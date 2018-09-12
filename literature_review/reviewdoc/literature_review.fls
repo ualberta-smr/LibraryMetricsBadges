@@ -8,14 +8,11 @@ INPUT /usr/local/texlive/2018/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2018/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2018/texmf-dist/tex/latex/base/size10.clo
 INPUT /usr/local/texlive/2018/texmf-dist/tex/latex/base/size10.clo
-INPUT /usr/local/texlive/2018/texmf-dist/tex/latex/lineno/lineno.sty
-INPUT /usr/local/texlive/2018/texmf-dist/tex/latex/lineno/lineno.sty
 INPUT literature_review.aux
 INPUT literature_review.aux
 OUTPUT literature_review.aux
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 OUTPUT literature_review.pdf
 INPUT /usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
@@ -24,4 +21,3 @@ INPUT literature_review.aux
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb
