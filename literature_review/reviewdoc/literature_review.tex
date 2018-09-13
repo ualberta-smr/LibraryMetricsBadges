@@ -65,16 +65,27 @@ While the number of languages it can suggest libraries for is limited to 5, the 
 with 1 language at 81\% and with 5 being at 67\% showing its potential to grow in the future.
 
 \paragraph{}
-Going back to the key problem of looking for the right library to use, Uddin's et. al \cite{opiner} article
+% WORK IN PROGRESS
+Going back to the key problem of choosing the right library to use, Uddin's et. al \cite{opinerarticle} article
 highlights their approach to this by looking at personal developer opinions's on different resources
 and how it affects the reader's decision. Furthermore, the sentiment behind this can be used to indicate if its 
-a positive, questionable, or negative source to use.
-
+a positive, questionable, or a negative API to use. The tool created, Opiner \cite{opiner} is a summarization engine
+that examines these opinions and evaluates its sentiment to see if the API should be recommended also displaying ratings on API traits
+and organizing top opinions on both positive and negative sides. 
+The backend of the application web crawls through a Q\&A site, StackOverflow \cite{stackoverflow} to extract answer
+information surrounding an API topic. This data is used to help discover when an API in mentioned, what kinds of opinion
+are associated with an API, and combining these opinions under common aspects developers care about such as usability and performance.
+Using Opiner \cite{opiner} through a small research study evaluated on 2 seperate groups of particpant's choices to see if 
+just StackOverflow \cite{stackoverflow} alone would work for decision making on selecting an API or both StackOverflow and Opiner would be better.
+We view that devlopers are more confident in their selection with both tools vs just StackOverflow alone. 
+A weakness is that although the evaluation of the study is optimistic, having 100\% as a metric for using both
+would be hard to generalize for a larger population. Giving a hard edge case percentage will be difficult to tell later on for false positive tests.
 
 \subsection{Github Badges}
 \paragraph{}
 TODO) Talk about NPM repo badge article
-
+% weaknesses survey used had too low of a population and thus is hard to generalize
+% to the majority
 
 \subsection{Metrics}
 \paragraph{}
