@@ -139,8 +139,25 @@ is difficult to generalize that these results will stay reliable for future stud
 % Talk about API popularity/migration metrics and where to organize info after
 With software libaries and APIs evolving at a rapid speed, upgrading to the latest software can be cumbersome for developers
 as challenges of backwards incompatability and deciding on new APIs for your project prove to be a problem.
-Hora et. al \cite{apiwave} dicusses these 2 obstacles and implements a web application \textit{apiwave} to mitigate these problems and
-highlight API popularity and migration in depth.
+Hora et. al \cite{apiwave} dicusses these 2 obstacles and implements a web application \textit{apiwave} \cite{apiwavewebsite} to mitigate these problems and
+highlight API popularity and migration in depth with the former measured by the number of users using the service.
+
+The research method takes the Git history code of a repository and outputs information about the API's popularity metric, method of migration with code snippets as examples.
+This code is further extracted by its Git diff. Based on the insertions and deletions, we can detect which lines have been modified for migration 
+and update the popularity statistic by 1 suggesting that the old library lost a follower and the new library gained one with further 
+assistance of mining import statements to see which APIs have changed.
+The client side of \textit{apiwave} \cite{apiwavewebsite} can present a library at many levels including specific interface lookup eg. java.util vs java.util.Map.
+\textit{Apiwave} also displays addition and deletions statistics, overall popularity graph, 
+and code snippets that highlights recommended libraries to transfer over to based on diffs.
+
+These results indicate different popularity trends and has been able to answer real life StackOverflow \cite{stackoverflow} 
+questions regarding API migration. This helps to recommend the best software to use for developers based on ease of use through migration
+and the number of others who support this -- popularity.
+
+With a high number of vistors to the page, it is only limited to Java at the moment even though there are many lanugages out there
+such as Javascript and Python that host many open source libaries. 
+
+
 
 
 \paragraph{}
