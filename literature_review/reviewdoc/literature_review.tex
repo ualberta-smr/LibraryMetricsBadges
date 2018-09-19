@@ -112,6 +112,14 @@ The key questions to ask are, \textit{What are the most common badges and what d
 To examine the impact of badges, Node Package Modules (npm) \cite{npm} is used as the research repository as it's the largest online collection of Javascipt packages. 
 
 % Research method analysis
+Data is collected by mining all npm \cite{npm} packages and keeping those with metadata that included 
+important metrics and a public Github \cite{github} repository. They extract the badges through the git history associated with 
+the README file by matching the regular expression for a badge insertion then further categorizing them into specific categories
+such as quality assuracne, popularity, dependencies etc. which each have different signaling intentions.
+With their survey insights, they develop sub questions to validate the qualities the badges are supposed to show. 
+For each type of signal (dependencies, popularity, test suite, and quality pull requests), they look at 
+impact before and after badge adoption through longitudinal analysis, statistical regressions
+to see how it is correlated with their arguments, and any underlying indicators that the badge may not overly express at first glance.
 
 % Results and conclusion
 The results suggest that displaying badges highly correlate with better code practices specifically higher test coverage, updated dependencies, and higher quality code.
@@ -119,10 +127,8 @@ However, overwhelming your repository with badges loses its intended signaling e
 Assessment signals that are more costly to produce are more reliable than static conventional badges that display trivial information already readily found on the page.
 
 % My opinions
-The article did a great dive into looking at the popular metrics that developers look for when choosing a library
-by its impact before and after badge adoption, longitudinal analysis overtime, and expressing a quantitative percentage
-to support their arguments. With their survey design research method however, having such a low response rate of 15.3\% 
-is difficult to generalize that these results will stay true in future studies.
+With their survey design research method that collected important libraries metrics from contributers and maintainers however, having such a low response rate of 15.3\% 
+is difficult to generalize that these results will stay reliable for future studies.
 
 
 
@@ -130,7 +136,7 @@ is difficult to generalize that these results will stay true in future studies.
 % evidence for why this method is better
 
 
-\newpage
+
 \subsection{Metrics}
 \paragraph{}
 TODO) Talk about API popularity/migration metrics
