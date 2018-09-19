@@ -1,6 +1,8 @@
 \documentclass[12pt]{article}
 
-    \usepackage[hyphens,spaces,obeyspaces]{url}
+\usepackage[hyphens,spaces,obeyspaces]{url}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
     
 
 \title{CMPUT 499 Literature Review}
@@ -27,7 +29,7 @@
 \newpage
 \section{Introduction}
 % Give idea of the topic of the literature review, patterns + theme
-% Work in Progress. This will be edited a lot.
+% Work in Progress. This will be edited a lot.s
 Third-party software libraries and Application Programming Interfaces (APIs) offer a way for developers
 to use existing features and funuctionalities to build their projects without having to re-invent the wheel.
 There are many libraries to use for different programming languages whether it is open source 
@@ -35,7 +37,7 @@ or hosted elsewhere. Although having this much freedom for deciding on what libr
 it is also conflicting to figure out which one is best for your project. It is difficult to choose because
 there are a variety of factors involved such as functionality and developer support. 
 In this review, we look at several diferent articles to help analyze various properties of libraries and 
-to determine a helpful comparison between them.
+to determine a high quality method of comparison between them.
 
 \section{Article Review}
 % Not sure how to format articles. Could start with one article per paragraph.
@@ -61,6 +63,7 @@ While trying out the application myself, I found that search results would only 
 libraries that are mentioned in specific contexts.
 Axios \cite{axios} a popular Javascript HTTP library should output expected 
 recomendations like Requests \cite{requests} module for Python but the actual list printed was empty.
+Axios \cite{axios} itself is mentioned around REST, APIs, and HTTP requests making it difficult to figure out in what context it should be recommended.
 While the number of languages it can suggest libraries for is limited to 5, the precision metric is impressive
 with 1 language at 81\% and with 5 being at 67\% showing its potential to grow in the future.
 
@@ -78,17 +81,43 @@ are associated with an API, and combining these opinions under common aspects de
 Using Opiner \cite{opiner} through a small research study evaluated on 2 seperate groups of particpant's choices to see if 
 just StackOverflow \cite{stackoverflow} alone would work for decision making on selecting an API or both StackOverflow and Opiner would be better.
 We view that devlopers are more confident in their selection with both tools vs just StackOverflow alone. 
-A weakness is that although the evaluation of the study is optimistic, having 100\% as a metric for using both
-would be hard to generalize for a larger population. Giving a hard edge case percentage will be difficult to tell later on for false positive tests.
+A weakness is that although the evaluation of the study proves useful, having 100\% as a metric for using both StackOverflow and Opiner
+would be hard to generalize for a larger population. 
 
 \subsection{Github Badges}
 \paragraph{}
-TODO) Talk about NPM repo badge article
-% weaknesses survey used had too low of a population and thus is hard to generalize
+Many developers like to both use and contribute to open-source software projects on GitHub \cite{github}. 
+Trockman et. al \cite{githubbadges} looks at the in depth quality of a package by analyzing repository badges eg. Figure \ref{phpbadge} that maintainers display on their README.
+
+% FIX FORMATING OF IMAGE SO TEXT CAN BE PRINTED UNDERNEATH IMAGE
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth,height=6cm,keepaspectratio=true]{gnrephpbadges}
+    \caption{
+        Example badges in a open source PHP repository \protect\cite{badgeimage}
+    }
+    \label{phpbadge}
+\end{figure}
+
+Trockman not only mentions that badges are signals to make qualities of a project more transparent but also "may impact users' and contributers' decision making" \cite{githubbadges}.
+Game like elements known as \textit{Gamification} are not explicitly embedded into these badges but in reality motivate users to contribute higher quality code to increase the signal quality
+displayed by these visuals. 
+The key questions to ask are, \textit{What are the most common badges and what does displayong them intend to signal?} and \textit{To what degree do badges correlate with qualities that developers expect?} \cite{githubbadges}.
+
+
+% look for main motivation behind project, goals, why they looked only at these prospects.
+% evidence for why this method is better??
+
+% results: badges that display build status, test, coverage, and updated dependendencies are positively correlated with better code practisies.
+% assessment signals that are more costly (took more work to produce) are better than conventional low quality badges that display something trivial already found on repo
+
+% weaknesses : survey used had too low of a population and thus is hard to generalize
 % to the majority
 
+\newpage
 \subsection{Metrics}
 \paragraph{}
+TODO) Talk about API popularity/migration metrics
 TODO) Talk about Fernando's article
 
 \newpage 
