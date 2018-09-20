@@ -29,7 +29,7 @@
 \newpage
 \section{Introduction}
 % Give idea of the topic of the literature review, patterns + theme
-% Work in Progress. This will be edited a lot.s
+
 \paragraph{}
 Third-party software libraries and Application Programming Interfaces (APIs) offer a way for developers
 to use existing features and integrate them within their projects without having to re-invent the wheel.
@@ -41,34 +41,33 @@ In this review, we look at several diferent articles to help analyze various pro
 to determine a reliable method of comparison between them.
 
 \section{Article Review}
-% Not sure how to format articles. Could start with one article per paragraph.
 
-% That would take to long. Format by theme? 
+% Format by theme 
 % Recommenders, Badges, API Comparisons by Metrics, Usage, etc.
 
 \subsection{Library Recommenders}
 \paragraph{}
-One problem is researching new analogical libraries to use for different programming languages that has similar functionalities 
-to the ones you currently know. Chen's et. al \cite{analogical} paper discusses their library recommender 
-that compiles a list of libraries from community resources such as blogs and Q\&A sites like StackOverflow \cite{stackoverflow} 
-and outputs a list of recommended libraries in the developer's language of choice. 
+One problem is researching for new analogical libraries to use that has similar functionalities 
+to the ones you already know of that works effectively with your project. Chen's et. al \cite{analogical} paper discusses their library recommender 
+that consumes as input a list of libraries from community resources such as blogs and Q\&A sites like StackOverflow \cite{stackoverflow} 
+and outputs a list of recommended libraries in a different language of choice that offers similar features to input language argument. 
 
 This is implemented by first mining tags on questions posted online on StackOverflow \cite{stackoverflow}.
 These tags are split into two knowledge bases: relational and categorical. Respectively, relational knowledge is how pairs of
-tags are correlated to each other eg. Java and JUnit while categorical knowledge consists of how tags are grouped into categories such as 
-language, operating system, concept, or library with both bases being analyzed by NLP. 
-The key idea here is that having different seperated tag categories and relatonships between tags often mentioned together
-allowed for a simpler way to recommend a new library. With the database in place, users can then search for recomendations through the built
-web application called SimilarTech \cite{similartech}.
+tags are correlated to each other e.g. Java and JUnit, while categorical knowledge consists of how tags are grouped into categories such as 
+language, operating system, concept, or library. Both these bases are analyzed by NLP to ensure efficient extraction of data and are sub categorized correctly.
+Having both seperated tag categories and relatonships between tags often mentioned together
+provides a simpler way to recommend a new library. With the database in place, users can then search for recomendations through the built
+web application called \textit{SimilarTech} \cite{similartech}.
 
-While trying out the application myself, I found that search results would only yield for 
-libraries that are mentioned in specific contexts.
-Axios \cite{axios} a popular Javascript HTTP library should output expected 
-recomendations like Requests \cite{requests} module for Python but the actual list printed was empty.
-Axios \cite{axios} itself is mentioned around many situations like REST, APIs, and HTTP requests making it difficult to figure out in what context it should be recommended.
+While trying out the application myself, I found that search results would yield for libraries only mentioned in specific contexts.
+Axios \cite{axios} a popular Javascript HTTP API should output expected recomendations 
+like the Requests \cite{requests} module for Python but the actual list printed was empty.
+Axios \cite{axios} itself is mentioned around many situations like REST, APIs, and HTTP requests making it difficult to figure out in what circumstance
+it should be recommended in.
 
 While the number of languages it can suggest libraries for is limited to 5, the precision metric is impressive
-with 1 language at 81\% and with 5 being at 67\% showing its potential to grow in the future.
+with 1 language at 81\% and with 5 being at 67\% demonstrating its potential to grow in the future.
 
 \paragraph{}
 Going back to the key problem of deciding on the right library to use, Uddin's et. al \cite{opinerarticle} article
