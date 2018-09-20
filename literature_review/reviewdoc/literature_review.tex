@@ -135,24 +135,25 @@ is difficult to generalize that these results will stay reliable for future stud
 \subsection{Metrics}
 \paragraph{}
 % API popularity and migration
-With software libaries and APIs evolving at a rapid speed, upgrading to the latest software can be cumbersome for developers
+With software libaries evolving at a rapid speed, upgrading to the latest software can be cumbersome for developers
 as challenges of backwards incompatability and deciding on new APIs for your project prove to be a problem.
 Hora et. al \cite{apiwave} dicusses these 2 obstacles and implements a web application \textit{apiwave} \cite{apiwavewebsite} to mitigate these problems and
 highlight API popularity and migration in depth with the former measured by the number of users using the service.
 
-The research method takes the Git history code of a repository and outputs information about the API's popularity metric, method of migration with code snippets as examples.
-This code is further extracted by its Git diff. Based on the insertions and deletions, we can detect which lines have been modified for migration 
-and update the popularity statistic by 1 suggesting that the old library lost a follower and the new library gained one with further 
-assistance of mining import statements to see which APIs have changed.
+The research method takes the Git history code of a repository and outputs information about the API's popularity metric and method of migration with code snippets as examples on this process.
+This code is further extracted by its Git diff. Based on insertions and deletions, we can detect which lines have been modified for migration 
+and update the popularity statistic by 1 suggesting that the old library lost a follower and the new library gained one.
+Mining import statement diffs assist with which APIs have been added or removed.
 The client side of \textit{apiwave} \cite{apiwavewebsite} can present a library at many levels including specific interface lookup eg. java.util vs java.util.Map.
-\textit{Apiwave} also displays addition and deletions statistics, overall popularity graph, 
+\textit{Apiwave} also displays addition and deletions statistics, an overall popularity graph, 
 and code snippets that highlights recommended libraries to transfer over to based on diffs.
 
-These results indicate different popularity trends and has been able to answer real life StackOverflow \cite{stackoverflow} 
-questions regarding API migration. This helps to recommend the best software to use for developers based on ease of use through migration
+These results indicate different popularity trends and can answer real life StackOverflow \cite{stackoverflow} 
+questions regarding API migration in testing with actual human answers. 
+This helps to recommend the best software to use for developers based on compatability through migration
 and the number of others who support this -- popularity.
 
-Even though there are a high number of vistors on the page, it is only limited to Java at the moment even though there are many lanugages out there
+Even though there are a high number of vistors and page views, it is only limited to the Java language even though there are many lanugages out there
 such as Javascript and Python that host many open source libaries. 
 
 
@@ -168,7 +169,7 @@ Key questions to look at are how to compile this dataset, and finding metrics th
 Data is collected from Stack Overflow \cite{stackoverflow}, a Q\&A resource, with source code and issues found on GitHub \cite{github} all to provide
 diversified content to see the perspective of API qualities at all angles. Many metrics eg. Release frequency, Performance presented by Mora et. al \cite{metrics} are also
 dicussed previously by other authors \cite{apiwave,analogical,githubbadges,opinerarticle}.
-For each metric a detailed description is given on what the metric portrays, how this metric is calculated by git commit extraction or previous related research by other authors,
+For each metric a detailed description is given on what the metric portrays, how this metric is calculated by git commit extraction or previous related research from other authors,
 and how it supports the method of comparison.
 
 The web application displays detailed information all at one place to showcase the different metrics for each API. 
@@ -176,8 +177,7 @@ Although there is no audience feedback within the article, Mora et al. \cite{met
 to improve the application looking into survey feedback and dynamic updates to the information displayed. 
 
 The study is limited to further generalization to show that quanitative measures work without specifying tests in the article. 
-It also wasn't clear at first how the data is extracted at first but later found that the methodology itself has been borrowed by another author to apply to more metrics.
-A detailed technical summary on data extraction could also be given to help connect the dots in the research method.
+A detailed technical summary on data extraction could also be given to help connect the dots in the research method even if the method itself has been referenced by another author.
 
 
 \newpage 
