@@ -47,7 +47,6 @@ to determine a high quality method of comparison between them.
 
 \subsection{Library Recommenders}
 \paragraph{}
-% TODO make paragraph shorter. Just needed to jot ideas down before doing that
 One problem is researching new analogical libraries to use for different programming languages that has similar functionalities 
 to the ones you currently know. Chen's et. al \cite{analogical} paper discusses their library recommender 
 that compiles a list of libraries from community resources such as blogs and Q\&A sites like StackOverflow \cite{stackoverflow} 
@@ -95,7 +94,6 @@ Many developers like to both use and contribute to open-source software projects
 With many online software to use, it's difficult to pin point which is worth your time to contribute to and integrate with your project.
 Trockman et. al \cite{githubbadges} looks at the in depth quality of a package by analyzing repository badges eg. Figure \ref{phpbadge} that maintainers display on their README.
 
-% FIX FORMATING OF IMAGE SO TEXT CAN BE PRINTED UNDERNEATH IMAGE
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth,height=6cm,keepaspectratio=true]{gnrephpbadges}
@@ -136,7 +134,7 @@ is difficult to generalize that these results will stay reliable for future stud
 
 \subsection{Metrics}
 \paragraph{}
-% Talk about API popularity/migration metrics and where to organize info after
+% API popularity and migration
 With software libaries and APIs evolving at a rapid speed, upgrading to the latest software can be cumbersome for developers
 as challenges of backwards incompatability and deciding on new APIs for your project prove to be a problem.
 Hora et. al \cite{apiwave} dicusses these 2 obstacles and implements a web application \textit{apiwave} \cite{apiwavewebsite} to mitigate these problems and
@@ -159,25 +157,27 @@ such as Javascript and Python that host many open source libaries.
 
 
 \paragraph{}
-Selecting the best suited library for your work is often difficult as you are not sure which ones contain the features you desire.
+Selecting the best suited library for your work is often difficult as you need to make sure that they are not only reliable but also contain your desired features.
 Mora et al. \cite{metrics} creates a method of comparison between libraries on a set criteria of metrics to help developers
-compare and contrast for the correct choice. Mentioned in the article, Uddin et al. \cite{analogical} proves that aspects
+compare and contrast between different software. Mentioned in the article, Uddin et al. \cite{analogical} proves that aspects
 such as performance, documentation, and usability also highlighted in Trockman's et al. \cite{githubbadges} argument are
 popular points to look for in an API.
-Providing a quantative measure that looks at library qualities could produce the best results when making the final decision.
+Providing a quantative measure that looks at library qualities could lead to the best decision on library selection.
 Key questions to look at are how to compile this dataset, and finding metrics that express the underlying quality of the library that developers care about.
 
-Data is collected from Stack Overflow \cite{stackoverflow}, a Q\&A resource, source code and issues found on GitHub \cite{github} provide
+Data is collected from Stack Overflow \cite{stackoverflow}, a Q\&A resource, with source code and issues found on GitHub \cite{github} all to provide
 diversified content to see the perspective of API qualities at all angles. Many metrics eg. Release frequency, Performance presented by Mora et. al \cite{metrics} are also
-dicussed previously by other authors \cite{apiwave} \cite{analogical} \cite{githubbadges} \cite{opinerarticle}.
-For each metric a description is given, how this metric is calculated by git commits, and how it relates to the method of comparison.
+dicussed previously by other authors \cite{apiwave,analogical,githubbadges,opinerarticle}.
+For each metric a detailed description is given on what the metric portrays, how this metric is calculated by git commit extraction or previous related research by other authors,
+and how it supports the method of comparison.
 
-This web application displays great information all at one place to showcase the different metrics for each API. 
+The web application displays detailed information all at one place to showcase the different metrics for each API. 
 Although there is no audience feedback within the article, Mora et al. \cite{metrics} gives specific future prospects on how
 to improve the application looking into survey feedback and dynamic updates to the information displayed. 
 
-The study is limited to further generalization that quanitative measures truly work without specifying tests in the article. 
-It also wasn't clear at first how the data is extracted at first but later found that the methodology itself has been borrowed by another author to apply to more metrics.  
+The study is limited to further generalization to show that quanitative measures work without specifying tests in the article. 
+It also wasn't clear at first how the data is extracted at first but later found that the methodology itself has been borrowed by another author to apply to more metrics.
+A detailed technical summary on data extraction could also be given to help connect the dots in the research method.
 
 
 \newpage 
@@ -185,10 +185,18 @@ It also wasn't clear at first how the data is extracted at first but later found
 % Summarize key points
 % Decide based on results from article, the method of reseach to dive into with my project
 \paragraph{}
-For future software metric analysis research based on popular metrics found by Mora et. al \cite{metrics}
+Deciding between different APIs in various libraries and frameworks proves to be challenging. 
+Chen et al. \cite{analogical} and Udin et al. \cite{opinerarticle} look at explicitly recommending libraries through their web application with the latter 
+focusing on opinion sentiment. Trockman et al. \cite{githubbadges} examines the impact of GitHub \cite{github} badges and whether they affect developer choices.
+Finally, Hora et. al \cite{apiwave} and Mora et. al \cite{metrics} analyze quantitative statistics on API metrics with the former focusing on popularity and migration.
+
+\paragraph{}
+For future software metric research based on popular metrics found by Mora et. al \cite{metrics}
 and Trockman et al. \cite{githubbadges}, we hope to create high quality, assessment Github \cite{github} badges
-based on the most popular software metrics to help recommend the best libraries for users to use through first
-glance at the README file.
+based on the most popular metrics to help recommend the best libraries for users through first
+glance at the README file. Spending more effort on these assessment badges in addition to taking the most popular metrics 
+will ensure that the impact on code quality increases
+but does not overload the user with too much information on the page. 
 
 \newpage
 \bibliographystyle{IEEEtran}
