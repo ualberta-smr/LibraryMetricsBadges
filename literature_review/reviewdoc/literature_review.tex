@@ -86,7 +86,7 @@ Using Opiner \cite{opiner} through a small research study evaluated on 2 seperat
 just StackOverflow \cite{stackoverflow} alone would work for decision making on selecting an API or both StackOverflow and Opiner would be better.
 We view that devlopers are more confident in their selection with both tools vs just StackOverflow alone. 
 
-A weakness is that although the evaluation of the study proves useful, having 100\% as a metric for using both StackOverflow and Opiner
+A weakness is that although the evaluation of the study proves useful, having 100\% as a percentage for using both StackOverflow and Opiner
 would be hard to generalize for a larger population. 
 
 \subsection{Github Badges}
@@ -109,7 +109,7 @@ Trockman not only mentions that badges are signals to make qualities of a projec
 Game like elements known as \textit{Gamification} are not explicitly embedded into these badges but in reality motivate users to contribute higher quality code to increase the signal quality
 displayed by these visuals. 
 The key questions to ask are, \textit{What are the most common badges and what does displayong them intend to signal?} and \textit{To what degree do badges correlate with qualities that developers expect?} \cite{githubbadges}.
-To examine the impact of badges, Node Package Modules (npm) \cite{npm} is used as the research repository as it's the largest online collection of Javascipt packages. 
+To examine the impact of badges, Node Package Modules (npm) \cite{npm} is used as the research repository as it's the largest online collection of Javascript packages. 
 
 % Research method analysis
 Data is collected by mining all npm \cite{npm} packages and keeping those with metadata that included 
@@ -159,12 +159,32 @@ such as Javascript and Python that host many open source libaries.
 
 
 \paragraph{}
-TODO) Talk about Fernando's article
+Selecting the best suited library for your work is often difficult as you are not sure which ones contain the features you desire.
+Mora et al. \cite{metrics} creates a method of comparison between libraries on a set criteria of metrics to help developers
+compare and contrast for the correct choice. Mentioned in the article, Uddin et al. \cite{analogical} proves that aspects
+such as performance, documentation, and usability also highlighted in Trockman's et al. \cite{githubbadges} argument are
+popular points to look for in an API.
+Providing a quantative measure that looks at library qualities could produce the best results when making the final decision.
+Key questions to look at are how to compile this dataset, and finding metrics that express the underlying quality of the library that developers care about.
+
+Data is collected from Stack Overflow \cite{stackoverflow}, a Q\&A resource, source code and issues found on GitHub \cite{github} provide
+diversified content to see the perspective of API qualities at all angles. Many metrics eg. Release frequency, Performance presented by Mora et. al \cite{metrics} are also
+dicussed previously by other authors \cite{apiwave} \cite{analogical} \cite{githubbadges} \cite{opinerarticle}.
+For each metric a description is given, how this metric is calculated by git commits, and how it relates to the method of comparison.
+
+This web application displays great information all at one place to showcase the different metrics for each API. 
+Although there is no audience feedback within the article, Mora et al. \cite{metrics} gives specific future prospects on how
+to improve the application looking into survey feedback and dynamic updates to the information displayed. 
+
+The study is limited to further generalization that quanitative measures truly work without specifying tests in the article. 
+It also wasn't clear at first how the data is extracted at first but later found that the methodology itself has been borrowed by another author to apply to more metrics.  
+
 
 \newpage 
 \section{Conclusion}
 % Summarize key points
 % Decide based on results from article, the method of reseach to dive into with my project
+\paragraph{}
 For future software metric analysis research based on popular metrics found by Mora et. al \cite{metrics}
 and Trockman et al. \cite{githubbadges}, we hope to create high quality, assessment Github \cite{github} badges
 based on the most popular software metrics to help recommend the best libraries for users to use through first
