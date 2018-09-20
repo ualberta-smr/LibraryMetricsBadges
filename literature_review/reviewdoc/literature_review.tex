@@ -50,20 +50,21 @@ to determine a reliable method of comparison between them.
 One problem is researching for new analogical libraries to use that has similar functionalities 
 to the ones you already know of that works effectively with your project. Chen's et. al \cite{analogical} paper discusses their library recommender 
 that consumes as input a list of libraries from community resources such as blogs and Q\&A sites like StackOverflow \cite{stackoverflow} 
-and outputs a list of recommended libraries in a different language of choice that offers similar features to input language argument. 
+and outputs a list of recommended libraries in a different language of choice that offers similar features to the input language argument. 
 
 This is implemented by first mining tags on questions posted online on StackOverflow \cite{stackoverflow}.
 These tags are split into two knowledge bases: relational and categorical. Respectively, relational knowledge is how pairs of
 tags are correlated to each other e.g. Java and JUnit, while categorical knowledge consists of how tags are grouped into categories such as 
-language, operating system, concept, or library. Both these bases are analyzed by NLP to ensure efficient extraction of data and are sub categorized correctly.
-Having both seperated tag categories and relatonships between tags often mentioned together
-provides a simpler way to recommend a new library. With the database in place, users can then search for recomendations through the built
+language, operating system, concept, or library. 
+Both these bases are analyzed by NLP to ensure efficient extraction of data and are sub categorized correctly.
+Having both seperated tag categories and relatonships between tags often mentioned together provides a simpler way to recommend a new library. 
+With the database in place, users can then search for recomendations through the built
 web application called \textit{SimilarTech} \cite{similartech}.
 
 While trying out the application myself, I found that search results would yield for libraries only mentioned in specific contexts.
 Axios \cite{axios} a popular Javascript HTTP API should output expected recomendations 
 like the Requests \cite{requests} module for Python but the actual list printed was empty.
-Axios \cite{axios} itself is mentioned around many situations like REST, APIs, and HTTP requests making it difficult to figure out in what circumstance
+Axios \cite{axios} itself is mentioned around many situations like REST, APIs, and HTTP requests making it difficult to target in what circumstance
 it should be recommended in.
 
 While the number of languages it can suggest libraries for is limited to 5, the precision metric is impressive
@@ -78,20 +79,29 @@ that examines these opinions and evaluates its sentiment to see if the API shoul
 displaying ratings on API traits and organizing top opinions for both positive and negative sides. 
 
 The backend of the application web crawls through a Q\&A site, StackOverflow \cite{stackoverflow} to extract answer
-information surrounding an API topic. This data is used to help discover when an API in mentioned and what kinds of opinions
-are associated with an API. The combination of data is then used to summarize common aspects developers care about such as usability and performance.
+information surrounding an API topic. This data is used to help discover when an API in referenced and what kinds of opinions
+are associated with an API by "finding its nearest API mention" \cite{opinerarticle}. 
+This combination of data is then used to summarize common aspects developers care about such as usability and performance by finding their interests
+through a survey.
 
 Using Opiner \cite{opiner} through a small research study evaluated on 2 seperate groups of particpant's choices to see if 
 just StackOverflow \cite{stackoverflow} alone would work for decision making on selecting an API or both StackOverflow and Opiner would be better.
-We view that devlopers are more confident in their selection with both tools vs just StackOverflow alone. 
+We view that developers are more confident in their selection with both tools versus just StackOverflow alone. 
 
+For correctness, Opiner gives an overall 90\% precision metric that indeed demonstrates that this data is reliable.
 A weakness is that although the evaluation of the study proves useful, having 100\% as a research study result for using both StackOverflow and Opiner
-would be hard to generalize for a larger population. 
+is difficult to generalize for a larger population. 
 
 \subsection{Github Badges}
 \paragraph{}
 With many online open source software to use, it's difficult to pin point which is worth your time to contribute to and/or integrate with your project.
 Trockman et. al \cite{githubbadges} looks at the in depth quality of a package by analyzing repository badges eg. Figure \ref{phpbadge} that maintainers display on their README file.
+rockman not only mentions that badges are signals that makes internal software aspects more transparent but also "may impact users' and contributers' decision making" \cite{githubbadges}.
+Game like elements known as \textit{Gamification} are not explicitly embedded into these badges but in reality motivate users to contribute higher quality code to increase the signal power
+displayed by these visuals. 
+The key questions to ask are, \textit{What are the most common badges and what does displayong them intend to signal?} and 
+\textit{To what degree do badges correlate with qualities that developers expect?} \cite{githubbadges}.
+To examine the impact of badges, Node Package Modules (npm) \cite{npm} is used as the research repository as it's the largest online collection of Javascript packages. 
 
 \begin{figure}
     \centering
@@ -102,31 +112,24 @@ Trockman et. al \cite{githubbadges} looks at the in depth quality of a package b
     \label{phpbadge}
 \end{figure}
 
-Trockman not only mentions that badges are signals that makes internal software aspects more transparent but also "may impact users' and contributers' decision making" \cite{githubbadges}.
-Game like elements known as \textit{Gamification} are not explicitly embedded into these badges but in reality motivate users to contribute higher quality code to increase the signal power
-displayed by these visuals. 
-The key questions to ask are, \textit{What are the most common badges and what does displayong them intend to signal?} and 
-\textit{To what degree do badges correlate with qualities that developers expect?} \cite{githubbadges}.
-To examine the impact of badges, Node Package Modules (npm) \cite{npm} is used as the research repository as it's the largest online collection of Javascript packages. 
-
 % Research method analysis
 Data is collected by mining all npm \cite{npm} packages and keeping those with metadata that included 
 important metrics and a public Github \cite{github} repository. They extract the badges through the git history associated with 
 the README file by matching the regular expression for a badge insertion then further categorizing them into specific categories
 such as quality assuracne, popularity, dependencies etc. which each have different signaling intentions.
-With their survey insights, they develop sub questions to validate the qualities the badges are supposed to show. 
+With their survey insights, they develop sub questions to validate if the badges exert the correct qualities as intended. 
 For each type of signal (dependencies, popularity, test suite, and quality pull requests), they look at 
 impact before and after badge adoption through longitudinal analysis, statistical regressions
-to see how it is correlated with their arguments, and any underlying indicators that the badge may not overly express at first glance.
+to see how it is correlated with their key questions, and any underlying indicators that the badge may not overly express at first glance.
 
 % Results and conclusion
-The results suggest that displaying badges highly correlate with better code practices specifically higher test coverage, updated dependencies, and higher quality code.
-However, overwhelming your repository with badges loses its intended signaling effect thus turns away users leading to decrease in downloads.
-Assessment signals that are more costly to produce are more reliable than static conventional badges that display trivial information already readily found on the page.
+The results suggest that displaying badges highly correlate with better code practices specifically higher test coverage, updated dependencies, and a increase in quality code.
+However, overwhelming your repository with badges loses its intended signaling effect thus turns away users leading to a decrease in downloads.
+Assessment signals that are more costly to produce are more reliable than static conventional badges that display trivial information easily found on the page.
 
 % My opinions
-With their survey design research method that collected important libraries metrics from contributers and maintainers however, having such a low response rate of 15.3\% 
-is difficult to generalize that these results will stay reliable for future studies.
+With their survey design research method that collected important libraries metrics from contributers and maintainers, having such a low response rate of 15.3\% 
+is challenging to generalize that these results will stay reliable for future studies.
 
 % look for main motivation behind project, goals, why they looked only at these prospects.
 % evidence for why this method is better
@@ -153,8 +156,8 @@ questions regarding API migration in testing with actual human answers.
 This helps to recommend the best software to use for developers based on compatability through migration
 and the number of others who support this -- popularity.
 
-Even though there are a high number of vistors and page views, it is only limited to the Java language even though there are many lanugages out there
-such as Javascript and Python that host many open source libaries. 
+Even though there is a high number of vistors and page views, it is only limited to the Java language even though there are many lanugages out there
+such as Javascript and Python that host readily available open source libaries. 
 
 
 \paragraph{}
@@ -172,7 +175,7 @@ dicussed previously by other authors \cite{apiwave,analogical,githubbadges,opine
 For each metric a detailed description is given on what the metric portrays, how this metric is calculated by git commit extraction or previous related research from other authors,
 and how it supports the method of comparison.
 
-The web application displays detailed information all at one place to showcase the different metrics for each API. 
+The web application displays detailed information all at one place to showcase the different quantitative metrics for each API. 
 Although there is no audience feedback within the article, Mora et al. \cite{metrics} gives specific future prospects on how
 to improve the application looking into survey feedback and dynamic updates to the information displayed. 
 
@@ -186,8 +189,8 @@ A detailed technical summary on data extraction could also be given to help conn
 % Decide based on results from article, the method of reseach to dive into with my project
 \paragraph{}
 Deciding between different APIs in various libraries and frameworks proves to be challenging. 
-Chen et al. \cite{analogical} and Udin et al. \cite{opinerarticle} look at explicitly recommending libraries through their web application with the latter 
-focusing on opinion sentiment. Trockman et al. \cite{githubbadges} examines the impact of GitHub \cite{github} badges and whether they affect developer choices.
+Chen et al. \cite{analogical} and Udin et al. \cite{opinerarticle} look at explicitly recommending libraries through their web application with the latter targeting on opinion sentiment. 
+Trockman et al. \cite{githubbadges} examines the impact of GitHub \cite{github} badges and whether they affect developer choices.
 Finally, Hora et. al \cite{apiwave} and Mora et. al \cite{metrics} analyze quantitative statistics on API metrics with the former focusing on popularity and migration.
 
 \paragraph{}
