@@ -81,7 +81,7 @@ displaying ratings on API traits in addition to organizing top opinions for both
 
 The backend of the application web crawls through a Q\&A site, StackOverflow \cite{stackoverflow} to extract answer
 information surrounding an API topic. This data is used to help discover when an API in referenced and what kinds of opinions
-are associated with an API by "finding its nearest API mention" \cite{opinerarticle} through a API name, link, or code said in the same sentence. 
+are associated with an API by "finding its nearest API mention" \cite{opinerarticle} through an API name, link, or code said in the same sentence. 
 This combination of data is then used to summarize common aspects developers care about such as usability and performance 
 by finding their interests through a survey.
 
@@ -121,23 +121,24 @@ Data is collected by mining all npm \cite{npm} packages and then keeping those w
 They extract the badges through the git history associated with 
 the README file by matching the regular expression for a badge insertion then further classifying them into specific categories
 such as quality assurance, popularity, dependencies etc. which each have different signaling intentions.
-With their survey insights, they develop sub questions to validate if the badges exert the correct qualities as intended. 
+With their developer and maintainer survey insights, they develop sub questions to validate if the badges exert the correct qualities as intended. 
 For each type of signal (dependencies, popularity, test suite, and quality pull requests), they look at 
 impact before and after badge adoption with 8 months on both sides through longitudinal analysis, statistical regressions
 to see how it is correlated with their key questions, and any underlying indicators that the badge may not overly express at first glance.
 
 % Results and conclusion
 The results suggest that displaying badges highly correlate with better code practices specifically higher test coverage, updated dependencies, and a increase in quality code.
-However, overwhelming your repository with badges loses its intended signaling effect thus turns away users leading to a decrease in downloads, with 5 being the best number.
-Assessment dynamic signals that are more costly to produce are more reliable than static conventional badges that display trivial information easily found on the page.
+However, overwhelming your repository with badges loses its intended signaling effect thus turns away users leading to a decrease in downloads,
+with 5 being the best number of badges to show off.
+Assessment dynamic signals that are more costly to produce are more reliable than static conventional badges 
+that display trivial information easily found on the page.
 
 % My opinions
-With their survey design research method that collected important libraries metrics from contributers and maintainers, having a low response rate of 15.3\% 
+With their survey design research method that collected software metrics from contributers and maintainers, having a low response rate of 15.3\% 
 is challenging to generalize that these results will stay reliable for future studies.
 
 % look for main motivation behind project, goals, why they looked only at these prospects.
 % evidence for why this method is better
-
 
 \subsection{Metrics}
 \paragraph{}
