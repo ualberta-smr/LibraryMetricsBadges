@@ -1,6 +1,4 @@
 https://github.com/google/gson.git
-https://github.com/elki-project/elki.git
-https://github.com/Waikato/moa.git
 https://github.com/spring-projects/spring-security.git
 https://github.com/mockito/mockito.git
 https://github.com/junit-team/junit5.git

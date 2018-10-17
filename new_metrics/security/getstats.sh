@@ -17,14 +17,16 @@
     # gradle build -x test
 
 cd "repos"
-for library in ls -d */; do
-    check = "$(find "$library" -maxdepth 1 -type f -name 'pom.xml')"
+x="ls -d */ | sed 's#/##'"
+
+for library in $( ls -d */ | sed 's#/##' )
+do
     cd $library
-    if [$check]
+    if find $library -maxdepth 1 -type f -name "pom.xml";
     then    
-        mvn clean install -DskipTests=true
+        $( mvn clean install -q -DskipTests=true )
     else
-        gradle build -x test
+        $( gradle build -q -x \\test )
     fi
     cd ..
 done
