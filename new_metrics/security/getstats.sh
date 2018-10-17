@@ -21,12 +21,13 @@ x="ls -d */ | sed 's#/##'"
 
 for library in $( ls -d */ | sed 's#/##' )
 do
-    cd $library
     if find $library -maxdepth 1 -type f -name "pom.xml";
     then    
-        $( mvn clean install -q -DskipTests=true )
+        cd $library
+        mvn clean install -q -DskipTests=true 
     else
-        $( gradle build -q -x \\test )
+        cd $library
+        gradle build -q -x test
     fi
     cd ..
 done
