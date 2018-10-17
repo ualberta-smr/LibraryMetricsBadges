@@ -16,6 +16,7 @@ done < $1
 # else
     # gradle build -x test
 
+rm "bugs.txt"
 cd "repos"
 for library in $( ls -d */ | sed 's#/##' )
 do
@@ -27,7 +28,6 @@ do
         cd $library
         gradle build -q -x test
     fi
-    java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar $library > ../../bugs.txt
     cd ..
 done
 
