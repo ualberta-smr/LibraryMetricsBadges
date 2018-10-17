@@ -1,0 +1,12 @@
+https://github.com/google/gson.git
+https://github.com/elki-project/elki.git
+https://github.com/Waikato/moa.git
+https://github.com/spring-projects/spring-security.git
+https://github.com/mockito/mockito.git
+https://github.com/junit-team/junit5.git
+https://github.com/ninjaframework/ninja.git
+https://github.com/jhy/jsoup.git
+https://github.com/DigitalPebble/storm-crawler.git
+https://github.com/yegor256/takes.git
+https://github.com/vaadin/platform.git
+https://github.com/ratpack/ratpack.git
