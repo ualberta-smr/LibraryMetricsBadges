@@ -1,0 +1,22 @@
+{
+  "name": "software-metrics-githubbadges",
+  "version": "1.0.0",
+  "description": "Github badges that provide a quantitative visualization of different software metrics to help users compare and contrast various software libraries",
+  "main": "createbadge.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ualberta-smr/bui-course-f18.git"
+  },
+  "author": "Monica",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ualberta-smr/bui-course-f18/issues"
+  },
+  "homepage": "https://github.com/ualberta-smr/bui-course-f18#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
