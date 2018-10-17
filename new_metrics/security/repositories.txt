@@ -1,3 +1,1 @@
 https://github.com/google/gson.git
-https://github.com/jhy/jsoup.git
-https://github.com/yegor256/takes.git
