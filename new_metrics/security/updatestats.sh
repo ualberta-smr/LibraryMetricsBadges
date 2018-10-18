@@ -1,6 +1,6 @@
 # assuming java classes don't have to be compiled, run this script to get spotbugs data
 rm "bugs.txt"
-cd "repos"
+cd "repos" # need to change later b/c im not pushing direct repositories on github
 for library in $( ls -d */ | sed 's#/##' )
 do
     cd $library

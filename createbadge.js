@@ -7,7 +7,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.send(getSecurity(req,res)); 
+    getSecurity(req,res)
+        .then(bugs => {
+            return res.redirect(302, `https://img.shields.io/badge/securityvulnerabilities-${bugs}%2-blue.svg`);
+        })
+        .catch(err => {
+            console.log(err);
+        }); 
+    res.end("Done");
 });
 
 // README file will call an endpoint everytime the page is refreshed

@@ -1,15 +1,22 @@
-var shell = require('shelljs');
 
-// TODO make the function asynchronous as spotbugs takes time to run
+var fs = require('fs');
+var exec = require('child_process').exec;
+
 module.exports = function(req,res){
-    if (shell.exec("./updatestats.sh").code !== 0) {
-        shell.echo("Some error occured with updating your badge");
-        shell.exit(1);
-    }
 
     // grab the number of bugs from numberofbugs.txt in security folder
-
     // then create the badge
 
-    return "TEsting function";
+    return new Promise((resolve, reject) => {
+        exec("bash ./updatestats.sh", function(err,stdout,stderr) {
+            if (err){
+                return reject(err.code);
+            }
+
+            fs.readFile('numberofbugs.txt', 'utf8', function(err, contents) {
+                console.log(contents);
+                return resolve(contents);
+            });
+        });
+    });
 };
