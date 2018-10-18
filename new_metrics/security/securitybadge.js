@@ -1,20 +1,22 @@
 
 var fs = require('fs');
 var exec = require('child_process').exec;
+var path = require("path");
 
-module.exports = function(req,res){
+module.exports = async function(req,res){
 
-    // grab the number of bugs from numberofbugs.txt in security folder
-    // then create the badge
-
-    return new Promise((resolve, reject) => {
-        exec("bash ./updatestats.sh", function(err,stdout,stderr) {
+    return await new Promise((resolve, reject) => {
+        // TODO fix directory paths so that the bash command can run
+        exec("bash ./new_metrics/security/updatestats.sh",  {cwd: './new_metrics/security'}, function(err,stdout,stderr) {
             if (err){
+                console.log(err);
                 return reject(err.code);
             }
 
+            console.log(stdout);
+            console.log(stderr);
+
             fs.readFile('numberofbugs.txt', 'utf8', function(err, contents) {
-                console.log(contents);
                 return resolve(contents);
             });
         });

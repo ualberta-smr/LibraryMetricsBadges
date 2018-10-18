@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "nodemon": "^1.18.4",
+    "path": "^0.12.7",
     "shelljs": "^0.8.2"
   }
 }
