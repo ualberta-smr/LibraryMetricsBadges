@@ -7,22 +7,23 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
+    res.send(`Hello world`); 
+});
+
+// README file will call an endpoint everytime the page is refreshed
+// this will update the badge dynamically 
+// TODO make this asynchronous as this is slow & inefficient
+
+app.get('/security', (req, res) => {
     getSecurity(req,res)
         .then(bugs => {
             console.log(bugs);
-            res.redirect(200, `https://img.shields.io/badge/securityvulnerabilities-${bugs}-blue.svg`);
+            res.redirect(200, `https://img.shields.io/badge/security_vulnerabilities-${bugs}-blue.svg`);
         })
         .catch(err => {
             console.log(err);
             res.send("ERROR");
         }); 
-});
-
-// README file will call an endpoint everytime the page is refreshed
-// this will update the badge dynamically 
-
-app.get('/security', (req, res) => {
-    res.send(`Hello world`); 
 });
 
 app.get('/releasefreq', (req, res) => {

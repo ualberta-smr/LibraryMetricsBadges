@@ -1,2 +1,2 @@
 # bui-course-f18
-![Security Badge](http://7d81004a.ngrok.io/)
+![Security Badge](http://8536bf95.ngrok.io/security)
