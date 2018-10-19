@@ -2,6 +2,7 @@
 
 const express = require("express"); 
 const getSecurity = require("./new_metrics/security/securitybadge");
+const getLastDiscussed = require("./existing_metrics/last_discussed/last_discussed_badge");
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -17,7 +18,7 @@ app.get('/security', async (req, res) => {
     await getSecurity(req,res)
         .then(bugs => {
             console.log(bugs);
-            res.redirect(302, `https://img.shields.io/badge/security_vulnerabilities-${bugs}↑-blue.svg`);
+            res.redirect(302, `https://img.shields.io/badge/security_vulnerabilities-${bugs}-blue.svg`);
         })
         .catch(err => {
             console.log(err);
@@ -29,8 +30,16 @@ app.get('/releasefreq', (req, res) => {
     res.send(`Hello world`); 
 });
 
-app.get('/laststackoverflow', (req, res) => {
-    res.send(`Hello world`); 
+app.get('/lastdiscussed', async (req, res) => {
+    await getLastDiscussed()
+        .then(lastdate => {
+            console.log(lastdate);
+            res.redirect(302, `https://img.shields.io/badge/last_discussed_SO-${lastdate}-yellow.svg`);
+        })
+        .catch(err => {
+            console.log(err);
+            res.send("ERROR");
+        }); 
 });
 
 app.get('/pullrequests', (req, res) => {
