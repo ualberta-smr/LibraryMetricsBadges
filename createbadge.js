@@ -12,13 +12,12 @@ app.get('/', (req, res) => {
 
 // README file will call an endpoint everytime the page is refreshed
 // this will update the badge dynamically 
-// TODO make this asynchronous as this is slow & inefficient
-
-app.get('/security', (req, res) => {
-    getSecurity(req,res)
+// Problem is that running shell to update the badge is too slow for web browser
+app.get('/security', async (req, res) => {
+    await getSecurity(req,res)
         .then(bugs => {
             console.log(bugs);
-            res.redirect(200, `https://img.shields.io/badge/security_vulnerabilities-${bugs}-blue.svg`);
+            res.redirect(302, `https://img.shields.io/badge/security_vulnerabilities-${bugs}↑-blue.svg`);
         })
         .catch(err => {
             console.log(err);
