@@ -3,8 +3,12 @@
 const express = require("express"); 
 const getSecurity = require("./new_metrics/security/securitybadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/last_discussed_badge");
-const app = express();
+const sqlite3 = require('sqlite3').verbose();
+const Promise = require("bluebird");
 
+const security_db = new sqlite3.Database('./new_metrics/security/bugs.db');
+
+const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
@@ -13,15 +17,14 @@ app.get('/', (req, res) => {
 
 // README file will call an endpoint everytime the page is refreshed
 // this will update the badge dynamically once per day due to github cache restrictions
-app.get('/security/:libname', async (req, res) => {
+app.get('/security', async (req, res) => {
     await getSecurity(req,res)
-        .then(bugs => {
-            console.log(bugs);
-            res.redirect(302, `https://img.shields.io/badge/security_vulnerabilities-${bugs}-blue.svg`);
+        .then(result => {
+            res.redirect(302, `https://img.shields.io/badge/findsecbugs_result-${result.numberofbugs}${result.status}-blue.svg`);
         })
         .catch(err => {
             console.log(err);
-            res.send("ERROR");
+            res.send(`ERROR loading security badge for ${req.query.libname}`);
         }); 
 });
 
@@ -49,9 +52,11 @@ app.get('/issueresponse', (req, res) => {
     res.send(`Hello world`); 
 });
 
-app.listen(port, () => {
-    console.log('Example app listening on port 3000!');
-});
+
+app.listen(port);
+
+
+
 
 
 

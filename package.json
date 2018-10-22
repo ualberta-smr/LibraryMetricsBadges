@@ -10,8 +10,10 @@
   "author": "Monica",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.2",
     "express": "^4.16.4",
     "nodemon": "^1.18.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sqlite3": "^4.0.2"
   }
 }
