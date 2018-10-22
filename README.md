@@ -1,10 +1,11 @@
 # Exploring Software Library Metrics with GitHub Badges 
-![Security Badge](http://8536bf95.ngrok.io/security)
+![Security Badge](http://bd42c219.ngrok.io/security)
 
 
 ## Prerequisites
 * Node versions 8.11.1 or above
 * NPM should be bundled with the Node version above
+* Lots of memory due to cloning of other open source libraries and Spotbugs necessities
 
 ## Environment Setup
 * Clone repository

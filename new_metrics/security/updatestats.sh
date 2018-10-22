@@ -14,3 +14,19 @@ do
     cd ..
     wc -l ../bugs.txt | grep -o "[0-9]\+" > ../numberofbugs.txt
 done
+
+
+
+# select * from bugs where libname=$library
+# grab the result from ^^ and save it to a variable
+# now run spotbugs and getbugs result to save to variable
+# save variable into table by update
+# sqlite3 bugs.db "SOME COMMAND;" ".exit" > test.txt
+
+# if sqlite3 ../../bugs.db 'select * from bugs where libname = \"${SOMEVAR}\"'; # that means the libary exists in the table
+    # previousnumber = savedValue ^^
+    # run spotbugs and save to variable
+    # compare previousnumber with newnumber and save to variable
+    # update SQL table for new variable so libname=$library, numberofbugs = newnumber , update = "--, down, or up arrow"
+# else
+    # lib doesnt exists so we run spotbugs and insert new value into t
