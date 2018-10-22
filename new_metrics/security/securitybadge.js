@@ -13,9 +13,10 @@ const security_db = new sqlite3.Database(dbpath);
 
 module.exports = function(req,res){
 
+    // because the libary updates via bash script, the update of the stat itself will have to be seperate from badge presentation
     return new Promise((resolve, reject) => {
-        let name = req.query.libname;
 
+        let name = req.query.libname;
         security_db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
             if (err){
                 console.log(err);

@@ -1,1 +1,2 @@
 https://github.com/google/gson.git
+https://github.com/junit-team/junit4.git

@@ -27,13 +27,13 @@ do
             echo "Using previously saved stat for: \"${library}\""
         fi
             echo "Stat being newly inserted for \"${library}\""
-            java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar $library > "../../bugs.txt"
+            java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar ./ > "../../bugs.txt"
             newnum=$(wc -l ../../bugs.txt | grep -o "[0-9]\+")
             sqlite3 ../../bugs.db "INSERT INTO bugs (id, libname, numberofbugs, status) VALUES (NULL, \"${library}\", \"${newnum}\", '--');"
     
     else
 
-        java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar $library > "../../bugs.txt"
+        java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar ./ > "../../bugs.txt"
         updatednum=$(wc -l ../../bugs.txt | grep -o "[0-9]\+")
 
         if [[ $(sqlite3 ../../bugs.db "select * from bugs where libname = \"${library}\";") ]];
@@ -57,5 +57,6 @@ do
             sqlite3 ../../bugs.db "INSERT INTO bugs (id, libname, numberofbugs, status) VALUES (NULL, \"${library}\", \"${updatednum}\", '--');"
         fi
     fi
+    cd ..
 done
 
