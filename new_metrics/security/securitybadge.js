@@ -7,10 +7,12 @@ const filePathCurrentBugs = path.resolve(__dirname, "./numberofbugs.txt");
 const filePathPrevBugs = path.resolve(__dirname, "./numberofbugs.txt");
 
 module.exports = function(req,res){
+    req.params.libname;
 
     return new Promise((resolve, reject) => {
         // due to Github request cache limits, badge would only be updated once per day
         // running the shell script to update is slow 
+
         exec("bash updatestats.sh",  {cwd: './new_metrics/security'}, function(err,stdout,stderr) {
             if (err){
                 console.log(err);
@@ -19,7 +21,7 @@ module.exports = function(req,res){
 
             const numberofbugs = fs.readFileSync(filePathCurrentBugs, 'utf8');
             const previousbugs = fs.readFileSync(filePathPrevBugs,'utf8');
-
+    
             let bugString = "";
             if (previousbugs.length == 0 || previousbugs == numberofbugs){
                 bugString = numberofbugs.concat(" ", "--");
@@ -30,9 +32,10 @@ module.exports = function(req,res){
             else{
                 bugString = numberofbugs.concat(" ", "↓");
             }
-
+    
             return resolve(bugString);
         });
+
     });
 
     // run sqlite3 to grab latest data for badge 

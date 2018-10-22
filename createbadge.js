@@ -12,9 +12,8 @@ app.get('/', (req, res) => {
 });
 
 // README file will call an endpoint everytime the page is refreshed
-// this will update the badge dynamically 
-// Problem is that running shell to update the badge is too slow for web browser
-app.get('/security', async (req, res) => {
+// this will update the badge dynamically once per day due to github cache restrictions
+app.get('/security/:libname', async (req, res) => {
     await getSecurity(req,res)
         .then(bugs => {
             console.log(bugs);
