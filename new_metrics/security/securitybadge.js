@@ -1,7 +1,7 @@
 
-var fs = require('fs');
-var exec = require('child_process').exec;
-var path = require("path");
+const fs = require('fs');
+const exec = require('child_process').exec;
+const path = require("path");
 const sqlite3 = require('sqlite3').verbose();
 const Promise = require("bluebird");
 
@@ -11,7 +11,7 @@ const dbpath = path.resolve(__dirname, "./bugs.db");
 
 const security_db = new sqlite3.Database(dbpath);
 
-module.exports = function(req,res){
+module.exports = (req,res) => {
 
     // because the libary updates via bash script, the update of the stat itself will have to be seperate from badge presentation
     return new Promise((resolve, reject) => {

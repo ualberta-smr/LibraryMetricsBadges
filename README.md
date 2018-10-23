@@ -22,9 +22,9 @@
 		* **CURRENTLY** -> Badge image is given from running a localhost/ngrok server
 			* Bash script dynamic update is too slow when a browser hits our badge endpoint
 		* add any Java, public Github repository clone link to `repositories.txt`
-		* To update stat only given library has been compiled already:
+		* To update stat given that library has been compiled already:
 			* run `bash updatestats.sh`
 		* To go through entire process of git cloning, Maven/Gradle compilation, then running SpotBugs
-			* run `bash compilelibs.sh` then run `bash updatestats.sh`
+			* run `bash clonelibs.sh < repositories.txt`, then `bash compilelibs.sh`, finally `bash updatestats.sh`
 	* pull_requests
 

@@ -2,6 +2,7 @@
 
 const express = require("express"); 
 const getSecurity = require("./new_metrics/security/securitybadge");
+const getRelease = require("./existing_metrics/release_freq/releasebadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/last_discussed_badge");
 const sqlite3 = require('sqlite3').verbose();
 const Promise = require("bluebird");
@@ -12,13 +13,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.send(`Hello world`); 
+    res.send(`Hello world! Home page is working.`); 
 });
 
 // README file will call an endpoint everytime the page is refreshed
 // this will update the badge dynamically once per day due to github cache restrictions
-app.get('/security', async (req, res) => {
-    await getSecurity(req,res)
+app.get('/security', (req, res) => {
+    getSecurity(req,res)
         .then(result => {
             res.redirect(302, `https://img.shields.io/badge/findsecbugs_result-${result.numberofbugs}${result.status}-blue.svg`);
         })
@@ -29,7 +30,14 @@ app.get('/security', async (req, res) => {
 });
 
 app.get('/releasefreq', (req, res) => {
-    res.send(`Hello world`); 
+    getRelease(req,res)
+        .then(result => {
+            console.log(result);
+            res.send(`Good its working. Check console`); 
+        })
+        .catch(err => {
+            console.error(error);
+        });
 });
 
 app.get('/lastdiscussed', async (req, res) => {
