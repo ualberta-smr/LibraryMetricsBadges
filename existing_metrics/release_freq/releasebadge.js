@@ -5,6 +5,7 @@ const sqlite3 = require('sqlite3').verbose();
 const Promise = require("bluebird");
 const moment = require('moment');
 const dotenv = require("dotenv");
+const _ = require("lodash");
 
 const dbpath = path.resolve(__dirname, "./release.db");
 const releasesDB = new sqlite3.Database(dbpath);
@@ -17,20 +18,38 @@ let config = {
     }
 };
 
-let calculateAverage = (owner, libName, response) => {
+let grabDates = async (owner,libName,response) => {
     let dates = [];
 
-    response.data.forEach(element => {
-        axios.get(`https://api.github.com/repos/${owner}/${libName}/git/tags/${element.object.sha}`, config)
-            .then((tagResponse) => {
-                dates.push(moment().format(tagResponse.data.tagger.date, 'MM DD YYYY'));
-                
-            })
-            .catch(err => {
-                console.error(err);
-            })
+    // https://blog.lavrton.com/javascript-loops-how-to-handle-async-await-6252dd3c795
+    for (let i = 0; i < response.data.length; i++){
+        tagResponse = await axios.get(`https://api.github.com/repos/${owner}/${libName}/git/tags/${response.data[i].object.sha}`, config);
+        try{
+            dates.push(tagResponse.data.tagger.date)    
+        }
+        catch(err){
+            console.error(err);
+        }
+    }
+
+    dates = _.sortBy(dates, olddate => {
+        return new Date(olddate);
     });
-    console.log(dates);
+
+    return dates;
+}
+
+let calculateAverage = async (owner, libName, response) => {
+    let dates = await grabDates(owner,libName,response);
+
+    let totaldays = 0;
+
+    for (let index = 0; index < dates.length - 1; index++) {
+        let a = moment(dates[index]);
+        let b = moment(dates[index + 1]);
+        totaldays += Math.abs(a.diff(b, 'days'));
+    }
+    console.log(totaldays);
 };
 
 module.exports = (req,res) => {
