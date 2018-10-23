@@ -1,19 +1,24 @@
 // Java 9, Node 8.11.1
 
 const express = require("express"); 
+const path = require("path");
+const dotenv = require('dotenv').config({path:"./variables.env"});
+
 const getSecurity = require("./new_metrics/security/securitybadge");
 const getRelease = require("./existing_metrics/release_freq/releasebadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/last_discussed_badge");
 const sqlite3 = require('sqlite3').verbose();
 const Promise = require("bluebird");
-
-const security_db = new sqlite3.Database('./new_metrics/security/bugs.db');
+const axios = require("axios");
 
 const app = express();
+
+const clientID = 'd3bc1153425f6848afb2';
+const clientSecret = '137eccc83e65375e711992942a90b7b7b31719e2';
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.send(`Hello world! Home page is working.`); 
+    res.sendFile(__dirname + '/index.html');
 });
 
 // README file will call an endpoint everytime the page is refreshed
@@ -29,6 +34,31 @@ app.get('/security', (req, res) => {
         }); 
 });
 
+//https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/
+// Declare the redirect route
+app.get('/oauth/redirect', (req, res) => {
+    // The req.query object has the query params that
+    // were sent to this route. We want the `code` param
+    const requestToken = req.query.code
+    axios({
+      // make a POST request
+      method: 'post',
+      // to the Github authentication API, with the client ID, client secret
+      // and request token
+      url: `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${requestToken}`,
+      // Set the content type header, so that we get the response in JSOn
+      headers: {
+           accept: 'application/json'
+      }
+    }).then((response) => {
+      // Once we get the response, extract the access token from
+      // the response body
+      const accessToken = response.data.access_token
+      // redirect the user to the welcome page, along with the access token
+      res.redirect(`/pullrequests?access_token=${accessToken}`)
+    })
+});
+
 app.get('/releasefreq', (req, res) => {
     getRelease(req,res)
         .then(result => {
@@ -36,7 +66,7 @@ app.get('/releasefreq', (req, res) => {
             res.send(`Good its working. Check console`); 
         })
         .catch(err => {
-            console.error(error);
+            console.error(err);
         });
 });
 

@@ -4,8 +4,9 @@
 
 ## Prerequisites
 * Node versions 8.11.1 or above
-* NPM should be bundled with the Node version above
+* NPM should be bundled with the Node version above (at least 5.6.0)
 * Lots of memory due to cloning of other open source libraries and Spotbugs necessities
+* Java version 8 (but some git cloning of libraries may need version 9 or 10 instead)
 
 ## Environment Setup
 * Clone repository
