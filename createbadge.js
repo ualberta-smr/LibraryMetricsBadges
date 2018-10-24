@@ -3,13 +3,11 @@
 const express = require("express"); 
 const path = require("path");
 const dotenv = require('dotenv').config({path:"./variables.env"});
+const axios = require("axios");
 
 const getSecurity = require("./new_metrics/security/securitybadge");
 const getRelease = require("./existing_metrics/release_freq/releasebadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/last_discussed_badge");
-const sqlite3 = require('sqlite3').verbose();
-const Promise = require("bluebird");
-const axios = require("axios");
 
 const app = express();
 
@@ -39,15 +37,15 @@ app.get('/oauth/redirect', (req, res) => {
     // were sent to this route. We want the `code` param
     const requestToken = req.query.code;
     axios({
-      method: 'post',
-      url: `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${requestToken}`,
-      headers: {
-           accept: 'application/json'
-      }
+        method: 'post',
+        url: `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${requestToken}`,
+        headers: {
+            accept: 'application/json'
+        }
     }).then((response) => {
-      const accessToken = response.data.access_token;
-      // redirect the user to the welcome page, along with the access token
-      res.redirect(`/pullrequests?access_token=${accessToken}`);
+        const accessToken = response.data.access_token;
+        // redirect the user to the welcome page, along with the access token
+        res.redirect(`/pullrequests?access_token=${accessToken}`);
     })
     .catch((err) => {
         console.error(err);

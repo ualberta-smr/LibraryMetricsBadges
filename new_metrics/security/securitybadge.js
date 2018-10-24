@@ -7,9 +7,9 @@ const Promise = require("bluebird");
 
 const filePathCurrentBugs = path.resolve(__dirname, "./numberofbugs.txt");
 const filePathPrevBugs = path.resolve(__dirname, "./numberofbugs.txt");
-const dbpath = path.resolve(__dirname, "./bugs.db");
+const dbpath = path.resolve(__dirname, "../../badges.db");
 
-const security_db = new sqlite3.Database(dbpath);
+const db = new sqlite3.Database(dbpath);
 
 module.exports = (req,res) => {
 
@@ -17,12 +17,14 @@ module.exports = (req,res) => {
     return new Promise((resolve, reject) => {
 
         let name = req.query.libname;
-        security_db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
+        db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
             if (err){
                 console.log(err);
+                db.close();
                 return reject(err);
             }
             console.log(result);
+            db.close();
             return resolve(result);
         });
 

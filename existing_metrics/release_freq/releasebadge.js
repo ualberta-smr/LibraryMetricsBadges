@@ -7,8 +7,8 @@ const moment = require('moment');
 const dotenv = require('dotenv').config({path:"../../variables.env"});
 const _ = require("lodash");
 
-const dbpath = path.resolve(__dirname, "./release.db");
-const releasesDB = new sqlite3.Database(dbpath);
+const dbpath = path.resolve(__dirname, "../../badges.db");
+const db = new sqlite3.Database(dbpath);
 
 let returnString = "N/A --";
 
@@ -68,50 +68,83 @@ module.exports = (req,res) => {
     // if 0 or 1 releases, it is N/A
     // Otherwise get all days since start of first release and divide by the number of releases
  
-    return new Promise((resolve, reject) => {
-        axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100`, config)
-            .then((response) => {
-                if (response.status != 200){
-                    return reject(response.status);
+    return new Promise( async (resolve, reject) => {
+        let response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100`, config);
+        
+        if(!response){
+            return reject(response);
+        }
+        if (response.status != 200){
+            return reject(response.status);
+        }
+        console.log(response.data.length);
+        if (response.data.length < 2){
+            return resolve(returnString);
+        }
+
+
+        // now check if libname exists inside the sql table
+        // if it doesn't exist in table, calculate from scratch and insert into table
+        // if it does exist in table 
+        db.get(`SELECT numreleases, averagedays FROM releasefreq WHERE libname = "${libName}"`, (err) => {
+            console.log(this.numreleases);
+            if (typeof this.numreleases == "undefined"){
+                // entry doesnt exist in table. Go calculate average then insert into table.
+                let average = calculateAverage(response);
+                console.log(average);
+                if (typeof average != "number"){
+                    return reject(average);
                 }
                 
-                //console.log(response);
-                console.log(response.data.length);
-                if (response.data.length < 2){
-                    return resolve(returnString);
-                }
-
-                return resolve(calculateAverage(response));
-
-                // now check if libname exists inside the sql table
-                // if it doesn't exist in table, calculate from scratch and insert into table
-                // if it does exist in table 
-                releasesDB.get(`SELECT numreleases, averagedays FROM releasefreq WHERE libname = "${libName}"`, (err,result) => {
-                    if (result.length < 1){
-
+                let data = [libName, response.data.length, average, "--"];
+                let placeholders = data.map((value) => '(?)').join(',');
+                let query = `INSERT INTO releasefreq(libname, numreleases, averagedays, status) VALUES` + placeholders;
+                
+                db.run(query, data, (err) => {
+                    if (err) {
+                        console.error(err.message);
+                        return reject(err);
                     }
-                    else{
-                        if (result.numreleases == response.request.ClientRequest.outputSize){
-                            return resolve(result);
-                        }
-                        else{
-                            // need to update the SQL table
-                            let data = [``,``,`${libName}`];
-                            let query = `UPDATE releasefreq SET numreleases = ?, averagedays = ? WHERE libname = ?`;
-                            releasesDB.run(query,data, (err) => {
-                                if (err){
-                                    console.error(err);
-                                    return reject(err);
-                                }
-                                console.log(`Row(s) updated: ${this.changes}`);
-                            });
-                        }
-                    }
+                    console.log(`Rows inserted ${this.changes}`);
+                    return resolve([average, "--"]);
                 });
-            })
-            .catch((err) => {
-                console.error(err);
-                return reject(err);
-            });
+            
+            }
+            else{
+                // entry exists in table and has not changed, just return the result
+                if (result.numreleases == response.data.length){
+                    return resolve([result.averagedays, result.status]);
+                }
+                else{
+                    // entry exists but we need to update the table
+                    let average = calculateAverage(response);
+                    if (typeof average != "number"){
+                        return reject(average);
+                    }
+
+                    let status = "--";
+                    if (result.averagedays < average){
+                        status = "↑";
+                    }
+                    else if(result.averagedays > average){
+                        status = "↓";
+                    }
+
+                    let data = [response.data.length, average, status];
+                    
+                    let query = `UPDATE releasefreq SET numreleases = ?, averagedays = ?, status = ? WHERE libname = ${libName}`;
+                    
+                    db.run(query, data, (err) => {
+                        if (err){
+                            console.error(err);
+                            return reject(err);
+                        }
+                        console.log(`Row(s) updated: ${this.changes}`);
+                        return resolve([result.averagedays, result.status]);
+                    });
+                }
+            }
+        });
+            
     });
 };
