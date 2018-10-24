@@ -13,8 +13,6 @@ const axios = require("axios");
 
 const app = express();
 
-const clientID = 'd3bc1153425f6848afb2';
-const clientSecret = '137eccc83e65375e711992942a90b7b7b31719e2';
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
@@ -34,36 +32,32 @@ app.get('/security', (req, res) => {
         }); 
 });
 
+//https://github.com/settings/tokens/new
 //https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/
-// Declare the redirect route
 app.get('/oauth/redirect', (req, res) => {
     // The req.query object has the query params that
     // were sent to this route. We want the `code` param
-    const requestToken = req.query.code
+    const requestToken = req.query.code;
     axios({
-      // make a POST request
       method: 'post',
-      // to the Github authentication API, with the client ID, client secret
-      // and request token
       url: `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${requestToken}`,
-      // Set the content type header, so that we get the response in JSOn
       headers: {
            accept: 'application/json'
       }
     }).then((response) => {
-      // Once we get the response, extract the access token from
-      // the response body
-      const accessToken = response.data.access_token
+      const accessToken = response.data.access_token;
       // redirect the user to the welcome page, along with the access token
-      res.redirect(`/pullrequests?access_token=${accessToken}`)
+      res.redirect(`/pullrequests?access_token=${accessToken}`);
     })
+    .catch((err) => {
+        console.error(err);
+    });
 });
 
 app.get('/releasefreq', (req, res) => {
     getRelease(req,res)
         .then(result => {
-            console.log(result);
-            res.send(`Good its working. Check console`); 
+            res.send(`AVERAGE NUM OF DAYS: ${result}`); 
         })
         .catch(err => {
             console.error(err);
