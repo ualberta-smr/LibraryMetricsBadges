@@ -34,117 +34,149 @@ let grabDates = async (response) => {
         }
     }
 
-    dates = _.sortBy(dates, olddate => {
-        return new Date(olddate);
-    });
-
     return dates;
 };
 
-let calculateAverage = async (response) => {
+let calculateAverage = (dates) => {
+    
+    let totaldays = 0;
+    for (let index = 0; index < dates.length - 1; index++) {
+        let a = moment(dates[index]);
+        let b = moment(dates[index + 1]);
+        totaldays += Math.abs(a.diff(b, 'days'));
+    }
+
+    return Math.ceil(totaldays / dates.length);
+
+};
+
+let insertEntry = async (data) => {
+
+    let placeholders = data.map((elem) => "?").join(",");
+    let query = `INSERT INTO releasefreq(libname, numreleases, averagedays, status) VALUES (${placeholders})`;
     try{
-        let dates = await grabDates(response);
-
-        let totaldays = 0;
-        for (let index = 0; index < dates.length - 1; index++) {
-            let a = moment(dates[index]);
-            let b = moment(dates[index + 1]);
-            totaldays += Math.abs(a.diff(b, 'days'));
-        }
-
-        return Math.ceil(totaldays / dates.length);
+        console.log("INSERT");
+        await db.run(query, data);
     }
     catch(err){
-        console.error(err);
         return err;
     }
 };
 
-module.exports = (req,res) => {
+let updateEntry = async (data) => {
+    let query = `UPDATE releasefreq SET numreleases = "?", averagedays = "?", status = "?" WHERE libname = "?"`;
+    try{
+        console.log("UPDATE");
+        await db.run(query, data);
+    }
+    catch(err){
+        return err;
+    }
+};
+
+
+let getReleases = async (owner, libName) => {
+    let alldates= [];
+    let pagenum = 1;
+    let numberofreleases = 0;
+
+    while(true){
+        let response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100&page=${pagenum}`, config);
+
+        if(!response){
+            return reject(response);
+        }
+
+        if (response.data.length == 0){
+            break;
+        }
+
+        if (response.status != 200){
+            return reject(response.status);
+        }
+        if (pagenum == 1 && response.data.length < 2){
+            return resolve(returnString);
+        }
+
+        numberofreleases += response.data.length;
+        let dates = await grabDates(response);
+        if (!Array.isArray(dates)){
+            return reject(response);
+        }
+        
+        alldates = [...alldates, ...dates];
+        pagenum++;
+    }
+    
+    alldates = await _.sortBy(alldates, olddate => {
+        return new Date(olddate);
+    });
+
+    return [alldates,numberofreleases];
+}
+
+module.exports = async (req,res) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
+
 
     // get number of releases via TAGS not RELEASES API
     // if 0 or 1 releases, it is N/A
     // Otherwise get all days since start of first release and divide by the number of releases
  
     return new Promise( async (resolve, reject) => {
-        let response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100`, config);
-        
-        if(!response){
-            return reject(response);
-        }
-        if (response.status != 200){
-            return reject(response.status);
-        }
-        console.log(response.data.length);
-        if (response.data.length < 2){
-            return resolve(returnString);
-        }
 
+        let arr = await getReleases(owner, libName);
+        let alldates = arr[0];
+        let numberofreleases = arr[1];
 
-        // now check if libname exists inside the sql table
-        // if it doesn't exist in table, calculate from scratch and insert into table
-        // if it does exist in table 
-        db.get(`SELECT numreleases, averagedays FROM releasefreq WHERE libname = "${libName}"`, (err) => {
-            console.log(this.numreleases);
-            if (typeof this.numreleases == "undefined"){
+        await db.get(`SELECT numreleases, averagedays, status FROM releasefreq WHERE libname = "${libName}"`, async (err,queryResult) => {
+            if (typeof queryResult == "undefined"){
                 // entry doesnt exist in table. Go calculate average then insert into table.
-                let average = calculateAverage(response);
-                console.log(average);
-                if (typeof average != "number"){
-                    return reject(average);
+                let average = calculateAverage(alldates);
+
+                let status = "--";
+                let data = [libName, numberofreleases, average, status];
+
+                try{
+                    await insertEntry(data);
+                    return resolve([average, status]);
                 }
-                
-                let data = [libName, response.data.length, average, "--"];
-                let placeholders = data.map((value) => '(?)').join(',');
-                let query = `INSERT INTO releasefreq(libname, numreleases, averagedays, status) VALUES` + placeholders;
-                
-                db.run(query, data, (err) => {
-                    if (err) {
-                        console.error(err.message);
-                        return reject(err);
-                    }
-                    console.log(`Rows inserted ${this.changes}`);
-                    return resolve([average, "--"]);
-                });
-            
+                catch(err){
+                    return reject(err);
+                }
             }
             else{
                 // entry exists in table and has not changed, just return the result
-                if (result.numreleases == response.data.length){
-                    return resolve([result.averagedays, result.status]);
+                if (queryResult.numreleases == numberofreleases){
+                    // TODO grab number of releases earlier cuz its too slow
+                    console.log("NO CHANGE");
+                    return resolve([queryResult.averagedays, queryResult.status]);
                 }
+                // entry exists but we need to update the table
                 else{
-                    // entry exists but we need to update the table
-                    let average = calculateAverage(response);
-                    if (typeof average != "number"){
-                        return reject(average);
-                    }
-
+                    let average = calculateAverage(alldates);
+    
                     let status = "--";
-                    if (result.averagedays < average){
+                    if (queryResult.averagedays < average){
                         status = "↑";
                     }
-                    else if(result.averagedays > average){
+                    else if(queryResult.averagedays > average){
                         status = "↓";
                     }
-
-                    let data = [response.data.length, average, status];
+    
+                    let data = [numberofreleases, average, status, libName];
                     
-                    let query = `UPDATE releasefreq SET numreleases = ?, averagedays = ?, status = ? WHERE libname = ${libName}`;
-                    
-                    db.run(query, data, (err) => {
-                        if (err){
-                            console.error(err);
-                            return reject(err);
-                        }
-                        console.log(`Row(s) updated: ${this.changes}`);
-                        return resolve([result.averagedays, result.status]);
-                    });
+                    try{
+                        await updateEntry(data);
+                        return resolve([average, status]);
+                    }
+                    catch(err){
+                        return reject(err);
+                    } 
+    
                 }
-            }
+            }   
         });
-            
     });
 };

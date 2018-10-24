@@ -17,6 +17,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get("/authsuccess", (req,res) => {
+    res.send("Github authentication success!");
+})
+
 // README file will call an endpoint everytime the page is refreshed
 // this will update the badge dynamically once per day due to github cache restrictions
 app.get('/security', (req, res) => {
@@ -32,9 +36,7 @@ app.get('/security', (req, res) => {
 
 //https://github.com/settings/tokens/new
 //https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/
-app.get('/oauth/redirect', (req, res) => {
-    // The req.query object has the query params that
-    // were sent to this route. We want the `code` param
+app.get('/oauth/redirect', (req, res) => { 
     const requestToken = req.query.code;
     axios({
         method: 'post',
@@ -45,7 +47,7 @@ app.get('/oauth/redirect', (req, res) => {
     }).then((response) => {
         const accessToken = response.data.access_token;
         // redirect the user to the welcome page, along with the access token
-        res.redirect(`/pullrequests?access_token=${accessToken}`);
+        res.redirect(`/authsuccess?access_token=${accessToken}`);
     })
     .catch((err) => {
         console.error(err);
@@ -55,7 +57,12 @@ app.get('/oauth/redirect', (req, res) => {
 app.get('/releasefreq', (req, res) => {
     getRelease(req,res)
         .then(result => {
-            res.send(`AVERAGE NUM OF DAYS: ${result}`); 
+            if (Array.isArray(result)){
+                res.send(`AVERAGE NUM OF DAYS: ${result[0]} with status ${result[1]}`);
+            }
+            else{
+                res.send(`Something happened: ${result}`); 
+            }
         })
         .catch(err => {
             console.error(err);
