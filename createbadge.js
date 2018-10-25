@@ -26,7 +26,10 @@ app.get("/authsuccess", (req,res) => {
 app.get('/security', (req, res) => {
     getSecurity(req,res)
         .then(result => {
-            res.redirect(302, `https://img.shields.io/badge/findsecbugs_result-${result.numberofbugs}${result.status}-blue.svg`);
+            res.send({
+                numbugs: result.numberofbugs,
+                status: result.status
+            });
         })
         .catch(err => {
             console.log(err);
@@ -58,7 +61,10 @@ app.get('/releasefreq', (req, res) => {
     getRelease(req,res)
         .then(result => {
             if (Array.isArray(result)){
-                res.send(`AVERAGE NUM OF DAYS: ${result[0]} with status ${result[1]}`);
+                res.send({
+                    numdays: `${result[0]}  ${result[1]}`,
+                });
+                //https://www.linkedin.com/pulse/who-wants-some-cool-smart-badges-art-shieldsio-adrien-sales/
             }
             else{
                 res.send(`Something happened: ${result}`); 
@@ -89,8 +95,8 @@ app.get('/issueresponse', (req, res) => {
     res.send(`Hello world`); 
 });
 
+const server = app.listen(port);
 
-app.listen(port);
 
 
 
