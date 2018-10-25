@@ -1,6 +1,7 @@
 # Exploring Software Library Metrics with GitHub Badges 
-![Security Badge](http://bd42c219.ngrok.io/security)
-![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=ReleaseDays&url=http%3A%2F%2Fafd7b0a1.ngrok.io%2Freleasefreq%3Fowner%3Dgson%26libname%3Dgson&query=numdays)
+![Security Badge](https://img.shields.io/badge/dynamic/json.svg?label=FindSecBugs%20Result&url=http%3A%2F%2Fa6a4d5f9.ngrok.io%2Fsecurity%3Flibname%3Djunit4&query=numbugs)
+
+![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http%3A%2F%2Fa6a4d5f9.ngrok.io%2Freleasefreq%3Fowner%3Djunit-team%26libname%3Djunit4&query=numdays&colorB=blue&suffix=%20%20days)
 
 ## Prerequisites
 * Node versions 8.11.1 or above

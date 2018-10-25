@@ -27,8 +27,7 @@ app.get('/security', (req, res) => {
     getSecurity(req,res)
         .then(result => {
             res.send({
-                numbugs: result.numberofbugs,
-                status: result.status
+                numbugs: `${result.numberofbugs} ${result.status}`
             });
         })
         .catch(err => {
@@ -62,9 +61,8 @@ app.get('/releasefreq', (req, res) => {
         .then(result => {
             if (Array.isArray(result)){
                 res.send({
-                    numdays: `${result[0]}  ${result[1]}`,
+                    numdays: `${result[0]} ${result[1]}`,
                 });
-                //https://www.linkedin.com/pulse/who-wants-some-cool-smart-badges-art-shieldsio-adrien-sales/
             }
             else{
                 res.send(`Something happened: ${result}`); 

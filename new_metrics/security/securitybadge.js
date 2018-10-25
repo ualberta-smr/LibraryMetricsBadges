@@ -13,18 +13,18 @@ const db = new sqlite3.Database(dbpath);
 
 module.exports = (req,res) => {
 
-    // because the libary updates via bash script, the update of the stat itself will have to be seperate from badge presentation
+    // TODO potentially change code so it runs bash scripts to update itself and store into sql server
     return new Promise((resolve, reject) => {
 
         let name = req.query.libname;
         db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
             if (err){
                 console.log(err);
-                db.close();
                 return reject(err);
             }
-            console.log(result);
-            db.close();
+            if (typeof result == "undefined"){
+                return reject("No results found for this Java library");
+            }
             return resolve(result);
         });
 
