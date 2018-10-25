@@ -1,3 +1,5 @@
+// Ednpoint times out if there are over 300ish release tags, but if left running it will save properly to database
+
 const fs = require('fs');
 const path = require("path");
 const axios = require("axios");
@@ -22,10 +24,9 @@ let grabDates = async (response) => {
     let dates = [];
 
     // https://blog.lavrton.com/javascript-loops-how-to-handle-async-await-6252dd3c795
-    for (let i = 0; i < response.data.length; i++){
-        // still too slow since we need to make a axios request for every commit
+    for (let i = 0; i < response.length; i++){
         try{
-            tagResponse = await axios.get(`${response.data[i].commit.url}`, config);
+            tagResponse = await axios.get(response[i], config);
             dates.push(tagResponse.data.commit.author.date);  
         }
         catch(err){
@@ -33,29 +34,35 @@ let grabDates = async (response) => {
             return err; 
         }
     }
-
     return dates;
 };
 
-let calculateAverage = (dates) => {
+let calculateAverage = async (dates) => {
+    let alldates = await grabDates(dates);
+    
+    if (!alldates || alldates.length == 0){
+        return false;
+    }
+
+    alldates = await _.sortBy(alldates, olddate => {
+        return new Date(olddate);
+    });
     
     let totaldays = 0;
-    for (let index = 0; index < dates.length - 1; index++) {
-        let a = moment(dates[index]);
-        let b = moment(dates[index + 1]);
+    for (let index = 0; index < alldates.length - 1; index++) {
+        let a = moment(alldates[index]);
+        let b = moment(alldates[index + 1]);
         totaldays += Math.abs(a.diff(b, 'days'));
     }
 
     return Math.ceil(totaldays / dates.length);
-
 };
 
 let insertEntry = async (data) => {
-
     let placeholders = data.map((elem) => "?").join(",");
     let query = `INSERT INTO releasefreq(libname, numreleases, averagedays, status) VALUES (${placeholders})`;
     try{
-        console.log("INSERT");
+        console.log("INSERT NEW VALUE");
         await db.run(query, data);
     }
     catch(err){
@@ -66,7 +73,7 @@ let insertEntry = async (data) => {
 let updateEntry = async (data) => {
     let query = `UPDATE releasefreq SET numreleases = "?", averagedays = "?", status = "?" WHERE libname = "?"`;
     try{
-        console.log("UPDATE");
+        console.log("UPDATE EXISTING VALUE");
         await db.run(query, data);
     }
     catch(err){
@@ -76,7 +83,7 @@ let updateEntry = async (data) => {
 
 
 let getReleases = async (owner, libName) => {
-    let alldates= [];
+    let urls = [];
     let pagenum = 1;
     let numberofreleases = 0;
 
@@ -86,11 +93,9 @@ let getReleases = async (owner, libName) => {
         if(!response){
             return reject(response);
         }
-
         if (response.data.length == 0){
             break;
         }
-
         if (response.status != 200){
             return reject(response.status);
         }
@@ -99,41 +104,33 @@ let getReleases = async (owner, libName) => {
         }
 
         numberofreleases += response.data.length;
-        let dates = await grabDates(response);
-        if (!Array.isArray(dates)){
-            return reject(response);
-        }
-        
-        alldates = [...alldates, ...dates];
+
+        response.data.forEach(element => {
+            urls.push(element.commit.url);
+        });
+    
         pagenum++;
     }
     
-    alldates = await _.sortBy(alldates, olddate => {
-        return new Date(olddate);
-    });
-
-    return [alldates,numberofreleases];
+    return [urls ,numberofreleases];
 }
 
 module.exports = async (req,res) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
-
-
-    // get number of releases via TAGS not RELEASES API
-    // if 0 or 1 releases, it is N/A
-    // Otherwise get all days since start of first release and divide by the number of releases
  
     return new Promise( async (resolve, reject) => {
-
         let arr = await getReleases(owner, libName);
-        let alldates = arr[0];
+        let urls = arr[0];
         let numberofreleases = arr[1];
 
         await db.get(`SELECT numreleases, averagedays, status FROM releasefreq WHERE libname = "${libName}"`, async (err,queryResult) => {
             if (typeof queryResult == "undefined"){
-                // entry doesnt exist in table. Go calculate average then insert into table.
-                let average = calculateAverage(alldates);
+                // entry doesnt exist in table. Go calculate average release frequency then insert into table.
+                let average = await calculateAverage(urls);
+                if(!average){
+                    return reject(average);
+                }
 
                 let status = "--";
                 let data = [libName, numberofreleases, average, status];
@@ -149,13 +146,15 @@ module.exports = async (req,res) => {
             else{
                 // entry exists in table and has not changed, just return the result
                 if (queryResult.numreleases == numberofreleases){
-                    // TODO grab number of releases earlier cuz its too slow
-                    console.log("NO CHANGE");
+                    console.log("NO CHANGE: grab existing value in database");
                     return resolve([queryResult.averagedays, queryResult.status]);
                 }
                 // entry exists but we need to update the table
                 else{
-                    let average = calculateAverage(alldates);
+                    let average = await calculateAverage(urls);
+                    if(!average){
+                        return reject(average);
+                    }
     
                     let status = "--";
                     if (queryResult.averagedays < average){
@@ -174,7 +173,6 @@ module.exports = async (req,res) => {
                     catch(err){
                         return reject(err);
                     } 
-    
                 }
             }   
         });
