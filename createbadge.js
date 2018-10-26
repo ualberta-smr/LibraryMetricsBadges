@@ -13,6 +13,12 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
+const config = {
+    clientid : process.env.CLIENT_ID,
+    clientsecret: process.env.CLIENT_SECRET,
+    token: process.env.TOKEN
+};
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -21,8 +27,7 @@ app.get("/authsuccess", (req,res) => {
     res.send("Github authentication success!");
 })
 
-// README file will call an endpoint everytime the page is refreshed
-// this will update the badge dynamically once per day due to github cache restrictions
+// Update for security badge will be done seperately with updatestats.sh due to heavy shell processing
 app.get('/security', (req, res) => {
     getSecurity(req,res)
         .then(result => {
@@ -53,6 +58,7 @@ app.get('/oauth/redirect', (req, res) => {
     })
     .catch((err) => {
         console.error(err);
+        res.send(`Error occurred: ${err}`);
     });
 });
 
@@ -61,7 +67,7 @@ app.get('/releasefreq', (req, res) => {
         .then(result => {
             if (Array.isArray(result)){
                 res.send({
-                    numdays: `${result[0]} ${result[1]}`,
+                    numdays: `${result[0]} days ${result[1]}`,
                 });
             }
             else{
@@ -70,6 +76,7 @@ app.get('/releasefreq', (req, res) => {
         })
         .catch(err => {
             console.error(err);
+            res.send(`Error occurred: ${err}`);
         });
 });
 
@@ -81,7 +88,7 @@ app.get('/lastdiscussed', async (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            res.send("ERROR");
+            res.send(`Error occurred: ${err}`);
         }); 
 });
 

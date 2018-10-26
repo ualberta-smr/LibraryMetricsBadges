@@ -13,7 +13,6 @@ const db = new sqlite3.Database(dbpath);
 
 module.exports = (req,res) => {
 
-    // TODO potentially change code so it runs bash scripts to update itself and store into sql server
     return new Promise((resolve, reject) => {
 
         let name = req.query.libname;

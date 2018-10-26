@@ -20,6 +20,11 @@ let config = {
     }
 };
 
+let numberofreleases = 0;
+let error = false;
+let toCalculate = true;
+let urls = [];
+
 let grabDates = async (response) => {
     let dates = [];
 
@@ -83,27 +88,26 @@ let updateEntry = async (data) => {
 
 
 let getReleases = async (owner, libName) => {
-    let urls = [];
     let pagenum = 1;
-    let numberofreleases = 0;
 
     while(true){
         let response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100&page=${pagenum}`, config);
 
-        if(!response){
-            return reject(response);
-        }
-        if (response.data.length == 0){
-            break;
-        }
         if (response.status != 200){
-            return reject(response.status);
+            error = true;
+            return response.status;
         }
+
         if (pagenum == 1 && response.data.length < 2){
-            return resolve(returnString);
+            numberofreleases = response.data.length;
+            return returnString;
         }
 
         numberofreleases += response.data.length;
+
+        if (response.data.length == 0){
+            break;
+        }
 
         response.data.forEach(element => {
             urls.push(element.commit.url);
@@ -118,18 +122,32 @@ let getReleases = async (owner, libName) => {
 module.exports = async (req,res) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
+    let average = "N/A";
  
     return new Promise( async (resolve, reject) => {
+        if (typeof owner == "undefined" || typeof libName == "undefined"){
+            return reject("Query parameters are invalid");
+        }
         let arr = await getReleases(owner, libName);
-        let urls = arr[0];
-        let numberofreleases = arr[1];
+        if (error){
+            return reject(arr);
+        }
+        if (arr == returnString){
+            toCalculate = false;
+        }
+        else{
+            urls = arr[0];
+            numberofreleases = arr[1];
+        }
 
         await db.get(`SELECT numreleases, averagedays, status FROM releasefreq WHERE libname = "${libName}"`, async (err,queryResult) => {
             if (typeof queryResult == "undefined"){
                 // entry doesnt exist in table. Go calculate average release frequency then insert into table.
-                let average = await calculateAverage(urls);
-                if(!average){
-                    return reject(average);
+                if (toCalculate){
+                    average = await calculateAverage(urls);
+                    if(!average){
+                        return reject(average);
+                    }
                 }
 
                 let status = "--";
@@ -151,22 +169,25 @@ module.exports = async (req,res) => {
                 }
                 // entry exists but we need to update the table
                 else{
-                    let average = await calculateAverage(urls);
-                    if(!average){
-                        return reject(average);
-                    }
-    
                     let status = "--";
-                    if (queryResult.averagedays < average){
-                        status = "↑";
-                    }
-                    else if(queryResult.averagedays > average){
-                        status = "↓";
+
+                    if (toCalculate){
+                        average = await calculateAverage(urls);
+                        if(!average){
+                            return reject(average);
+                        }
+                        if (queryResult.averagedays < average){
+                            status = "↑";
+                        }
+                        else if(queryResult.averagedays > average){
+                            status = "↓";
+                        }
                     }
     
                     let data = [numberofreleases, average, status, libName];
                     
                     try{
+                        console.log(data);
                         await updateEntry(data);
                         return resolve([average, status]);
                     }

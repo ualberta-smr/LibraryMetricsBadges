@@ -25,12 +25,12 @@ do
         if [[ $(sqlite3 ../../../../badges.db  "select * from bugs where libname = \"${library}\";") ]];
         then
             echo "Using previously saved stat for: \"${library}\""
-        fi
+        else
             echo "Stat being newly inserted for \"${library}\""
             java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar ./ > "../../bugs.txt"
             newnum=$(wc -l ../../bugs.txt | grep -o "[0-9]\+")
             sqlite3 ../../../../badges.db "INSERT INTO bugs (libname, numberofbugs, status) VALUES (\"${library}\", \"${newnum}\", '--');"
-    
+        fi
     else
 
         java -jar ../../spotbugs-3.1.3/lib/spotbugs.jar -textui -include ../../includefilterfile.xml -effort:max -high -pluginList ../../findsecbugs-plugin-1.8.0.jar ./ > "../../bugs.txt"
