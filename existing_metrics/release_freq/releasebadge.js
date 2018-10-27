@@ -1,6 +1,5 @@
 // Ednpoint times out if there are over 300ish release tags, but if left running it will save properly to database
 
-const fs = require('fs');
 const path = require("path");
 const axios = require("axios");
 const sqlite3 = require('sqlite3').verbose();

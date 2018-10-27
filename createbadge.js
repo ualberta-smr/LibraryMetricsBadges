@@ -7,17 +7,11 @@ const axios = require("axios");
 
 const getSecurity = require("./new_metrics/security/securitybadge");
 const getRelease = require("./existing_metrics/release_freq/releasebadge");
-const getLastDiscussed = require("./existing_metrics/last_discussed/last_discussed_badge");
+const getLastDiscussed = require("./existing_metrics/last_discussed/lastdiscussedbadge");
 
 const app = express();
 
 const port = process.env.PORT || 3000;
-
-const config = {
-    clientid : process.env.CLIENT_ID,
-    clientsecret: process.env.CLIENT_SECRET,
-    token: process.env.TOKEN
-};
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -81,10 +75,11 @@ app.get('/releasefreq', (req, res) => {
 });
 
 app.get('/lastdiscussed', async (req, res) => {
-    await getLastDiscussed()
-        .then(lastdate => {
-            console.log(lastdate);
-            res.redirect(302, `https://img.shields.io/badge/last_discussed_SO-${lastdate}-yellow.svg`);
+    await getLastDiscussed(req,res)
+        .then(date => {
+            res.send({
+                lastdate: date
+            });
         })
         .catch(err => {
             console.log(err);
