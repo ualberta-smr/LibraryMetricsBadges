@@ -7,6 +7,7 @@
 * NPM should be bundled with the Node version above (at least 5.6.0)
 * Lots of memory due to cloning of other open source libraries and Spotbugs necessities 
 * Java version 8 (but some git cloning of libraries may need version 9 or 10 instead)
+* Maven and Gradle
 * Sqlite3 that can run on command line
 * Git 
 	* configured so that it can run various commands like `git clone & git pull` on command line without authentication
@@ -20,11 +21,14 @@
 ## Folder Structure and Setup per badge
 * existing_metrics
 	* last_discussed
+
 	* issue_response_time
+
 	* release_freq
 		* Will calculate average number of days between 2 >= releases
 		* contains file, releasebadge.js that handles all Github API calls and constructs JSON response for badge creation
 		* no additional setup needed
+
 * new_metrics
 	* security
 		* add any Java, public Github repository clone link to `repositories.txt`
@@ -33,6 +37,7 @@
 		* To go through entire process of git cloning, Maven/Gradle compilation, then running SpotBugs
 			* run inside of security directory, `bash clonelibs.sh < repositories.txt`, then `bash compilelibs.sh`, finally `bash updatestats.sh`
 		* dynamic update of badge is seperate from badge image itself
+	
 	* pull_requests
 
 

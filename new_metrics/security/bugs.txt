@@ -1,5 +1,1 @@
-H S SECMD5: MD5 is not a recommended cryptographic hash function  At PathAssembler.java:[line 59]
-H S SECOBDES: Object deserialization is used in org.junit.experimental.max.MaxHistory.readHistory(File)  At MaxHistory.java:[line 52]
-H S SECOBDES: Object deserialization is used in org.junit.internal.ArrayComparisonFailureTest.deserializeFailureFromFile(String)  At ArrayComparisonFailureTest.java:[line 65]
-H S SECOBDES: Object deserialization is used in junit.tests.runner.ResultTest.assertResultSerializable(Result)  At ResultTest.java:[line 85]
-H S SECOBDES: Object deserialization is used in junit.tests.runner.ResultTest.assertResultReserializable(Result, ResultTest$SerializationFormat)  At ResultTest.java:[line 95]
+H S SECMD5: MD5 is not a recommended cryptographic hash function  At PathAssembler.java:[line 65]

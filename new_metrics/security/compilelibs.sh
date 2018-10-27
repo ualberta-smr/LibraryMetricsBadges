@@ -2,7 +2,7 @@
 cd "repos"
 for library in $( ls -d */ | sed 's#/##' )
 do
-    if find $library -maxdepth 1 -type f -name "pom.xml";
+    if [[ $(find $library -maxdepth 1 -type f -name "pom.xml") ]];
     then    
         cd $library
         mvn clean install -q -DskipTests=true 
