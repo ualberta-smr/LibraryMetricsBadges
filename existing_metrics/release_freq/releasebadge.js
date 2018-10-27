@@ -88,7 +88,6 @@ let getReleases = async (owner, libName, error, numberofreleases) => {
         let response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100&page=${pagenum}`, config);
 
         if (response.status != 200){
-            error = true;
             return response.status;
         }
 
@@ -120,30 +119,40 @@ module.exports = async (req,res) => {
     let urls = [];
     let numberofreleases = 0;
     let error = false;
- 
+
     return new Promise( async (resolve, reject) => {
         if (typeof owner == "undefined" || typeof libName == "undefined"){
             return reject("Query parameters are invalid");
         }
-        let arr = await getReleases(owner, libName, error, numberofreleases);
-        if (error){
-            return reject(arr);
+        try{
+            let arr = await getReleases(owner, libName, error, numberofreleases);
+            if (!Array.isArray(arr)){
+                return reject(arr);
+            }
+            if (arr.length < 2){
+                urls = arr;
+            }
+            else{
+                urls = arr[0];
+                numberofreleases = arr[1];
+            }
         }
-        if (arr.length < 2){
-            urls = arr;
-        }
-        else{
-            urls = arr[0];
-            numberofreleases = arr[1];
+        catch(err){
+            reject(err);
         }
 
         await db.get(`SELECT numreleases, averagedays, status FROM releasefreq WHERE libname = "${libName}"`, async (err,queryResult) => {
             if (typeof queryResult == "undefined"){
                 // entry doesnt exist in table. Go calculate average release frequency then insert into table.
                 if (urls.length > 1){
-                    average = await calculateAverage(urls);
-                    if(!average){
-                        return reject(average);
+                    try{
+                        average = await calculateAverage(urls);
+                        if(!average){
+                            return reject(average);
+                        }  
+                    }
+                    catch(err){
+                        return reject(err);
                     }
                 }
 
@@ -169,9 +178,14 @@ module.exports = async (req,res) => {
                     let status = "--";
 
                     if (urls.length > 1){
-                        average = await calculateAverage(urls);
-                        if(!average){
-                            return reject(average);
+                        try{
+                            average = await calculateAverage(urls);
+                            if(!average){
+                                return reject(average);
+                            }  
+                        }
+                        catch(err){
+                            return reject(err);
                         }
                         if (queryResult.averagedays < average){
                             status = "↑";

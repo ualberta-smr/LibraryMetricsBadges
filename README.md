@@ -4,10 +4,11 @@
 
 ## Prerequisites
 * Node versions 8.11.1 or above
-* NPM should be bundled with the Node version above (at least 5.6.0)
+* NPM versions 5.6.0 or above
 * Lots of memory due to cloning of other open source libraries and Spotbugs necessities 
-* Java version 8 (but some git cloning of libraries may need version 9 or 10 instead)
-* Maven and Gradle
+* Java version 8 or above
+	* Disclaimer: Some libraries may not compile properly if not on 9 or 10
+* Maven (3.5.4) and Gradle (4.10.2) or above
 * Sqlite3 that can run on command line
 * Git 
 	* configured so that it can run various commands like `git clone & git pull` on command line without authentication
@@ -16,7 +17,9 @@
 * Fork repository
 * Inside of root folder of repo, run `npm install` to grab necessary dependencies
 * Inside of root folder of repo, run `sqlite3 badges.db < tables.sql` to setup an empty database 
-* TODO -> Write procedure for setting up env variables and Github OAuth
+* TODO -> Write procedure for setting up env variables for authentication
+* https://github.com/settings/tokens
+* https://stackapps.com/apps/oauth/register
 
 ## Folder Structure and Setup per badge
 * existing_metrics
@@ -35,7 +38,7 @@
 		* To update stat given that library has been compiled already:
 			* run `bash updatestats.sh`
 		* To go through entire process of git cloning, Maven/Gradle compilation, then running SpotBugs
-			* run inside of security directory, `bash clonelibs.sh < repositories.txt`, then `bash compilelibs.sh`, finally `bash updatestats.sh`
+			* run inside of security directory, `bash setup.sh`
 		* dynamic update of badge is seperate from badge image itself
 	
 	* pull_requests
