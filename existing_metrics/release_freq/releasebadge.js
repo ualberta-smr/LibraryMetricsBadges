@@ -20,11 +20,6 @@ let config = {
     }
 };
 
-let numberofreleases = 0;
-let error = false;
-let toCalculate = true;
-let urls = [];
-
 let grabDates = async (response) => {
     let dates = [];
 
@@ -87,9 +82,9 @@ let updateEntry = async (data) => {
 };
 
 
-let getReleases = async (owner, libName) => {
+let getReleases = async (owner, libName, error, numberofreleases) => {
     let pagenum = 1;
-
+    let urls = [];
     while(true){
         let response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/tags?per_page=100&page=${pagenum}`, config);
 
@@ -100,14 +95,14 @@ let getReleases = async (owner, libName) => {
 
         if (pagenum == 1 && response.data.length < 2){
             numberofreleases = response.data.length;
-            return returnString;
+            return [];
         }
-
-        numberofreleases += response.data.length;
 
         if (response.data.length == 0){
             break;
         }
+
+        numberofreleases += response.data.length;
 
         response.data.forEach(element => {
             urls.push(element.commit.url);
@@ -123,17 +118,20 @@ module.exports = async (req,res) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
     let average = "N/A";
+    let urls = [];
+    let numberofreleases = 0;
+    let error = false;
  
     return new Promise( async (resolve, reject) => {
         if (typeof owner == "undefined" || typeof libName == "undefined"){
             return reject("Query parameters are invalid");
         }
-        let arr = await getReleases(owner, libName);
+        let arr = await getReleases(owner, libName, error, numberofreleases);
         if (error){
             return reject(arr);
         }
-        if (arr == returnString){
-            toCalculate = false;
+        if (arr.length < 2){
+            urls = arr;
         }
         else{
             urls = arr[0];
@@ -143,7 +141,7 @@ module.exports = async (req,res) => {
         await db.get(`SELECT numreleases, averagedays, status FROM releasefreq WHERE libname = "${libName}"`, async (err,queryResult) => {
             if (typeof queryResult == "undefined"){
                 // entry doesnt exist in table. Go calculate average release frequency then insert into table.
-                if (toCalculate){
+                if (urls.length > 1){
                     average = await calculateAverage(urls);
                     if(!average){
                         return reject(average);
@@ -171,7 +169,7 @@ module.exports = async (req,res) => {
                 else{
                     let status = "--";
 
-                    if (toCalculate){
+                    if (urls.length > 1){
                         average = await calculateAverage(urls);
                         if(!average){
                             return reject(average);
