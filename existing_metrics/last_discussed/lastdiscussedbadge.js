@@ -21,12 +21,11 @@ module.exports = async (req,res) => {
 
     return new Promise(async (resolve, reject) => {
         try{
+            // get the most popular tag (that has the largest number of questions) associated with the library name
             tagResponse = await axios.get(`${rootURL}/tags/${libName}/info?pagesize=10&order=desc&sort=popular&${SO}&key=${process.env.SO_KEY}`);
-            if (!tagResponse || tagResponse.status != 200){
-                reject(tagResponse);
-            }
         }
         catch(err){
+            console.log(err);
             reject(err);
         }
 
@@ -37,18 +36,17 @@ module.exports = async (req,res) => {
         const popularTagName = tagResponse.data.items[0].name;
 
         try{
+            // get the most recent question associated with the popular tag
             recentQuestion = await axios.get(`${rootURL}/questions?pagesize=1&order=desc&sort=creation&${SO}&tagged=${popularTagName}&key=${process.env.SO_KEY}`);
-            if (!recentQuestion || recentQuestion.status != 200){
-                reject(recentQuestion);
-            }
         }
         catch(err){
+            console.log(err);
             reject(err);
         }
 
         // if a tag contains no questions
         if (recentQuestion.data.items.length == 0){
-            resolve(recentQuestion);
+            reject(recentQuestion);
         }
 
         let latestDate = recentQuestion.data.items[0].creation_date;
