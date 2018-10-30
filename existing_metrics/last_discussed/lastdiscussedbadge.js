@@ -57,6 +57,14 @@ module.exports = async (req,res) => {
         latestDate = moment.unix(latestDate).format("MM-DD-YYYY");
         console.log(latestDate);
 
+        let query = `INSERT OR REPLACE INTO lastdiscussed(libname, lastdate) VALUES (?,?);`;
+        try{
+            await db.run(query, [libName, latestDate]);
+        }
+        catch(err){
+            return err;
+        }
+
         resolve(latestDate);
     });
 };
