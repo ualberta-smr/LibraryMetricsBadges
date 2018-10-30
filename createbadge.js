@@ -1,13 +1,12 @@
 // Java 9, Node 8.11.1
 
 const express = require("express"); 
-const path = require("path");
 const dotenv = require('dotenv').config({path:"./variables.env"});
-const axios = require("axios");
 
 const getSecurity = require("./new_metrics/security/securitybadge");
 const getRelease = require("./existing_metrics/release_freq/releasebadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/lastdiscussedbadge");
+const getIssueResponseTime = require("./existing_metrics/issue_response_time/issueresponsetime");
 
 const app = express();
 
@@ -17,7 +16,7 @@ app.get('/', (req, res) => {
     res.send("Welcome to Software Metrics Research Page");
 });
 
-// Update for security badge will be done seperately with updatestats.sh due to heavy shell processing
+// Update for security badge will be done seperately with updatestats.sh due to heavy shell processing with Spotbugs run
 app.get('/security', (req, res) => {
     getSecurity(req,res)
         .then(result => {
@@ -27,7 +26,7 @@ app.get('/security', (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            res.send(`ERROR loading security badge for ${req.query.libname}`);
+            res.send(`ERROR loading security badge for ${req.query.libname}. Error: ${err}`);
         }); 
 });
 
@@ -66,8 +65,17 @@ app.get('/pullrequests', (req, res) => {
     res.send(`Hello world`); 
 });
 
-app.get('/issueresponse', (req, res) => {
-    res.send(`Hello world`); 
+app.get('/issueresponse', async (req, res) => {
+    await getIssueResponseTime(req,res)
+        .then(responseTime => {
+            res.send({
+                responsetime:responseTime
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(`Error occurred: ${err}`);
+        });
 });
 
 const server = app.listen(port);
