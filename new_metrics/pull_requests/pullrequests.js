@@ -12,7 +12,7 @@ let config = {
     }
 };
 
-// Algorithm for getting % of outside contributers work being merged as PR
+// Algorithm for getting % of outside contributers work being merged into REPO
 // Grab all pull requests that have been approved in repo
 // For every user that created the PR, 
 // classify developers as maintainers (≥ 33 % of project commits) 
@@ -20,12 +20,16 @@ let config = {
 // Divide total contributers PR / total of all PRs
 
 
-let getAllPRs = async (owner, libName) => {
+// 1. Get all PRs that have been approved
+// 2. For every user from 1, check if they are a contributer, 
+        // if so -> increment numberofContributerPRs by 1
+
+let getAllPRs = async(owner, libName) => {
     let pagenum = 1;
     let pulls = [];
     let response = "";
     let numberOfPullReqs = 0;
-    
+
     while(true){
         try{
             response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?state=closed&per_page=100&page=${pagenum}`, config);
@@ -44,10 +48,11 @@ let getAllPRs = async (owner, libName) => {
             break;
         }
 
-        numberOfPullReqs += response.data.length;
-
         response.data.forEach(element => {
-            urls.push(element.commit.url);
+            if (element.merged_at !== null){
+                pulls.push(element.user.login);
+                numberOfPullReqs++;
+            }
         });
     
         pagenum++;
@@ -60,8 +65,25 @@ let getAllPRs = async (owner, libName) => {
 
 module.exports = (req,res) => {
     return new Promise( async (resolve, reject) => {
-        let linName = req.query.libname;
+        let libName = req.query.libname;
         let owner = req.query.owner;
+        let arr = [];
+
+        try{
+            arr = await getAllPRs(owner, libName);
+            if (arr.length == 0){
+                return reject(arr);
+            }
+        }
+        catch(err){
+            return reject(err);
+        }
+
+        let pulls = arr[0];
+        let numberOfPullReqs = arr[1];
+
+        console.log(numberOfPullReqs);
+
         
         // db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
         //     if (err){

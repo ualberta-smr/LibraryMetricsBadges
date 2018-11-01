@@ -62,7 +62,7 @@ app.get('/lastdiscussed', async (req, res) => {
         }); 
 });
 
-app.get('/pullrequests', (req, res) => {
+app.get('/pullrequests', async(req, res) => {
     await getPRs(req,res)
         .then(percentage => {
             res.send({
