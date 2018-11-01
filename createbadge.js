@@ -7,6 +7,7 @@ const getSecurity = require("./new_metrics/security/securitybadge");
 const getRelease = require("./existing_metrics/release_freq/releasebadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/lastdiscussedbadge");
 const getIssueResponseTime = require("./existing_metrics/issue_response_time/issueresponsetime");
+const getPRs = require("./new_metrics/pull_requests/pullrequests");
 
 const app = express();
 
@@ -62,7 +63,16 @@ app.get('/lastdiscussed', async (req, res) => {
 });
 
 app.get('/pullrequests', (req, res) => {
-    res.send(`Hello world`); 
+    await getPRs(req,res)
+        .then(percentage => {
+            res.send({
+                percentage:percentage
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(`Error occurred: ${err}`);
+        });
 });
 
 app.get('/issueresponse', async (req, res) => {
