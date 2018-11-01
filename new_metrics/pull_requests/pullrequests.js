@@ -24,6 +24,66 @@ let config = {
 // 2. For every user from 1, check if they are a contributer, 
         // if so -> increment numberofContributerPRs by 1
 
+let getTotalNumCommits = async(owner,libName) => {
+    // Algorithm Definition: https://blog.notfoss.com/posts/get-total-number-of-commits-for-a-repository-using-the-github-api/ by notfoss
+
+};
+
+
+let classifyUserType = async(owner,libName) => {
+    // return totalnumberofcommits, object with users as keys: "M for Maintainer and C for Contributer"
+    let pagenum = 1;
+    let totalCommits = 0;
+    let response = "";
+    let users = {}; // user as key -> value as number of commits made
+    let contributors = {}; // user as key -> bool as value
+
+    while(true){
+        try{
+            // The repository contributors graph only shows the top 100 contributors to the repository by commits. 
+            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/commits?per_page=100&page=${pagenum}`, config);
+        }
+        catch(err){
+            console.log(err);
+            return err;
+        }
+ 
+        if (response.data.length == 0){
+            break;
+        }
+
+        let x = 0;
+        let index = 0
+        // discarding unverified commits with no association to user email
+        response.data.forEach((element,index) => {
+            if (element.author !== null){
+                if (!users[element.author.login]){
+                    users[element.author.login] = 0;
+                }
+    
+                users[element.author.login]++;
+                totalCommits++;
+            }
+        });
+
+        pagenum++;
+    }
+
+    if (totalCommits === 0){
+        return "Error";
+    }
+    console.log(users);
+
+    // Looping through JS Object keys -> https://stackoverflow.com/a/18202926 by Danny R
+    Object.keys(users).forEach(user => {
+        // divide number of commits user made by total number of commits
+        if ((Math.floor(users[user] / totalCommits) < 0.10)){
+            contributors[user] = users[user];
+        }
+    });
+
+};
+
 let getAllPRs = async(owner, libName) => {
     let pagenum = 1;
     let pulls = [];
@@ -37,11 +97,6 @@ let getAllPRs = async(owner, libName) => {
         catch(err){
             console.log(err);
             return err;
-        }
-
-        if (pagenum == 1 && response.data.length == 0){
-            numberOfPullReqs = response.data.length;
-            return [pulls, numberOfPullReqs];
         }
 
         if (response.data.length == 0){
@@ -59,7 +114,7 @@ let getAllPRs = async(owner, libName) => {
     }
     
     return [pulls, numberOfPullReqs];
-}
+};
 
 
 
@@ -69,20 +124,25 @@ module.exports = (req,res) => {
         let owner = req.query.owner;
         let arr = [];
 
+        // try{
+        //     arr = await getAllPRs(owner, libName);
+        //     if (arr[0].length == 0){
+        //         return reject(arr);
+        //     }
+        // }
+        // catch(err){
+        //     return reject(err);
+        // }
+
+        // let pulls = arr[0];
+        // let numberOfPullReqs = arr[1];
+
         try{
-            arr = await getAllPRs(owner, libName);
-            if (arr.length == 0){
-                return reject(arr);
-            }
+            arr = await classifyUserType(owner, libName);
         }
         catch(err){
             return reject(err);
         }
-
-        let pulls = arr[0];
-        let numberOfPullReqs = arr[1];
-
-        console.log(numberOfPullReqs);
 
         
         // db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
