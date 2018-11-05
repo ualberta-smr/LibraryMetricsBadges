@@ -4,7 +4,7 @@ create table bugs (
     status STRING,
     FOREIGN KEY(libname) REFERENCES releasefreq(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES lastdiscussed(libname) ON DELETE CASCADE,
-    FOREIGN KEY(libname) REFERENCES PROutsider(libname) ON DELETE CASCADE
+    FOREIGN KEY(libname) REFERENCES pullrequests(libname) ON DELETE CASCADE
 );
 
 create table releasefreq (
@@ -14,7 +14,7 @@ create table releasefreq (
     status STRING,
     FOREIGN KEY(libname) REFERENCES bugs(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES lastdiscussed(libname) ON DELETE CASCADE,
-    FOREIGN KEY(libname) REFERENCES PROutsider(libname) ON DELETE CASCADE
+    FOREIGN KEY(libname) REFERENCES pullrequests(libname) ON DELETE CASCADE
 );
 
 create table lastdiscussed (
@@ -22,10 +22,10 @@ create table lastdiscussed (
     lastdate STRING,
     FOREIGN KEY(libname) REFERENCES bugs(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES releasefreq(libname) ON DELETE CASCADE,
-    FOREIGN KEY(libname) REFERENCES PROutsider(libname) ON DELETE CASCADE
+    FOREIGN KEY(libname) REFERENCES pullrequests(libname) ON DELETE CASCADE
 );
 
-create table PROutsider (
+create table pullrequests (
     libname STRING PRIMARY KEY,
     percent STRING,
     numrequests INTEGER,

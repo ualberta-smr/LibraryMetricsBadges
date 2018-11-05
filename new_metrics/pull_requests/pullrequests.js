@@ -12,25 +12,17 @@ let config = {
     }
 };
 
-// Algorithm for getting % of outside contributers work being merged into REPO
-// Grab all pull requests that have been approved in repo
-// For every user that created the PR, 
-// classify contributors (< 10 %).
-// Divide total contributers PR / total of all PRs
-
-
-// 1. Get all PRs that have been approved
-// 2. For every user from 1, check if they are a contributer, 
-        // if so -> increment numberofContributerPRs by 1
-
-let getTotalNumCommits = async(owner,libName) => {
-    // Algorithm Definition: https://blog.notfoss.com/posts/get-total-number-of-commits-for-a-repository-using-the-github-api/ by notfoss
-
-};
-
-
+/**
+ * Classify contributor user type by checking if total number commits user made is less than 10% of all commits
+ * 
+ * @param {string} owner representing the owner of the repository
+ * @param {string} libName representing the name of the repository/library
+ * 
+ * @returns {object} contributors -> key:users, value:number of commits made
+ * 
+ * @example owner=google libName=gson 
+ */
 let classifyUserType = async(owner,libName) => {
-    // return totalnumberofcommits, object with users as keys: "M for Maintainer and C for Contributer"
     let pagenum = 1;
     let totalCommits = 0;
     let response = "";
@@ -66,8 +58,6 @@ let classifyUserType = async(owner,libName) => {
         pagenum++;
     }
 
-    console.log(users);
-
     if (totalCommits === 0){
         return "Error";
     }
@@ -97,7 +87,7 @@ let classifyUserType = async(owner,libName) => {
  * @param {string} libName representing the name of the repository/library
  * @param {object} contributors with keys as contributor login names, and values as number of commits associated with user
  * 
- * @returns {float} percentage showing the % of merged contributors PRs in a library
+ * @returns {Array} percentage showing the % of merged contributors PRs in a library, and total number of pull requests
  * 
  * @example owner=google libName=gson contributors={user1:12,user2:3}
  */
@@ -136,9 +126,21 @@ let getAllPRs = async(owner, libName, contributors) => {
     
     console.log(numberOfPullReqs);
     console.log(merged, pullreqs);
+
+    return [Math.floor((merged/pullreqs * 100)), numberOfPullReqs];
 };
 
-module.exports = (req,res) => {
+/**
+ * GET request endpoint that calculates metric of contributor's merged PRs and stores it into database
+ * given a library and owner name
+ * 
+ * @param {object} req contains the request user made
+ * 
+ * @returns {number} percentage containing number of outside contributor's work that is merged into repo
+ * 
+ * @example localhost:3000/pullrequests?owner=axios&libname=axios
+ */
+module.exports = (req) => {
     return new Promise( async (resolve, reject) => {
         let libName = req.query.libname;
         let owner = req.query.owner;
@@ -154,21 +156,22 @@ module.exports = (req,res) => {
 
         try{
             arr = await getAllPRs(owner, libName, contributors);
+            if (arr.length === 0){
+                return reject(percentage);
+            }
         }
         catch(err){
             return reject(err);
         }
 
-        
-        // db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
-        //     if (err){
-        //         console.log(err);
-        //         return reject(err);
-        //     }
-        //     if (typeof result == "undefined"){
-        //         return reject("No results found for this Java library. Did you add your library to repositories.txt and run setup.sh?");
-        //     }
-        //     return resolve(result);
-        // });
+        let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, numrequests) VALUES (?,?,?);`;
+        try{
+            await db.run(query, [libName, arr[0], arr[1]]);
+        }
+        catch(err){
+            return reject(err);
+        }
+
+        return resolve(arr[0]);
     });
 };

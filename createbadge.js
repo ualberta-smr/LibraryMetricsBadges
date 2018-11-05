@@ -1,5 +1,3 @@
-// Java 9, Node 8.11.1
-
 const express = require("express"); 
 const dotenv = require('dotenv').config({path:"./variables.env"});
 
@@ -66,7 +64,7 @@ app.get('/pullrequests', async(req, res) => {
     await getPRs(req,res)
         .then(percentage => {
             res.send({
-                percentage:percentage
+                percentage:percentage + "%"
             });
         })
         .catch(err => {
