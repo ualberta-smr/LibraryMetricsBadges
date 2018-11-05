@@ -89,21 +89,25 @@ let classifyUserType = async(owner,libName) => {
     return contributors;
 };
 
+/**
+ * Grabs all PRs in repository and filters them based on those associated with a contributor user status
+ * and calculates metric percentage using, "total number of merged contributor PR / total number of contributor PRs"
+ * 
+ * @param {string} owner representing the owner of the repository
+ * @param {string} libName representing the name of the repository/library
+ * @param {object} contributors with keys as contributor login names, and values as number of commits associated with user
+ * 
+ * @returns {float} percentage showing the % of merged contributors PRs in a library
+ * 
+ * @example owner=google libName=gson contributors={user1:12,user2:3}
+ */
 let getAllPRs = async(owner, libName, contributors) => {
-    // total number of merged contributor PR / total number of contributor PRs
-
-    // get all PRs
-        // filter to get contributor PRs
-    
-    // filter to get merged PRs
-
     let pagenum = 1;
-    let merged = [];
-    let pullreqs = [];
+    let merged = 0;
+    let pullreqs = 0;
     let response = "";
     let numberOfPullReqs = 0;
 
-    // get all PRs that have been closed and merged
     while(true){
         try{
             response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?state=all&per_page=100&page=${pagenum}`, config);
@@ -117,19 +121,12 @@ let getAllPRs = async(owner, libName, contributors) => {
             break;
         }
 
-        // response.data.forEach(element => {
-        //     if (element.merged_at !== null){
-        //         pulls.push(element.user.login);
-        //         numberOfPullReqs++;
-        //     }
-        // });
-
         response.data.forEach(element => {
             if (typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
                 if (element.merged_at !== null){
-                    merged.push(element);
+                    merged++; // merged contributor's PRs
                 }
-                pullreqs.push(element);
+                pullreqs++; // contributor's PRs
             }
             numberOfPullReqs++;
         })
@@ -138,10 +135,8 @@ let getAllPRs = async(owner, libName, contributors) => {
     }
     
     console.log(numberOfPullReqs);
-    console.log(merged.length, pullreqs.length);
+    console.log(merged, pullreqs);
 };
-
-
 
 module.exports = (req,res) => {
     return new Promise( async (resolve, reject) => {
