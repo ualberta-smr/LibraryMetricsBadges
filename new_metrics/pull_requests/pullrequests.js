@@ -15,8 +15,7 @@ let config = {
 // Algorithm for getting % of outside contributers work being merged into REPO
 // Grab all pull requests that have been approved in repo
 // For every user that created the PR, 
-// classify developers as maintainers (≥ 33 % of project commits) 
-// or contributors (< 10 %).
+// classify contributors (< 10 %).
 // Divide total contributers PR / total of all PRs
 
 
@@ -37,10 +36,10 @@ let classifyUserType = async(owner,libName) => {
     let response = "";
     let users = {}; // user as key -> value as number of commits made
     let contributors = {}; // user as key -> bool as value
+    let all = 0; // total number of all commits regardless of null status
 
     while(true){
         try{
-            // The repository contributors graph only shows the top 100 contributors to the repository by commits. 
             response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/commits?per_page=100&page=${pagenum}`, config);
         }
         catch(err){
@@ -52,10 +51,8 @@ let classifyUserType = async(owner,libName) => {
             break;
         }
 
-        let x = 0;
-        let index = 0
         // discarding unverified commits with no association to user email
-        response.data.forEach((element,index) => {
+        response.data.forEach((element) => {
             if (element.author !== null){
                 if (!users[element.author.login]){
                     users[element.author.login] = 0;
@@ -64,35 +61,52 @@ let classifyUserType = async(owner,libName) => {
                 users[element.author.login]++;
                 totalCommits++;
             }
+            all++;
         });
-
         pagenum++;
     }
+
+    console.log(users);
 
     if (totalCommits === 0){
         return "Error";
     }
-    console.log(users);
+
+    // now filter to get only contribtor user types
+    console.log("Total commits vs all commit numbers", totalCommits, all);
 
     // Looping through JS Object keys -> https://stackoverflow.com/a/18202926 by Danny R
     Object.keys(users).forEach(user => {
         // divide number of commits user made by total number of commits
-        if ((Math.floor(users[user] / totalCommits) < 0.10)){
+        let percent = users[user] / totalCommits;
+        if (percent < 0.10){
             contributors[user] = users[user];
         }
     });
 
+    console.log("All users vs just contributors", Object.keys(users).length, Object.keys(contributors).length); // number of all users vs just contributors
+
+    return contributors;
 };
 
-let getAllPRs = async(owner, libName) => {
+let getAllPRs = async(owner, libName, contributors) => {
+    // total number of merged contributor PR / total number of contributor PRs
+
+    // get all PRs
+        // filter to get contributor PRs
+    
+    // filter to get merged PRs
+
     let pagenum = 1;
-    let pulls = [];
+    let merged = [];
+    let pullreqs = [];
     let response = "";
     let numberOfPullReqs = 0;
 
+    // get all PRs that have been closed and merged
     while(true){
         try{
-            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?state=closed&per_page=100&page=${pagenum}`, config);
+            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?state=all&per_page=100&page=${pagenum}`, config);
         }
         catch(err){
             console.log(err);
@@ -103,17 +117,28 @@ let getAllPRs = async(owner, libName) => {
             break;
         }
 
+        // response.data.forEach(element => {
+        //     if (element.merged_at !== null){
+        //         pulls.push(element.user.login);
+        //         numberOfPullReqs++;
+        //     }
+        // });
+
         response.data.forEach(element => {
-            if (element.merged_at !== null){
-                pulls.push(element.user.login);
-                numberOfPullReqs++;
+            if (typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
+                if (element.merged_at !== null){
+                    merged.push(element);
+                }
+                pullreqs.push(element);
             }
-        });
+            numberOfPullReqs++;
+        })
     
         pagenum++;
     }
     
-    return [pulls, numberOfPullReqs];
+    console.log(numberOfPullReqs);
+    console.log(merged.length, pullreqs.length);
 };
 
 
@@ -122,23 +147,18 @@ module.exports = (req,res) => {
     return new Promise( async (resolve, reject) => {
         let libName = req.query.libname;
         let owner = req.query.owner;
+        let contributors = {};
         let arr = [];
 
-        // try{
-        //     arr = await getAllPRs(owner, libName);
-        //     if (arr[0].length == 0){
-        //         return reject(arr);
-        //     }
-        // }
-        // catch(err){
-        //     return reject(err);
-        // }
-
-        // let pulls = arr[0];
-        // let numberOfPullReqs = arr[1];
+        try{
+            contributors = await classifyUserType(owner, libName);
+        }
+        catch(err){
+            return reject(err);
+        }
 
         try{
-            arr = await classifyUserType(owner, libName);
+            arr = await getAllPRs(owner, libName, contributors);
         }
         catch(err){
             return reject(err);
