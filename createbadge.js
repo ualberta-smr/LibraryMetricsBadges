@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
  * @returns {undefined}
  */
 app.get('/security', (req, res) => {
-    getSecurity(req,res)
+    getSecurity(req)
         .then(result => {
             res.send({
                 numbugs: `${result.numberofbugs} ${result.status}`
@@ -61,7 +61,7 @@ app.get('/security', (req, res) => {
  * @returns {undefined}
  */
 app.get('/releasefreq', (req, res) => {
-    getRelease(req,res)
+    getRelease(req)
         .then(result => {
             if (Array.isArray(result)){
                 res.send({
@@ -87,7 +87,7 @@ app.get('/releasefreq', (req, res) => {
  * @returns {undefined}
  */
 app.get('/lastdiscussed', async (req, res) => {
-    await getLastDiscussed(req,res)
+    await getLastDiscussed(req)
         .then(date => {
             res.send({
                 lastdate: date
@@ -108,7 +108,7 @@ app.get('/lastdiscussed', async (req, res) => {
  * @returns {undefined}
  */
 app.get('/pullrequests', async(req, res) => {
-    await getPRs(req,res)
+    await getPRs(req)
         .then(percentage => {
             res.send({
                 percentage:percentage + "%"
@@ -129,7 +129,7 @@ app.get('/pullrequests', async(req, res) => {
  * @returns {undefined}
  */
 app.get('/issueresponse', async (req, res) => {
-    await getIssueResponseTime(req,res)
+    await getIssueResponseTime(req)
         .then(responseTime => {
             res.send({
                 responsetime:responseTime

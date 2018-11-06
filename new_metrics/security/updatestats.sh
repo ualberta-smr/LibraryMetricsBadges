@@ -1,6 +1,22 @@
-# Assuming java classes don't have to be compiled, run this script to get spotbugs data
+# Script runs Spotbugs for every java library that has been cloned and compiled on your local machine
+# Assuming java classes don't have to be compiled, run this script to get spotbugs data and
+# it will store it within database
 # bash updatestats.sh
 
+
+# References
+# --------------------------------
+# Counting number of lines in file using wc -l -> Stack Overflow
+# https://stackoverflow.com/a/3137099 
+# Author: user85509 https://stackoverflow.com/users/85509/user85509
+# user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
+
+# Remove trailing slashes when listing directories -> SuperUser, Stack Exchange
+# https://superuser.com/a/674004
+# Author: Teun Vink https://superuser.com/users/270767/teun-vink
+# user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
+
+#/bin/bash
 cd "repos" 
 for library in $( ls -d */ | sed 's#/##' )
 do
