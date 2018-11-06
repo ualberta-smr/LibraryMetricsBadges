@@ -26,9 +26,9 @@ let classifyUserType = async(owner,libName) => {
     let pagenum = 1;
     let totalCommits = 0;
     let response = "";
-    let users = {}; // user as key -> value as number of commits made
-    let contributors = {}; // user as key -> bool as value
-    let all = 0; // total number of all commits regardless of null status
+    let users = {};         // user as key -> value as number of commits made
+    let contributors = {};  // user as key -> value as number of commits made
+    let all = 0;            // total number of all commits regardless of status
 
     while(true){
         try{
@@ -43,7 +43,7 @@ let classifyUserType = async(owner,libName) => {
             break;
         }
 
-        // discarding unverified commits with no association to user email
+        // discarding unverified commits with no association to a verified email
         response.data.forEach((element) => {
             if (element.author !== null){
                 if (!users[element.author.login]){
@@ -65,9 +65,14 @@ let classifyUserType = async(owner,libName) => {
     // now filter to get only contribtor user types
     console.log("Total commits vs all commit numbers", totalCommits, all);
 
-    // Looping through JS Object keys -> https://stackoverflow.com/a/18202926 by Danny R
+    /**
+     * Looping through JS Object keys
+     * https://stackoverflow.com/a/18202926
+     * Author: Danny R https://stackoverflow.com/users/1351261/danny-r
+     * user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
+     */
     Object.keys(users).forEach(user => {
-        // divide number of commits user made by total number of commits
+        // divide number of commits user made by total number of all commits
         let percent = users[user] / totalCommits;
         if (percent < 0.10){
             contributors[user] = users[user];
@@ -93,10 +98,10 @@ let classifyUserType = async(owner,libName) => {
  */
 let getAllPRs = async(owner, libName, contributors) => {
     let pagenum = 1;
-    let merged = 0;
-    let pullreqs = 0;
+    let merged = 0;             // merged contributor's PRs
+    let pullreqs = 0;           // contributor's PRs
     let response = "";
-    let numberOfPullReqs = 0;
+    let numberOfPullReqs = 0;   // total number of PRs
 
     while(true){
         try{
@@ -111,12 +116,13 @@ let getAllPRs = async(owner, libName, contributors) => {
             break;
         }
 
+        // filter to get only contributor's PRs and merged PRs
         response.data.forEach(element => {
             if (typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
                 if (element.merged_at !== null){
-                    merged++; // merged contributor's PRs
+                    merged++; 
                 }
-                pullreqs++; // contributor's PRs
+                pullreqs++; 
             }
             numberOfPullReqs++;
         })
