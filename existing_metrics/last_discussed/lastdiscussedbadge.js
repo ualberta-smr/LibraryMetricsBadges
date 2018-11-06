@@ -11,10 +11,15 @@ const db = new sqlite3.Database(dbpath);
 const rootURL = `https://api.stackexchange.com/2.2`;
 const SO = `site=stackoverflow`;
 
-
-// search library name up using tag search and select tag with largest number of questions
-// with API, get the most recent question contianing tag of library and extract date
-module.exports = async (req,res) => {
+/**
+ * Finds the last date discussed on Stack Overflow by selecting tag asssociated with library with largest number of questions
+ * then grab the most recent question containing the tag of the library and extract date
+ * 
+ * @param {object} req - Express middleware request object
+ * 
+ * @returns {string} latestdate of the last discussed on Stack Overflow
+ */
+module.exports = async (req) => {
     let libName = req.query.libname;
     let tagResponse = "N/A";
     let recentQuestion = "N/A";

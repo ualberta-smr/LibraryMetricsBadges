@@ -1,5 +1,3 @@
-// Ednpoint times out if there are over 300ish release tags, but if left running it will save properly to database
-
 const path = require("path");
 const axios = require("axios");
 const sqlite3 = require('sqlite3').verbose();
@@ -19,6 +17,13 @@ let config = {
     }
 };
 
+/**
+ * Grab the dates from every response objects for when a release is made
+ * 
+ * @param {Array} response list of response API objects of releases
+ * 
+ * @return {Array} list of date strings of every commit associated with a release 
+ */
 let grabDates = async (response) => {
     let dates = [];
 
@@ -36,6 +41,14 @@ let grabDates = async (response) => {
     return dates;
 };
 
+/**
+ * Calculates the average number of days between releases by getting the difference 
+ * between each date string
+ * 
+ * @param {Array} dates list of date strings
+ * 
+ * @returns {number} average number days between releases
+ */
 let calculateAverage = async (dates) => {
     let alldates = await grabDates(dates);
     
@@ -57,6 +70,13 @@ let calculateAverage = async (dates) => {
     return Math.ceil(totaldays / dates.length);
 };
 
+/**
+ * Inserts into the database the library name, number of releases, average days, and status
+ * 
+ * @param {Array} data list containing the library name, number of releases, average days, and status
+ * 
+ * @returns {null} 
+ */
 let insertEntry = async (data) => {
     let placeholders = data.map((elem) => "?").join(",");
     let query = `INSERT INTO releasefreq(libname, numreleases, averagedays, status) VALUES (${placeholders})`;
@@ -69,6 +89,13 @@ let insertEntry = async (data) => {
     }
 };
 
+/**
+ * Updates the number of releases, average days, and status of the query in the database
+ * 
+ * @param {Array} data list containing number of releases, average days, and status of query
+ * 
+ * @returns {null} 
+ */
 let updateEntry = async (data) => {
     let query = `UPDATE releasefreq SET numreleases = "?", averagedays = "?", status = "?" WHERE libname = "?"`;
     try{
@@ -80,8 +107,17 @@ let updateEntry = async (data) => {
     }
 };
 
-
-let getReleases = async (owner, libName, error, numberofreleases) => {
+/**
+ * Gets the commit tags associated with releases and gets the detailed commit URL
+ * for each tag
+ * 
+ * @param {string} owner owner name of the library
+ * @param {string} libName library name
+ * @param {numberofreleases} numberofreleases total number of releases
+ * 
+ * @returns {number} average number days between releases
+ */
+let getReleases = async (owner, libName, numberofreleases) => {
     let pagenum = 1;
     let urls = [];
     while(true){
@@ -112,20 +148,28 @@ let getReleases = async (owner, libName, error, numberofreleases) => {
     return [urls ,numberofreleases];
 }
 
-module.exports = async (req,res) => {
+/**
+ * Gets the average number of days between releases and updates/inserts corresponding
+ * info in database
+ * 
+ * @param {object} req - Express request object
+ * 
+ * @returns {Array} contains calculated average number and the status of the query whether 
+ * if the average stayed neutral, increased, or decreased
+ */
+module.exports = async (req) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
     let average = "N/A";
     let urls = [];
     let numberofreleases = 0;
-    let error = false;
 
     return new Promise( async (resolve, reject) => {
         if (typeof owner == "undefined" || typeof libName == "undefined"){
             return reject("Query parameters are invalid");
         }
         try{
-            let arr = await getReleases(owner, libName, error, numberofreleases);
+            let arr = await getReleases(owner, libName, numberofreleases);
             if (!Array.isArray(arr)){
                 return reject(arr);
             }
