@@ -131,9 +131,14 @@ app.get('/pullrequests', async(req, res) => {
 app.get('/issueresponse', async (req, res) => {
     await getIssueResponseTime(req)
         .then(responseTime => {
-            res.send({
-                responsetime:responseTime
-            });
+            if (typeof responseTime !== "undefined"){
+                res.send({
+                    responsetime:`${responseTime} days`
+                });
+            }
+            else{
+                res.send(`Error occurred: ${err}`);
+            }
         })
         .catch(err => {
             console.log(err);

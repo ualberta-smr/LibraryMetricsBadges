@@ -104,6 +104,7 @@ let calculateMetric = async(owner,libName) => {
 module.exports = async (req) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
+    //TODO hook this up with sqlite3
 
     return new Promise(async (resolve,reject) => {
         try{
