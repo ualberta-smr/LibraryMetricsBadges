@@ -31,7 +31,10 @@ create table lastdiscussed (
 create table pullrequests (
     libname STRING PRIMARY KEY,
     percent STRING,
-    numrequests INTEGER,
+    allcommits INTEGER,
+    mergedcount INTEGER,
+    contributorprcount INTEGER,
+    userclassification STRING,
     status STRING,
     FOREIGN KEY(libname) REFERENCES bugs(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES releasefreq(libname) ON DELETE CASCADE,
