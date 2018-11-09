@@ -31,7 +31,6 @@ create table lastdiscussed (
 create table pullrequests (
     libname STRING PRIMARY KEY,
     percent STRING,
-    allcommits INTEGER,
     mergedcount INTEGER,
     contributorprcount INTEGER,
     userclassification STRING,

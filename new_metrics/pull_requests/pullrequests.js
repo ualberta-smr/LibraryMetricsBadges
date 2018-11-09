@@ -13,78 +13,6 @@ let config = {
 };
 
 /**
- * Classify contributor user type by checking if total number commits user made is less than 10% of all commits
- * 
- * @param {string} owner representing the owner of the repository
- * @param {string} libName representing the name of the repository/library
- * 
- * @returns {object} contributors -> key:users, value:number of commits made
- * 
- * @example owner=google libName=gson 
- */
-let classifyUserType = async(owner,libName) => {
-    let pagenum = 1;
-    let totalCommits = 0;
-    let response = "";
-    let users = {};         // user as key -> value as number of commits made
-    let contributors = {};  // user as key -> value as number of commits made
-    let all = 0;            // total number of all commits regardless of status
-
-    while(true){
-        try{
-            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/commits?per_page=100&page=${pagenum}`, config);
-        }
-        catch(err){
-            console.log(err);
-            return err;
-        }
- 
-        if (response.data.length == 0){
-            break;
-        }
-
-        // discarding unverified commits with no association to a verified email
-        response.data.forEach((element) => {
-            if (element.author !== null){
-                if (!users[element.author.login]){
-                    users[element.author.login] = 0;
-                }
-    
-                users[element.author.login]++;
-                totalCommits++;
-            }
-            all++;
-        });
-        pagenum++;
-    }
-
-    if (totalCommits === 0){
-        return "Error";
-    }
-
-    // now filter to get only contribtor user types
-    console.log("Total commits vs all commit numbers", totalCommits, all);
-
-    /**
-     * Looping through JS Object keys
-     * https://stackoverflow.com/a/18202926
-     * Author: Danny R https://stackoverflow.com/users/1351261/danny-r
-     * user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
-     */
-    Object.keys(users).forEach(user => {
-        // divide number of commits user made by total number of all commits
-        let percent = users[user] / totalCommits;
-        if (percent < 0.10){
-            contributors[user] = users[user];
-        }
-    });
-
-    console.log("All users vs just contributors", Object.keys(users).length, Object.keys(contributors).length); // number of all users vs just contributors
-
-    return contributors;
-};
-
-/**
  * Grabs all PRs in repository and filters them based on those associated with a contributor user status
  * and calculates metric percentage using, "total number of merged contributor PR / total number of contributor PRs"
  * 
@@ -97,6 +25,24 @@ let classifyUserType = async(owner,libName) => {
  * @example owner=google libName=gson contributors={user1:12,user2:3}
  */
 let getAllPRs = async(owner, libName, contributors) => {
+    // `{
+    //     repository(owner: "axios", name: "axios") {
+    //       pullRequests(last:1 states:MERGED){
+    //         edges{
+    //           node{
+    //             author{
+    //               login
+    //             }
+    //           }
+    //         }
+    //         pageInfo {
+    //           endCursor
+    //           hasNextPage
+    //         }
+    //       }
+    //     }
+    //   }
+    //   `
     let pagenum = 1;
     let merged = 0;             // merged contributor's PRs
     let pullreqs = 0;           // contributor's PRs
@@ -130,8 +76,8 @@ let getAllPRs = async(owner, libName, contributors) => {
         pagenum++;
     }
     
-    console.log(numberOfPullReqs);
-    console.log(merged, pullreqs);
+    console.log("Total number of PRs:", numberOfPullReqs);
+    console.log("Total number of merged contributor PRs vs all contributor PRs:", merged, pullreqs);
 
     return [Math.floor((merged/pullreqs * 100)), numberOfPullReqs];
 };
@@ -153,16 +99,22 @@ module.exports = (req) => {
         let contributors = {};
         let arr = [];
 
-        try{
-            contributors = await classifyUserType(owner, libName);
-        }
-        catch(err){
-            return reject(err);
-        }
+
+        await db.get(`SELECT userclassification from pullrequests where libname=${libName};`,  (err, row) => {
+            console.log(row);
+            //TODO FIGURE OUT WHY THIS ROW IS UNDEFINED EVEN THO THE RECORD IS IN DATABASE???
+            if (typeof row !== "undefined"){
+                contributors = JSON.parse(row.userclassification);
+            }
+            else{
+                return reject("Did you run through the /classifyusers endpoint yet", err);
+            }
+        });
+
 
         try{
             arr = await getAllPRs(owner, libName, contributors);
-            if (arr.length === 0){
+            if (Array.isArray(arr) && arr.length === 0){
                 return reject(percentage);
             }
         }
@@ -170,7 +122,7 @@ module.exports = (req) => {
             return reject(err);
         }
 
-        let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, numrequests) VALUES (?,?,?);`;
+        let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, numPRs) VALUES (?,?,?);`;
         try{
             await db.run(query, [libName, arr[0], arr[1]]);
         }

@@ -6,6 +6,7 @@ const getRelease = require("./existing_metrics/release_freq/releasebadge");
 const getLastDiscussed = require("./existing_metrics/last_discussed/lastdiscussedbadge");
 const getIssueResponseTime = require("./existing_metrics/issue_response_time/issueresponsetime");
 const getPRs = require("./new_metrics/pull_requests/pullrequests");
+const updateUsers = require("./new_metrics/pull_requests/classifyusers");
 
 const app = express();
 
@@ -101,6 +102,7 @@ app.get('/lastdiscussed', async (req, res) => {
 
 /**
  * Get Pull Requests endpoint that calculates percentage of merged contributor PRs 
+ * Prerequisites: Running the /updateusers endpoint first
  * 
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -113,6 +115,26 @@ app.get('/pullrequests', async(req, res) => {
             res.send({
                 percentage:percentage + "%"
             });
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(`Error occurred: ${err}`);
+        });
+});
+
+
+/**
+ * Updates User classification for contributors on a repo needed for PR badge
+ * 
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ *  
+ * @returns {undefined}
+ */
+app.get('/classifyusers', async(req, res) => {
+    await updateUsers(req)
+        .then(result=> {
+            res.send(result);
         })
         .catch(err => {
             console.log(err);
