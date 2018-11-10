@@ -86,7 +86,6 @@ module.exports = (req) => {
         }
 
         await db.get(`SELECT userclassification from users where libname="${libName}";`, async (err, row) => {
-            //TODO FIGURE OUT WHY THIS ROW IS UNDEFINED EVEN THO THE RECORD IS IN DATABASE???
             if (typeof row !== "undefined"){
                 contributors = JSON.parse(row.userclassification);
 

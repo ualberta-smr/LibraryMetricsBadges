@@ -91,7 +91,16 @@ let classifyUserType = async(owner,libName) => {
     }
 };
 
-
+/**
+ * GET request endpoint that creates a JSON object that contains users that are 
+ * classified as contributors for the pull requests endpoint
+ * 
+ * @param {object} req contains the request user made
+ * 
+ * @returns {object} Github contributors of a repo
+ * 
+ * @example localhost:3000/classifyusers?owner=axios&libname=axios
+ */
 module.exports = async (req) => {
     return new Promise(async (resolve,reject) => {
         const libName = req.query.libname;
