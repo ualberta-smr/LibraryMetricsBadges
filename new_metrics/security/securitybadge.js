@@ -15,12 +15,15 @@ const db = new sqlite3.Database(dbpath);
 module.exports = (req) => {
     return new Promise((resolve, reject) => {
         let name = req.query.libname;
+        if (typeof name === "undefined"){
+            return reject("Query parameters are invalid");
+        }
         db.get(`SELECT numberofbugs, status FROM bugs WHERE libname = "${name}"`, (err, result) => {
             if (err){
                 console.log(err);
                 return reject(err);
             }
-            if (typeof result == "undefined"){
+            if (typeof result === "undefined"){
                 return reject("No results found for this Java library. Did you add your library to repositories.txt and run setup.sh?");
             }
             return resolve(result);

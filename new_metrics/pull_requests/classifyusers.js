@@ -80,7 +80,7 @@ let classifyUserType = async(owner,libName) => {
 
     console.log("All users vs just contributors", Object.keys(users).length, Object.keys(contributors).length); // number of all users vs just contributors
 
-    let query = `INSERT OR REPLACE INTO pullrequests(libname, userclassification) VALUES (?,?);`;
+    let query = `INSERT OR REPLACE INTO users(libname, userclassification) VALUES (?,?);`;
     try{
         await db.run(query, [libName, JSON.stringify(contributors)]);
         return contributors;
@@ -96,6 +96,10 @@ module.exports = async (req) => {
     return new Promise(async (resolve,reject) => {
         const libName = req.query.libname;
         const owner = req.query.owner;
+
+        if (typeof owner === "undefined" || typeof libName === "undefined"){
+            return reject("Query parameters are invalid");
+        }
         try{
             const userObj = await classifyUserType(owner,libName);
             if (Object.keys(userObj).length > 0){

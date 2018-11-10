@@ -1,7 +1,7 @@
 # Exploring Software Library Metrics with GitHub Badges 
 ![Security Badge](https://img.shields.io/badge/dynamic/json.svg?label=FindSecBugs%20Result&url=http%3A%2F%2F74ce0b03.ngrok.io%2Fsecurity%3Flibname%3Dgson&query=numbugs&colorB=orange)
-![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http%3A%2F%2F74ce0b03.ngrok.io%2Freleasefreq%3Fowner%3Dgoogle%26libname%3Dgson&query=numdays&colorB=blue)
-![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/dynamic/json.svg?label=Last%20Discussed%20on%20Stack%20Overflow&url=http%3A%2F%2F74ce0b03.ngrok.io%2Flastdiscussed%3Flibname%3Dgson&query=lastdate&colorB=9400D3)
+![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http://70b93ede.ngrok.io/releasefreq?owner=google&libname=gson&query=numdays&colorB=blue)
+![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/dynamic/json.svg?label=Last%20Discussed%20on%20Stack%20Overflow&url=http://70b93ede.ngrok.io/lastdiscussed?libname=axios&query=lastdate&colorB=9400D3)
 
 ## Prerequisites
 * Node versions 8.11.1 or above

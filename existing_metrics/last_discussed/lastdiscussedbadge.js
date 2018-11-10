@@ -25,6 +25,10 @@ module.exports = async (req) => {
     let recentQuestion = "N/A";
 
     return new Promise(async (resolve, reject) => {
+        if (typeof owner === "undefined" || typeof libName === "undefined"){
+            return reject("Query parameters are invalid");
+        }
+        
         try{
             // get the most popular tag (that has the largest number of questions) associated with the library name
             tagResponse = await axios.get(`${rootURL}/tags/${libName}/info?pagesize=10&order=desc&sort=popular&${SO}&key=${process.env.SO_KEY}`);

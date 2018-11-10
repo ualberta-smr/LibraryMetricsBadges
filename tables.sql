@@ -33,13 +33,18 @@ create table pullrequests (
     percent STRING,
     mergedcount INTEGER,
     contributorprcount INTEGER,
-    userclassification STRING,
     numPRs INTEGER,
     status STRING,
     FOREIGN KEY(libname) REFERENCES bugs(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES releasefreq(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES lastdiscussed(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES issueresponse(libname) ON DELETE CASCADE
+);
+
+create table users (
+    libname STRING PRIMARY KEY,
+    userclassification STRING,
+    FOREIGN KEY(libname) REFERENCES pullrequests(libname) ON DELETE CASCADE
 );
 
 create table issueresponse (

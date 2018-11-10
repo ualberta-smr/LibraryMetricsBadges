@@ -165,7 +165,7 @@ module.exports = async (req) => {
     let numberofreleases = 0;
 
     return new Promise( async (resolve, reject) => {
-        if (typeof owner == "undefined" || typeof libName == "undefined"){
+        if (typeof owner === "undefined" || typeof libName === "undefined"){
             return reject("Query parameters are invalid");
         }
         try{

@@ -107,6 +107,10 @@ module.exports = async (req) => {
     //TODO hook this up with sqlite3
 
     return new Promise(async (resolve,reject) => {
+        if (typeof owner === "undefined" || typeof libName === "undefined"){
+            return reject("Query parameters are invalid");
+        }
+        
         try{
             let response = await calculateMetric(owner,libName);
             console.log(response);

@@ -25,24 +25,6 @@ let config = {
  * @example owner=google libName=gson contributors={user1:12,user2:3}
  */
 let getAllPRs = async(owner, libName, contributors) => {
-    // `{
-    //     repository(owner: "axios", name: "axios") {
-    //       pullRequests(last:1 states:MERGED){
-    //         edges{
-    //           node{
-    //             author{
-    //               login
-    //             }
-    //           }
-    //         }
-    //         pageInfo {
-    //           endCursor
-    //           hasNextPage
-    //         }
-    //       }
-    //     }
-    //   }
-    //   `
     let pagenum = 1;
     let merged = 0;             // merged contributor's PRs
     let pullreqs = 0;           // contributor's PRs
@@ -62,7 +44,7 @@ let getAllPRs = async(owner, libName, contributors) => {
             break;
         }
 
-        // filter to get only contributor's PRs and merged PRs
+        // filter to get only contributor's PRs and merged PRs for users that still exist on Github
         response.data.forEach(element => {
             if (typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
                 if (element.merged_at !== null){
@@ -99,37 +81,38 @@ module.exports = (req) => {
         let contributors = {};
         let arr = [];
 
+        if (typeof owner === "undefined" || typeof libName === "undefined"){
+            return reject("Query parameters are invalid");
+        }
 
-        await db.get(`SELECT userclassification from pullrequests where libname=${libName};`,  (err, row) => {
-            console.log(row);
+        await db.get(`SELECT userclassification from users where libname="${libName}";`, async (err, row) => {
             //TODO FIGURE OUT WHY THIS ROW IS UNDEFINED EVEN THO THE RECORD IS IN DATABASE???
             if (typeof row !== "undefined"){
                 contributors = JSON.parse(row.userclassification);
+
+                try{
+                    arr = await getAllPRs(owner, libName, contributors);
+                    if (Array.isArray(arr) && arr.length === 0){
+                        return reject(percentage);
+                    }
+                }
+                catch(err){
+                    return reject(err);
+                }
+
+                let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, numPRs) VALUES (?,?,?);`;
+                try{
+                    await db.run(query, [libName, arr[0], arr[1]]);
+                }
+                catch(err){
+                    return reject(err);
+                }
+
+                return resolve(arr[0]);
             }
             else{
-                return reject("Did you run through the /classifyusers endpoint yet", err);
+                return reject("Did you run through the /classifyusers endpoint yet?", err);
             }
         });
-
-
-        try{
-            arr = await getAllPRs(owner, libName, contributors);
-            if (Array.isArray(arr) && arr.length === 0){
-                return reject(percentage);
-            }
-        }
-        catch(err){
-            return reject(err);
-        }
-
-        let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, numPRs) VALUES (?,?,?);`;
-        try{
-            await db.run(query, [libName, arr[0], arr[1]]);
-        }
-        catch(err){
-            return reject(err);
-        }
-
-        return resolve(arr[0]);
     });
 };
