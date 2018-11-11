@@ -75,6 +75,7 @@ let getAllPRs = async(owner, libName, contributors) => {
  * @example localhost:3000/pullrequests?owner=axios&libname=axios
  */
 module.exports = (req) => {
+    //TODO database updates, if number of merged PRs change or total number of PRs change
     return new Promise( async (resolve, reject) => {
         let libName = req.query.libname;
         let owner = req.query.owner;
@@ -92,8 +93,9 @@ module.exports = (req) => {
                 try{
                     arr = await getAllPRs(owner, libName, contributors);
                     if (Array.isArray(arr) && arr.length === 0){
-                        return reject(percentage);
+                        return reject(arr);
                     }
+                    console.log(arr);
                 }
                 catch(err){
                     return reject(err);

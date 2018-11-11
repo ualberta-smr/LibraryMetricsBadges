@@ -29,27 +29,27 @@ let calculateMetric = async(owner,libName) => {
                                 node {
                                     createdAt
                                     author {
-                                    login
-                                }
-                                comments(first: 1) {
-                                    edges {
-                                        node {
-                                            createdAt
-                                            author {
-                                                login
+                                        login
+                                    }
+                                    comments(first: 1) {
+                                        edges {
+                                            node {
+                                                createdAt
+                                                author {
+                                                    login
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            pageInfo {
+                                endCursor
+                                hasNextPage
+                            }
                         }
-                        pageInfo {
-                            endCursor
-                            hasNextPage
-                        }
-                    }
-                }   
-            }`;
+                    }   
+                }`;
 
             const response = await axios({
                 url: graphQLLink,
@@ -93,7 +93,10 @@ let calculateMetric = async(owner,libName) => {
             }
         }
         catch(err){
-            console.log(err);
+            return new Promise((resolve,reject) => {
+                console.log(err);
+                return reject(err);
+            })
         }
     } 
     console.log(totalIssues, validIssues);
