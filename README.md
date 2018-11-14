@@ -1,8 +1,8 @@
 # Exploring Software Library Metrics with GitHub Badges 
-![Security Badge](https://img.shields.io/badge/dynamic/json.svg?label=FindSecBugs%20Result&url=http%3A%2F%2F74ce0b03.ngrok.io%2Fsecurity%3Flibname%3Dgson&query=numbugs&colorB=orange)
-![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http://70b93ede.ngrok.io/releasefreq?owner=google&libname=gson&query=numdays&colorB=blue)
-![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/dynamic/json.svg?label=Last%20Discussed%20on%20Stack%20Overflow&url=http://70b93ede.ngrok.io/lastdiscussed?libname=axios&query=lastdate&colorB=9400D3)
-![Contributor PRs Merge Rate Badge](https://img.shields.io/badge/dynamic/json.svg?label=Contributor%20PRs%20Merge%20Rate&url=http%3A%2F%2Fcca2d959.ngrok.io%2Fpullrequests%3Fowner%3Daxios%26libname%3Daxios&query=percentage&colorB=yellow)
+![Security Badge](https://img.shields.io/badge/dynamic/json.svg?label=FindSecBugs&url=http%3A%2F%2F5adb7185.ngrok.io%2Fsecurity%3Flibname%3Dgson&query=numbugs&colorB=orange)
+![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http%3A%2F%2F5adb7185.ngrok.io%2Freleasefreq%3Fowner%3Daxios%26libname%3Daxios&query=numdays&colorB=blue)
+![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/dynamic/json.svg?label=Last%20Discussed%20on%20Stack%20Overflow&url=http%3A%2F%2F5adb7185.ngrok.io%2Flastdiscussed%3Flibname%3Dgson&query=lastdate&colorB=9400D3)
+![Contributor PRs Merge Rate Badge](https://img.shields.io/badge/dynamic/json.svg?label=Contributor%20PR%20Merge%20Rate&url=http%3A%2F%2F5adb7185.ngrok.io%2Fpullrequests%3Fowner%3Dnozzlegear%26libname%3DShopifysharp&query=percentage&colorB=yellow)
 
 ## Prerequisites
 * Node versions 8.11.1 or above

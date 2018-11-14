@@ -25,7 +25,7 @@ module.exports = async (req) => {
     let recentQuestion = "N/A";
 
     return new Promise(async (resolve, reject) => {
-        if (typeof owner === "undefined" || typeof libName === "undefined"){
+        if (typeof libName === "undefined"){
             return reject("Query parameters are invalid");
         }
         
