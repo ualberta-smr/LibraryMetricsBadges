@@ -20,7 +20,8 @@ let config = {
  * @param {string} libName representing the name of the repository/library
  * @param {object} contributors with keys as contributor login names, and values as number of commits associated with user
  * 
- * @returns {Array} percentage showing the % of merged contributors PRs in a library, and total number of pull requests
+ * @returns {Array} percentage showing the % of merged contributors PRs in a library, number of merged PRs, 
+ * number of contributor PRs, and total number of all PRs
  * 
  * @example owner=google libName=gson contributors={user1:12,user2:3}
  */
@@ -61,7 +62,7 @@ let getAllPRs = async(owner, libName, contributors) => {
     console.log("Total number of PRs:", numberOfPullReqs);
     console.log("Total number of merged contributor PRs vs all contributor PRs:", merged, pullreqs);
 
-    return [Math.floor((merged/pullreqs * 100)), numberOfPullReqs];
+    return [Math.floor((merged/pullreqs * 100)), merged, pullreqs, numberOfPullReqs];
 };
 
 /**
@@ -101,15 +102,33 @@ module.exports = (req) => {
                     return reject(err);
                 }
 
-                let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, numPRs) VALUES (?,?,?);`;
-                try{
-                    await db.run(query, [libName, arr[0], arr[1]]);
-                }
-                catch(err){
-                    return reject(err);
-                }
-
-                return resolve(arr[0]);
+                await db.get(`SELECT * from pullrequests where libname="${libName}";`, async (err, row) => {
+                    if (err){
+                        reject(err);
+                    }
+                    let status = "--";
+                    if (typeof row !== "undefined"){
+                        if (row.percent < arr[0]){
+                            status = "↑";
+                        }
+                        else if (row.percent > arr[0]){
+                            status = "↓";
+                        }
+                        else{
+                            status = "--";
+                        }
+                    }
+                    
+                    let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, mergedcount, contributorprcount, numPRs, status) VALUES (?,?,?,?,?,?);`;
+                    try{
+                        await db.run(query, [libName, ...arr, status]);
+                    }
+                    catch(err){
+                        return reject(err);
+                    }
+    
+                    return resolve([arr[0], status]);
+                });
             }
             else{
                 return reject("Did you run through the /classifyusers endpoint yet?", err);

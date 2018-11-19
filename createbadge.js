@@ -111,9 +111,9 @@ app.get('/lastdiscussed', async (req, res) => {
  */
 app.get('/pullrequests', async(req, res) => {
     await getPRs(req)
-        .then(percentage => {
+        .then(response => {
             res.send({
-                percentage:percentage + "%"
+                percentage: response[0] + "% " + response[1]
             });
         })
         .catch(err => {

@@ -116,6 +116,8 @@ let updateEntry = async (data) => {
  * @param {numberofreleases} numberofreleases total number of releases
  * 
  * @returns {number} average number days between releases
+ * 
+ * @example localhost:3000/releasefreq?owner=axios&libname=axios
  */
 let getReleases = async (owner, libName, numberofreleases) => {
     let pagenum = 1;

@@ -18,6 +18,8 @@ const SO = `site=stackoverflow`;
  * @param {object} req - Express middleware request object
  * 
  * @returns {string} latestdate of the last discussed on Stack Overflow
+ * 
+ * @example localhost:3000/lastdiscussed?libname=axios
  */
 module.exports = async (req) => {
     let libName = req.query.libname;
