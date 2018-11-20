@@ -65,59 +65,6 @@ let getAllPRs = async(owner, libName, contributors) => {
     return [Math.floor((merged/pullreqs * 100)), merged, pullreqs, numberOfPullReqs];
 };
 
-
-let getPRMetric = async(owner, libName, contributors) => {
-    let pagenum = 1;
-    let merged = 0;             // merged contributor's PRs
-    let pullreqs = 0;           // contributor's PRs
-    let response = "";
-    let numberOfPullReqs = 0;   // total number of PRs
-
-    let isMerged = false;
-    let isClosed = false;
-    let searchTerm = "open";
-    while(true){
-        try{
-            createdDate = "2014-09-14";
-            let queryURL = `https://api.github.com/search/issues?per_page=100&page=${pagenum}sort=created&order=asc&q=repo:${owner}/${libName}+is:${searchTerm}+type:pr+created:>=${createdDate}`
-            response = await axios.get(queryURL, config);
-        }
-        catch(err){
-            console.log(err);
-            return err;
-        }
-
-        if (response.data.items.length == 0 && !isMerged){
-            searchTerm = "merged";
-            pagenum = 1;
-        }
-        else if (response.data.items.length == 0 && !isClosed){
-            searchTerm = "closed";
-            pagenum = 1;
-        }
-        else if (response.data.items.length == 0 && isMerged && isClosed){
-            break;
-        }
-
-        response.data.items.forEach(element => {
-            if (typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
-                if (element.merged_at !== null){
-                    merged++; 
-                }
-                pullreqs++; 
-            }
-            numberOfPullReqs++;
-        });
-
-        pagenum++;
-    }
-    
-    console.log("Total number of PRs:", numberOfPullReqs);
-    console.log("Total number of merged contributor PRs vs all contributor PRs:", merged, pullreqs);
-
-    return [Math.floor((merged/pullreqs * 100)), merged, pullreqs, numberOfPullReqs];
-};
-
 /**
  * GET request endpoint that calculates metric of contributor's merged PRs and stores it into database
  * given a library and owner name
@@ -144,9 +91,6 @@ module.exports = (req) => {
         await db.get(`SELECT userclassification from users where libname="${libName}";`, async (err, row) => {
             if (typeof row !== "undefined"){
                 contributors = JSON.parse(row.userclassification);
-
-                getPRMetric(owner,libName, contributors);
-                return resolve("");
 
                 try{
                     arr = await getAllPRs(owner, libName, contributors);
