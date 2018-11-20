@@ -13,22 +13,6 @@ let config = {
     }
 };
 
-let getDateCache = async (libName) => {
-    return new Promise(async (resolve,reject) => {
-        await db.get(`SELECT saveddate from pullrequests where libname="${libName}";`, (err, row) => {
-            if (err){
-                return reject(err);
-            }
-            let endDate = new Date("1970-01-01T00:00:00Z");
-
-            if (typeof row !== "undefined"){
-                endDate = new Date(row.saveddate);
-            }
-            return resolve(endDate);
-        });
-    });
-};
-
 /**
  * Grabs all PRs in repository and filters them based on those associated with a contributor user status
  * and calculates metric percentage using, "total number of merged contributor PR / total number of contributor PRs"
@@ -58,12 +42,11 @@ let getAllPRs = async(owner, libName, contributors, lastDate) => {
     let endDate = new Date("1970-01-01T00:00:00Z");
     if (typeof lastDate !== "undefined"){
         endDate = new Date(lastDate);
-        perPage= 20;
+        perPage= 20;                // toggle number of items per page returned from API for faster response when doing not from scratch 
     }
-    
+
     console.log(endDate);
     while(true){
-        console.log(pagenum);
         try{
             response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?direction=desc&sort=created&state=all&per_page=${perPage}&page=${pagenum}`, config);
         }
@@ -83,7 +66,6 @@ let getAllPRs = async(owner, libName, contributors, lastDate) => {
         // filter to get only contributor's PRs and merged PRs for users that still exist on Github
         let done = false;
         for (let i = 0; i < response.data.length; i++){
-            console.log(i);
             let element = response.data[i];
             prDate = new Date(element.created_at);
             if (prDate <= endDate){
@@ -145,7 +127,7 @@ module.exports = (req) => {
 
                     // -------------------------------------
                     try{
-                        arr = await getAllPRs(owner, libName, contributors, row.saveddate);
+                        arr = await getAllPRs(owner, libName, contributors, row ? row.saveddate: undefined);
                         if (!Array.isArray(arr) || arr.length === 0){
                             return reject(arr);
                         }
@@ -163,7 +145,7 @@ module.exports = (req) => {
                     let status = "--";
                     let metric = 0;
                     let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, mergedcount, contributorprcount, numPRs, saveddate, status) VALUES (?,?,?,?,?,?,?);`;
-     
+
                     if (typeof row !== "undefined"){            
                         let allPRs = arr[1] + row.contributorprcount;
                         let allMerged = arr[0] + row.mergedcount;
