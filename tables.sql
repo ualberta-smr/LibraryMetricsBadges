@@ -34,6 +34,7 @@ create table pullrequests (
     mergedcount INTEGER,
     contributorprcount INTEGER,
     numPRs INTEGER,
+    saveddate STRING,
     status STRING,
     FOREIGN KEY(libname) REFERENCES bugs(libname) ON DELETE CASCADE,
     FOREIGN KEY(libname) REFERENCES releasefreq(libname) ON DELETE CASCADE,

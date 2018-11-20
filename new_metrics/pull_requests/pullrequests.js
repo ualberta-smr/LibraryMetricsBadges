@@ -2,6 +2,7 @@ const axios = require("axios");
 const path = require("path");
 const sqlite3 = require('sqlite3').verbose();
 const Promise = require("bluebird");
+const moment = require("moment");
 const dbpath = path.resolve(__dirname, "../../badges.db");
 
 const db = new sqlite3.Database(dbpath);
@@ -11,6 +12,26 @@ let config = {
         "Authorization": `${process.env.TOKEN}`
     }
 };
+
+let getDateCache = async (libName) => {
+    return new Promise(async (resolve,reject) => {
+        await db.get(`SELECT saveddate from pullrequests where libname="${libName}";`, (err, row) => {
+            if (err){
+                return reject(err);
+            }
+            let endDate = new Date("1970-01-01T00:00:00Z");
+
+            if (typeof row !== "undefined"){
+                console.log(row.saveddate);
+                endDate = new Date(row.saveddate);
+                console.log(endDate);
+            }
+            console.log("in here",endDate);
+            return resolve(endDate);
+        });
+    });
+};
+
 
 /**
  * Grabs all PRs in repository and filters them based on those associated with a contributor user status
@@ -31,10 +52,16 @@ let getAllPRs = async(owner, libName, contributors) => {
     let pullreqs = 0;           // contributor's PRs
     let response = "";
     let numberOfPullReqs = 0;   // total number of PRs
+    let savedDate = new Date();
+
+    let endDate = await getDateCache(libName);
+    if (!moment(endDate, moment.ISO_8601, true).isValid()){
+        endDate = new Date("1970-01-01T00:00:00Z");
+    } 
 
     while(true){
         try{
-            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?state=all&per_page=100&page=${pagenum}`, config);
+            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?direction=desc&sort=created&state=all&per_page=100&page=${pagenum}`, config);
         }
         catch(err){
             console.log(err);
@@ -45,25 +72,44 @@ let getAllPRs = async(owner, libName, contributors) => {
             break;
         }
 
+        if (response.data.length > 0 && pagenum === 1){
+            savedDate = new Date(response.data[0].created_at);
+        }
+
+
+
         // filter to get only contributor's PRs and merged PRs for users that still exist on Github
-        response.data.forEach(element => {
-            if (typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
+        let done = false;
+        for (let i = 0; i < response.data.length; i++){
+            let element = response.data[i];
+            prDate = new Date(element.created_at);
+            if (prDate <= endDate){
+                done = true;
+                break;
+            }
+            if (prDate > endDate && typeof element.user.login != "undefined" && contributors.hasOwnProperty(element.user.login)){
                 if (element.merged_at !== null){
                     merged++; 
                 }
                 pullreqs++; 
             }
             numberOfPullReqs++;
-        })
-    
+        }
+
+        if (done){
+            break;
+        }
         pagenum++;
     }
-    
+    endDate = savedDate;
+    console.log("NEW DATE", endDate);
     console.log("Total number of PRs:", numberOfPullReqs);
     console.log("Total number of merged contributor PRs vs all contributor PRs:", merged, pullreqs);
 
-    return [Math.floor((merged/pullreqs * 100)), merged, pullreqs, numberOfPullReqs];
+    return [pullreqs > 0 ? Math.floor((merged/pullreqs * 100)) : 0, merged, pullreqs, numberOfPullReqs, moment(endDate).toISOString()];
 };
+
+// update metric (merged + newmerged / pullreqs + pullreqsnew)
 
 /**
  * GET request endpoint that calculates metric of contributor's merged PRs and stores it into database
@@ -94,7 +140,7 @@ module.exports = (req) => {
 
                 try{
                     arr = await getAllPRs(owner, libName, contributors);
-                    if (Array.isArray(arr) && arr.length === 0){
+                    if (!Array.isArray(arr) || arr.length === 0){
                         return reject(arr);
                     }
                     console.log(arr);
@@ -120,7 +166,7 @@ module.exports = (req) => {
                         }
                     }
                     
-                    let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, mergedcount, contributorprcount, numPRs, status) VALUES (?,?,?,?,?,?);`;
+                    let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, mergedcount, contributorprcount, numPRs, saveddate, status) VALUES (?,?,?,?,?,?,?);`;
                     try{
                         await db.run(query, [libName, ...arr, status]);
                     }
