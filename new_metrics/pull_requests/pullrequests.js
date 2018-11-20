@@ -22,16 +22,12 @@ let getDateCache = async (libName) => {
             let endDate = new Date("1970-01-01T00:00:00Z");
 
             if (typeof row !== "undefined"){
-                console.log(row.saveddate);
                 endDate = new Date(row.saveddate);
-                console.log(endDate);
             }
-            console.log("in here",endDate);
             return resolve(endDate);
         });
     });
 };
-
 
 /**
  * Grabs all PRs in repository and filters them based on those associated with a contributor user status
@@ -46,22 +42,30 @@ let getDateCache = async (libName) => {
  * 
  * @example owner=google libName=gson contributors={user1:12,user2:3}
  */
-let getAllPRs = async(owner, libName, contributors) => {
+let getAllPRs = async(owner, libName, contributors, lastDate) => {
     let pagenum = 1;
     let merged = 0;             // merged contributor's PRs
     let pullreqs = 0;           // contributor's PRs
     let response = "";
     let numberOfPullReqs = 0;   // total number of PRs
     let savedDate = new Date();
+    let perPage = 100;
 
-    let endDate = await getDateCache(libName);
-    if (!moment(endDate, moment.ISO_8601, true).isValid()){
-        endDate = new Date("1970-01-01T00:00:00Z");
-    } 
-
+    // let endDate = await getDateCache(libName);
+    // if (!moment(endDate, moment.ISO_8601, true).isValid()){
+    //     endDate = new Date("1970-01-01T00:00:00Z");
+    // } 
+    let endDate = new Date("1970-01-01T00:00:00Z");
+    if (typeof lastDate !== "undefined"){
+        endDate = new Date(lastDate);
+        perPage= 20;
+    }
+    
+    console.log(endDate);
     while(true){
+        console.log(pagenum);
         try{
-            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?direction=desc&sort=created&state=all&per_page=100&page=${pagenum}`, config);
+            response = await axios.get(`https://api.github.com/repos/${owner}/${libName}/pulls?direction=desc&sort=created&state=all&per_page=${perPage}&page=${pagenum}`, config);
         }
         catch(err){
             console.log(err);
@@ -76,11 +80,10 @@ let getAllPRs = async(owner, libName, contributors) => {
             savedDate = new Date(response.data[0].created_at);
         }
 
-
-
         // filter to get only contributor's PRs and merged PRs for users that still exist on Github
         let done = false;
         for (let i = 0; i < response.data.length; i++){
+            console.log(i);
             let element = response.data[i];
             prDate = new Date(element.created_at);
             if (prDate <= endDate){
@@ -101,12 +104,13 @@ let getAllPRs = async(owner, libName, contributors) => {
         }
         pagenum++;
     }
+
     endDate = savedDate;
     console.log("NEW DATE", endDate);
     console.log("Total number of PRs:", numberOfPullReqs);
     console.log("Total number of merged contributor PRs vs all contributor PRs:", merged, pullreqs);
 
-    return [pullreqs > 0 ? Math.floor((merged/pullreqs * 100)) : 0, merged, pullreqs, numberOfPullReqs, moment(endDate).toISOString()];
+    return [merged, pullreqs, numberOfPullReqs, moment(endDate).toISOString()];
 };
 
 // update metric (merged + newmerged / pullreqs + pullreqsnew)
@@ -133,48 +137,67 @@ module.exports = (req) => {
             return reject("Query parameters are invalid");
         }
 
-
         await db.get(`SELECT userclassification from users where libname="${libName}";`, async (err, row) => {
             if (typeof row !== "undefined"){
                 contributors = JSON.parse(row.userclassification);
 
-                try{
-                    arr = await getAllPRs(owner, libName, contributors);
-                    if (!Array.isArray(arr) || arr.length === 0){
-                        return reject(arr);
-                    }
-                    console.log(arr);
-                }
-                catch(err){
-                    return reject(err);
-                }
-
                 await db.get(`SELECT * from pullrequests where libname="${libName}";`, async (err, row) => {
+
+                    // -------------------------------------
+                    try{
+                        arr = await getAllPRs(owner, libName, contributors, row.saveddate);
+                        if (!Array.isArray(arr) || arr.length === 0){
+                            return reject(arr);
+                        }
+                        console.log("return value from getAllPRs", arr);
+                    }
+                    catch(err){
+                        return reject(err);
+                    }
+                    // -------------------------------------
+
+                    console.log("rows retrieved", row);
                     if (err){
                         reject(err);
                     }
                     let status = "--";
-                    if (typeof row !== "undefined"){
-                        if (row.percent < arr[0]){
+                    let metric = 0;
+                    let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, mergedcount, contributorprcount, numPRs, saveddate, status) VALUES (?,?,?,?,?,?,?);`;
+     
+                    if (typeof row !== "undefined"){            
+                        let allPRs = arr[1] + row.contributorprcount;
+                        let allMerged = arr[0] + row.mergedcount;
+                        allPRs > 0 ? metric = Math.floor((allMerged / allPRs * 100)) : 0;
+
+                        if (row.percent < metric){
                             status = "↑";
                         }
-                        else if (row.percent > arr[0]){
+                        else if (row.percent > metric){
                             status = "↓";
                         }
                         else{
                             status = "--";
                         }
+  
+                        try{
+                            db.run(query, [libName, metric, allMerged, allPRs, arr[2] + row.numPRs, arr[3], status]);
+                            return resolve([metric, status]);
+                        }
+                        catch(err){
+                            return reject(err);
+                        }
                     }
-                    
-                    let query = `INSERT OR REPLACE INTO pullrequests(libname, percent, mergedcount, contributorprcount, numPRs, saveddate, status) VALUES (?,?,?,?,?,?,?);`;
-                    try{
-                        await db.run(query, [libName, ...arr, status]);
+                    else{
+                        arr[1] > 0 ? metric = Math.floor((arr[0]/arr[1] * 100)) : 0;
+                        try{
+                            db.run(query, [libName, metric, ...arr, status]);
+                            return resolve([metric, status]);
+                        }
+                        catch(err){
+                            return reject(err);
+                        }
                     }
-                    catch(err){
-                        return reject(err);
-                    }
-    
-                    return resolve([arr[0], status]);
+        
                 });
             }
             else{
