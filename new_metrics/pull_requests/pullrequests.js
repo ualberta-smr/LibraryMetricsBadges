@@ -15,16 +15,17 @@ let config = {
 
 /**
  * Grabs all PRs in repository and filters them based on those associated with a contributor user status
- * and calculates metric percentage using, "total number of merged contributor PR / total number of contributor PRs"
+ * and grabs various PR metrics for later calculation
  * 
  * @param {string} owner representing the owner of the repository
  * @param {string} libName representing the name of the repository/library
  * @param {object} contributors with keys as contributor login names, and values as number of commits associated with user
+ * @param {string} date is undefined for contains the last cached date
  * 
- * @returns {Array} percentage showing the % of merged contributors PRs in a library, number of merged PRs, 
- * number of contributor PRs, and total number of all PRs
+ * @returns {Array}  number of merged PRs, 
+ * number of contributor PRs, and total number of all PRs, and the most recent date of last PR
  * 
- * @example owner=google libName=gson contributors={user1:12,user2:3}
+ * @example owner=google libName=gson contributors={user1:12,user2:3} lastDate="1970-01-01T00:00:00Z"
  */
 let getAllPRs = async(owner, libName, contributors, lastDate) => {
     let pagenum = 1;
