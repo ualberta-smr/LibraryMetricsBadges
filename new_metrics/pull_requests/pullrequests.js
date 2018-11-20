@@ -35,14 +35,10 @@ let getAllPRs = async(owner, libName, contributors, lastDate) => {
     let savedDate = new Date();
     let perPage = 100;
 
-    // let endDate = await getDateCache(libName);
-    // if (!moment(endDate, moment.ISO_8601, true).isValid()){
-    //     endDate = new Date("1970-01-01T00:00:00Z");
-    // } 
     let endDate = new Date("1970-01-01T00:00:00Z");
     if (typeof lastDate !== "undefined"){
         endDate = new Date(lastDate);
-        perPage= 20;                // toggle number of items per page returned from API for faster response when doing not from scratch 
+        perPage= 20;                // toggle for faster response when not calculating metric from scratch
     }
 
     console.log(endDate);
@@ -63,7 +59,7 @@ let getAllPRs = async(owner, libName, contributors, lastDate) => {
             savedDate = new Date(response.data[0].created_at);
         }
 
-        // filter to get only contributor's PRs and merged PRs for users that still exist on Github
+        // filter to get only classified contributor PRs for non deleted users
         let done = false;
         for (let i = 0; i < response.data.length; i++){
             let element = response.data[i];
@@ -95,8 +91,6 @@ let getAllPRs = async(owner, libName, contributors, lastDate) => {
     return [merged, pullreqs, numberOfPullReqs, moment(endDate).toISOString()];
 };
 
-// update metric (merged + newmerged / pullreqs + pullreqsnew)
-
 /**
  * GET request endpoint that calculates metric of contributor's merged PRs and stores it into database
  * given a library and owner name
@@ -125,7 +119,7 @@ module.exports = (req) => {
 
                 await db.get(`SELECT * from pullrequests where libname="${libName}";`, async (err, row) => {
 
-                    // -------------------------------------
+                    // get PR statistics to calculate metric
                     try{
                         arr = await getAllPRs(owner, libName, contributors, row ? row.saveddate: undefined);
                         if (!Array.isArray(arr) || arr.length === 0){
@@ -136,7 +130,6 @@ module.exports = (req) => {
                     catch(err){
                         return reject(err);
                     }
-                    // -------------------------------------
 
                     console.log("rows retrieved", row);
                     if (err){
