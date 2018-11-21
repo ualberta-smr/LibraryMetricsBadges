@@ -153,9 +153,9 @@ app.get('/classifyusers', async(req, res) => {
 app.get('/issueresponse', async (req, res) => {
     await getIssueResponseTime(req)
         .then(responseTime => {
-            if (typeof responseTime !== "undefined"){
+            if (Array.isArray(responseTime)){
                 res.send({
-                    responsetime:`${responseTime} days`
+                    responsetime:`${responseTime[0]} days ${responseTime[1]}`
                 });
             }
             else{

@@ -112,7 +112,7 @@ let calculateMetric = async(owner,libName) => {
     } 
     console.log(totalIssues, validIssues);
 
-    return [validIssues, totalIssues, Math.floor((totalMS / validIssues / 86400000))];
+    return [Math.floor((totalMS / validIssues / 86400000)), validIssues, totalIssues];
 };
 
 /**
@@ -128,7 +128,6 @@ let calculateMetric = async(owner,libName) => {
 module.exports = async (req) => {
     let owner = req.query.owner;
     let libName = req.query.libname;
-    //TODO hook this up with sqlite3
 
     return new Promise(async (resolve,reject) => {
         if (typeof owner === "undefined" || typeof libName === "undefined"){
@@ -136,19 +135,21 @@ module.exports = async (req) => {
         }
         
         try{
-            let response = await calculateMetric(owner,libName);
-            console.log(response);
-
             await db.get(`SELECT * from issueresponse where libname="${libName}";`, async (err, row) => {
                 if (err){
-                    reject(err);
+                    return reject(err);
                 }
                 let status = "--";
+                if (row){
+                    resolve([row.averagedays, row.status]);
+                }
+                let response = await calculateMetric(owner,libName);
+                console.log(response);
                 if (typeof row !== "undefined"){
-                    if (row.averagedays < response[2]){
+                    if (row.averagedays < response[0]){
                         status = "↑";
                     }
-                    else if (row.averagedays > response[2]){
+                    else if (row.averagedays > response[0]){
                         status = "↓";
                     }
                     else{
@@ -157,14 +158,13 @@ module.exports = async (req) => {
                 }
                 let query = `INSERT OR REPLACE INTO issueresponse(libname, averagedays, totalWithComments, totalIssues, status) VALUES (?,?,?,?,?);`;
                 try{
-                    await db.run(query, [libName, ...response, status]);
+                    db.run(query, [libName, ...response, status]);
                 }
                 catch(err){
                     return reject(err);
                 }
-
+                return resolve([response[0], status]);
             });
-            resolve(response[2]);
         }
         catch(err){
             reject(err);
