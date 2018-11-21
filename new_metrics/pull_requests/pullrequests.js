@@ -132,7 +132,6 @@ module.exports = (req) => {
                         return reject(err);
                     }
 
-                    console.log("rows retrieved", row);
                     if (err){
                         reject(err);
                     }
@@ -177,7 +176,7 @@ module.exports = (req) => {
                 });
             }
             else{
-                return reject("Did you run through the /classifyusers endpoint yet?", err);
+                return reject("Did you run through the /classifyusers endpoint yet or typed the endpoint incorrectly?", err);
             }
         });
     });

@@ -83,6 +83,7 @@ let classifyUserType = async(owner,libName) => {
     let query = `INSERT OR REPLACE INTO users(libname, userclassification) VALUES (?,?);`;
     try{
         await db.run(query, [libName, JSON.stringify(contributors)]);
+        console.log(contributors);
         return contributors;
     }
     catch(err){
