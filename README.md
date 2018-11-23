@@ -1,9 +1,18 @@
-# Exploring Software Library Metrics with GitHub Badges 
+# Exploring Software Library Metrics with Repository Badges 
 ![Security Badge](https://img.shields.io/badge/dynamic/json.svg?label=FindSecurityBugs&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fsecurity%3Flibname%3Dgson&query=numbugs&colorB=orange)
 ![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Freleasefreq%3Flibname%3Dgson%26owner%3Dgoogle&query=numdays&colorB=blue)
 ![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/dynamic/json.svg?label=Last%20Discussed%20on%20Stack%20Overflow&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Flastdiscussed%3Flibname%3Dgson&query=lastdate&colorB=9400D3)
 ![Contributor PRs Merge Rate Badge](https://img.shields.io/badge/dynamic/json.svg?label=Contributor%20PR%20Merge%20Rate&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fpullrequests%3Fowner%3Daxios%26libname%3Daxios&query=percentage&colorB=green)
 ![Issue Response Time Average Badge](https://img.shields.io/badge/dynamic/json.svg?label=Issue%20Response%20Time%20Average&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fissueresponse%3Fowner%3Daxios%26libname%3Daxios&query=responsetime&colorB=29C8A9)
+
+## Description
+
+
+## Contributors
+
+
+## Documentation
+
 
 ## Prerequisites
 * Node versions 8.11.1 or above
@@ -18,42 +27,85 @@
 
 ## Environment Setup
 * Fork repository
-* Inside of root folder of repo, run `npm install` to grab necessary dependencies
-* Inside of root folder of repo, run `sqlite3 badges.db < tables.sql` to setup an empty database 
-* TODO -> Write procedure for setting up env variables for authentication
-* https://github.com/settings/tokens
-* https://stackapps.com/apps/oauth/register
+* Inside root folder of repo, run `npm install` to grab necessary dependencies
+* Inside root folder of repo, run `sqlite3 badges.db < tables.sql` to setup an empty database 
+* Inside root folder of repo, create file called `variables.env`
+	* Make 2 environment variables called TOKEN and SO_KEY
+		* Get personal access token from [Github](https://github.com/settings/tokens)
+		* Get API Key from [Stack Overflow](https://stackapps.com/apps/oauth/register)
+		* [Image of Stack Overflow Auth](pictures/stackoverflowkey.png)
+		* Input those keys into the file e.g
+			* TOKEN=bearer INPUTYOURTOKEN
+			* SO_KEY=INPUTYOURKEY
 
 ## Folder Structure and Setup per badge
 * existing_metrics
 	* last_discussed
+		* Gets latest date of a Stack Overflow question about the library
+		* *lastdiscussedbadge.js* -> handles Github API calls and constructs JSON response for badge creation
+		* no additional setup needed
 
 	* issue_response_time
+		* Calculates average time to get a response for an issue
+		* *issuereponsetime.js* -> handles Github API calls and constructs JSON response for badge creation
+		* no additional setup needed
 
 	* release_freq
-		* Will calculate average number of days between 2 >= releases
-		* contains file, releasebadge.js that handles all Github API calls and constructs JSON response for badge creation
+		* Calculates average number of days between 2 or more releases
+		* *releasebadge.js* -> handles Github API calls and constructs JSON response for badge creation
 		* no additional setup needed
 
 * new_metrics
 	* security
-		* add any Java, public Github repository clone link to `repositories.txt`
-		* To update stat given that library has been compiled already:
-			* run `bash updatestats.sh`
+		* Gets number of security bugs found by Spotbugs with FindSecBugs plugin
+		* Add any Java, public Github repository clone link to `repositories.txt`
 		* To go through entire process of git cloning, Maven/Gradle compilation, then running SpotBugs
-			* run inside of security directory, `bash setup.sh`
-		* dynamic update of badge is seperate from badge image itself
-	
-	* pull_requests
+			* Run inside of security directory, `bash setup.sh`
+		* To update stat given that library has been compiled already:
+			* Run `bash updatestats.sh`
+		* Dynamic update of badge is seperate from badge image itself
 
+	* pull_requests
+		* Calculates contributor PR merge approval percentage
+		* Run classifyusers endpoint first (see Endpoints section below)
+		* no additional setup needed
 
 ## Endpoints
-* security
+* Security
+	* **NOTE -> you will need cloned and compiled Java repos on your local machine (see folder structure for setup)**
 	* localhost:3000/security?libname=SOMEJAVALIBRARYNAME
 		* e.g. localhost:3000/security?libname=gson
-	* NOTE -> you will need cloned and compiled Java repos on your local machine (see folder structure for setup)
-* release frequency
+* Release Frequency
 	* localhost:3000/releasefreq?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
 		* e.g. localhost:3000/releasefreq?owner=junit-team&libname=junit5
 	* Insert any open source, public, Github respository in the query fields
+* Last Discussed on Stack Overflow
+	* localhost:3000/lastdiscussed?libname=SOMEIBRARYNAME
+		* e.g. localhost:3000/lastdiscussed?libname=momentjs
+* Issue Response Time
+	* localhost:3000/issueresponse?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
+		* e.g. localhost:3000/issueresponse?owner=junit-team&libname=junit5
+* Contributor PR Merge Rate
+	* **NOTE -> you will need to run the classify users endpoint first**
+	* localhost:3000/pullrequests?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
+		* e.g. localhost:3000/pullrequests?owner=junit-team&libname=junit5
+* Classify Users
+	* localhost:3000/classifyusers?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
+		* e.g. localhost:3000/classifyusers?owner=junit-team&libname=junit5
 
+## Running Project
+* Setup Security and Contributor PR endpoints first
+* Badge Creation
+	* Run `npm start`
+	* Directed to *localhost:3000* which then you can access any of the above endpoints
+	* Once you use an endpoint it will return a JSON object
+		* Get the key pair e.g numdays:10
+	* Go to [Shields.io](https://shields.io/#/)
+	* Scroll down to Dynamic Section
+	* Input values for label, url, query, color as needed 
+		* [Badge Input](pictures/shieldsioinput.png)
+	* Finally, grab Shields url given in the url bar and make a link to it on your README
+* Generate Docs
+	* Run `npm docs:build`
+	* TODO
+		
