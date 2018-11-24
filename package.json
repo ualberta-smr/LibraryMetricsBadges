@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon createbadge.js",
-    "docs:build": "documentation build new_metrics/** existing_metrics/** -f html -o docs"
+    "docs:build": "documentation build new_metrics/** existing_metrics/** -f md -o docs"
   },
   "author": "Monica",
   "license": "ISC",

@@ -33,7 +33,7 @@
 	* Make 2 environment variables called TOKEN and SO_KEY
 		* Get personal access token from [Github](https://github.com/settings/tokens)
 		* Get API Key from [Stack Overflow](https://stackapps.com/apps/oauth/register)
-		* [Image of Stack Overflow Auth](pictures/stackoverflowkey.png)
+		* [Image of Stack Overflow Auth](pictures/stackoverflowkey.png?raw=true)
 		* Input those keys into the file e.g
 			* TOKEN=bearer INPUTYOURTOKEN
 			* SO_KEY=INPUTYOURKEY
@@ -43,13 +43,11 @@
 	* last_discussed
 		* Gets latest date of a Stack Overflow question about the library
 		* *lastdiscussedbadge.js* -> handles Github API calls and constructs JSON response for badge creation
-		* no additional setup needed
-
+		* no additional setup needed<br/>
 	* issue_response_time
 		* Calculates average time to get a response for an issue
 		* *issuereponsetime.js* -> handles Github API calls and constructs JSON response for badge creation
-		* no additional setup needed
-
+		* no additional setup needed<br/>
 	* release_freq
 		* Calculates average number of days between 2 or more releases
 		* *releasebadge.js* -> handles Github API calls and constructs JSON response for badge creation
@@ -63,8 +61,7 @@
 			* Run inside of security directory, `bash setup.sh`
 		* To update stat given that library has been compiled already:
 			* Run `bash updatestats.sh`
-		* Dynamic update of badge is seperate from badge image itself
-
+		* Dynamic update of badge is seperate from badge image itself <br/>
 	* pull_requests
 		* Calculates contributor PR merge approval percentage
 		* Run classifyusers endpoint first (see Endpoints section below)
@@ -96,16 +93,16 @@
 ## Running Project
 * Setup Security and Contributor PR endpoints first
 * Badge Creation
-	* Run `npm start`
+	* Run `npm run start`
 	* Directed to *localhost:3000* which then you can access any of the above endpoints
 	* Once you use an endpoint it will return a JSON object
 		* Get the key pair e.g numdays:10
 	* Go to [Shields.io](https://shields.io/#/)
 	* Scroll down to Dynamic Section
 	* Input values for label, url, query, color as needed 
-		* [Badge Input](pictures/shieldsioinput.png)
+		* [Badge Input](pictures/shieldsioinput.png?raw=true)
 	* Finally, grab Shields url given in the url bar and make a link to it on your README
 * Generate Docs
-	* Run `npm docs:build`
+	* Run `npm run docs:build`
 	* TODO
 		
