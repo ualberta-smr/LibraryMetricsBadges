@@ -26,6 +26,7 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 * Sqlite3 that can run on command line
 * Git 
 	* configured so that it can run various commands like `git clone & git pull` on command line without authentication
+* [Ngrok](https://ngrok.com/download)
 
 ## Environment Setup
 * Fork repository
@@ -95,8 +96,13 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 ## Running Project
 * Setup Security and Contributor PR endpoints first
 * Badge Creation
-	* Run `npm run start`
-	* Directed to *localhost:3000* which then you can access any of the above endpoints using the internet browser of an API client like Postman
+	* Run `npm run start` on one terminal session
+	* Run `ngrok http 3000` on another session
+		* Get the Forwarding link on the ngrok session which changes for every new
+		run if session is exited 
+			* e.g  http://f212a1f2.ngrok.io
+	* Directed to *http://f212a1f2.ngrok.io* for example which then you can access any of the above endpoints using the internet browser or an API client like Postman
+		* http://f212a1f2.ngrok.io/classifyusers?owner=google&libname=gson
 	* Once you use an endpoint it will return a JSON object
 		* Get the key e.g numdays:10 where numdays is the term you want
 	* Go to [Shields.io](https://shields.io/#/)
@@ -106,10 +112,10 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 	* Finally, grab Shields url given in the url bar and make a link to it on your README
 * Generate Docs
 	* Run `npm run docs:build`
-	* New documentation will be rebuilt and shown as `docs.md`
+	* New documentation will be rebuilt and shown as `docs/docs.md`
 		
 ## License
-ualberta-smr/bui-course-f18 is licensed under the
+ualberta-smr/bui-course-f18 is licensed under the </br>
 MIT License
 A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 [MIT License](LICENSE.md)
