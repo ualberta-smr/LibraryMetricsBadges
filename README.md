@@ -6,13 +6,15 @@
 ![Issue Response Time Average Badge](https://img.shields.io/badge/dynamic/json.svg?label=Issue%20Response%20Time%20Average&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fissueresponse%3Fowner%3Daxios%26libname%3Daxios&query=responsetime&colorB=29C8A9)
 
 ## Description
-
+This project oversees repository badges developed from various software metrics to help developers compare between different libraries and make the best selection for which library to use
 
 ## Contributors
-
+Project developed by the Software Maintenance and Reuse lab [(SMR)](https://sarahnadi.org/smr/), University of Alberta. </br>
+Developers: [Monica Bui](https://github.com/bui1), [Sarah Nadi](https://sarahnadi.org)
 
 ## Documentation
-
+Documentation on various functions used in the scripts will be found in [docs/docs.md](docs/docs.md).
+For more detailed descriptions of methodologies used to calculate each badge's metrics, it can be found in [docs/methods.md](docs/methods.md)
 
 ## Prerequisites
 * Node versions 8.11.1 or above
@@ -43,11 +45,11 @@
 	* last_discussed
 		* Gets latest date of a Stack Overflow question about the library
 		* *lastdiscussedbadge.js* -> handles Github API calls and constructs JSON response for badge creation
-		* no additional setup needed<br/>
+		* no additional setup needed
 	* issue_response_time
 		* Calculates average time to get a response for an issue
 		* *issuereponsetime.js* -> handles Github API calls and constructs JSON response for badge creation
-		* no additional setup needed<br/>
+		* no additional setup needed
 	* release_freq
 		* Calculates average number of days between 2 or more releases
 		* *releasebadge.js* -> handles Github API calls and constructs JSON response for badge creation
@@ -71,38 +73,40 @@
 * Security
 	* **NOTE -> you will need cloned and compiled Java repos on your local machine (see folder structure for setup)**
 	* localhost:3000/security?libname=SOMEJAVALIBRARYNAME
-		* e.g. localhost:3000/security?libname=gson
+		* e.g. localhost:3000/security?libname=gson  
 * Release Frequency
 	* localhost:3000/releasefreq?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
 		* e.g. localhost:3000/releasefreq?owner=junit-team&libname=junit5
-	* Insert any open source, public, Github respository in the query fields
+	* Insert any open source, public, Github respository in the query fields    
 * Last Discussed on Stack Overflow
 	* localhost:3000/lastdiscussed?libname=SOMEIBRARYNAME
 		* e.g. localhost:3000/lastdiscussed?libname=momentjs
 * Issue Response Time
 	* localhost:3000/issueresponse?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
-		* e.g. localhost:3000/issueresponse?owner=junit-team&libname=junit5
+		* e.g. localhost:3000/issueresponse?owner=junit-team&libname=junit5  
 * Contributor PR Merge Rate
 	* **NOTE -> you will need to run the classify users endpoint first**
 	* localhost:3000/pullrequests?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
-		* e.g. localhost:3000/pullrequests?owner=junit-team&libname=junit5
-* Classify Users
+		* e.g. localhost:3000/pullrequests?owner=junit-team&libname=junit5    
+* Classify Users 
 	* localhost:3000/classifyusers?owner=OWNEROFORGANIZATIONORREPO&libname=SOMEIBRARYNAME
-		* e.g. localhost:3000/classifyusers?owner=junit-team&libname=junit5
+		* e.g. localhost:3000/classifyusers?owner=junit-team&libname=junit5   
 
 ## Running Project
 * Setup Security and Contributor PR endpoints first
 * Badge Creation
 	* Run `npm run start`
-	* Directed to *localhost:3000* which then you can access any of the above endpoints
+	* Directed to *localhost:3000* which then you can access any of the above endpoints using the internet browser of an API client like Postman
 	* Once you use an endpoint it will return a JSON object
-		* Get the key pair e.g numdays:10
+		* Get the key e.g numdays:10 where numdays is the term you want
 	* Go to [Shields.io](https://shields.io/#/)
 	* Scroll down to Dynamic Section
-	* Input values for label, url, query, color as needed 
+	* Input values for label, url, query, color 
 		* [Badge Input](pictures/shieldsioinput.png?raw=true)
 	* Finally, grab Shields url given in the url bar and make a link to it on your README
 * Generate Docs
 	* Run `npm run docs:build`
-	* TODO
+	* New documentation will be rebuilt and shown as `docs.md`
 		
+License
+[MIT License](LICENSE.md)
