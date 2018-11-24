@@ -108,5 +108,8 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 	* Run `npm run docs:build`
 	* New documentation will be rebuilt and shown as `docs.md`
 		
-License
+## License
+ualberta-smr/bui-course-f18 is licensed under the
+MIT License
+A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 [MIT License](LICENSE.md)
