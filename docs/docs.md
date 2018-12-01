@@ -26,19 +26,18 @@
 -   [classifyUserType][22]
     -   [Parameters][23]
     -   [Examples][24]
--   [forEach][25]
--   [classifyusers][26]
-    -   [Parameters][27]
-    -   [Examples][28]
--   [getAllPRs][29]
-    -   [Parameters][30]
-    -   [Examples][31]
--   [pullrequests][32]
-    -   [Parameters][33]
-    -   [Examples][34]
--   [window][35]
--   [securitybadge][36]
-    -   [Parameters][37]
+-   [classifyusers][25]
+    -   [Parameters][26]
+    -   [Examples][27]
+-   [getAllPRs][28]
+    -   [Parameters][29]
+    -   [Examples][30]
+-   [pullrequests][31]
+    -   [Parameters][32]
+    -   [Examples][33]
+-   [window][34]
+-   [securitybadge][35]
+    -   [Parameters][36]
 
 ## calculateMetric
 
@@ -50,9 +49,9 @@ Consider only issues whose first comment author != author of issue
 
 -   `owner`  
 -   `libName`  
--   `req` **[Object][38]** Express request object
+-   `req` **[Object][37]** Express request object
 
-Returns **[Array][39]** 3 items, number of all issues, number of issues that have valid comments, and calculated metric
+Returns **[Array][38]** 3 items, number of all issues, number of issues that have valid comments, and calculated metric
 
 ## issueresponsetime
 
@@ -61,7 +60,7 @@ is authored by someone not the issue creator
 
 ### Parameters
 
--   `req` **[Object][38]** Express request object
+-   `req` **[Object][37]** Express request object
 
 ### Examples
 
@@ -69,7 +68,7 @@ is authored by someone not the issue creator
 localhost:3000/issueresponse?owner=axios&libname=axios
 ```
 
-Returns **[number][40]** average number of days for issue response time
+Returns **[number][39]** average number of days for issue response time
 
 ## lastdiscussedbadge
 
@@ -78,7 +77,7 @@ then grab the most recent question containing the tag of the library and extract
 
 ### Parameters
 
--   `req` **[object][38]** Express middleware request object
+-   `req` **[object][37]** Express middleware request object
 
 ### Examples
 
@@ -86,7 +85,7 @@ then grab the most recent question containing the tag of the library and extract
 localhost:3000/lastdiscussed?libname=axios
 ```
 
-Returns **[string][41]** latestdate of the last discussed on Stack Overflow
+Returns **[string][40]** latestdate of the last discussed on Stack Overflow
 
 ## grabDates
 
@@ -94,9 +93,9 @@ Grab the dates from every response objects for when a release is made
 
 ### Parameters
 
--   `response` **[Array][39]** list of response API objects of releases
+-   `response` **[Array][38]** list of response API objects of releases
 
-Returns **[Array][39]** list of date strings of every commit associated with a release
+Returns **[Array][38]** list of date strings of every commit associated with a release
 
 ## calculateAverage
 
@@ -105,9 +104,9 @@ between each date string
 
 ### Parameters
 
--   `dates` **[Array][39]** list of date strings
+-   `dates` **[Array][38]** list of date strings
 
-Returns **[number][40]** average number days between releases
+Returns **[number][39]** average number days between releases
 
 ## insertEntry
 
@@ -115,7 +114,7 @@ Inserts into the database the library name, number of releases, average days, an
 
 ### Parameters
 
--   `data` **[Array][39]** list containing the library name, number of releases, average days, and status
+-   `data` **[Array][38]** list containing the library name, number of releases, average days, and status
 
 Returns **null** 
 
@@ -125,7 +124,7 @@ Updates the number of releases, average days, and status of the query in the dat
 
 ### Parameters
 
--   `data` **[Array][39]** list containing number of releases, average days, and status of query
+-   `data` **[Array][38]** list containing number of releases, average days, and status of query
 
 Returns **null** 
 
@@ -136,8 +135,8 @@ for each tag
 
 ### Parameters
 
--   `owner` **[string][41]** owner name of the library
--   `libName` **[string][41]** library name
+-   `owner` **[string][40]** owner name of the library
+-   `libName` **[string][40]** library name
 -   `numberofreleases` **numberofreleases** total number of releases
 
 ### Examples
@@ -146,7 +145,7 @@ for each tag
 localhost:3000/releasefreq?owner=axios&libname=axios
 ```
 
-Returns **[number][40]** average number days between releases
+Returns **[number][39]** average number days between releases
 
 ## releasebadge
 
@@ -155,9 +154,9 @@ info in database
 
 ### Parameters
 
--   `req` **[object][38]** Express request object
+-   `req` **[object][37]** Express request object
 
-Returns **[Array][39]** contains calculated average number and the status of the query whether 
+Returns **[Array][38]** contains calculated average number and the status of the query whether 
 if the average stayed neutral, increased, or decreased
 
 ## classifyUserType
@@ -166,8 +165,8 @@ Classify contributor user type by checking if total number commits user made is 
 
 ### Parameters
 
--   `owner` **[string][41]** representing the owner of the repository
--   `libName` **[string][41]** representing the name of the repository/library
+-   `owner` **[string][40]** representing the owner of the repository
+-   `libName` **[string][40]** representing the name of the repository/library
 
 ### Examples
 
@@ -175,14 +174,7 @@ Classify contributor user type by checking if total number commits user made is 
 owner=google libName=gson
 ```
 
-Returns **[object][38]** contributors -> key:users, value:number of commits made
-
-## forEach
-
-Looping through JS Object keys
-[https://stackoverflow.com/a/18202926][42]
-Author: Danny R [https://stackoverflow.com/users/1351261/danny-r][43]
-user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
+Returns **[object][37]** contributors -> key:users, value:number of commits made
 
 ## classifyusers
 
@@ -191,7 +183,7 @@ classified as contributors for the pull requests endpoint
 
 ### Parameters
 
--   `req` **[object][38]** contains the request user made
+-   `req` **[object][37]** contains the request user made
 
 ### Examples
 
@@ -199,7 +191,7 @@ classified as contributors for the pull requests endpoint
 localhost:3000/classifyusers?owner=axios&libname=axios
 ```
 
-Returns **[object][38]** Github contributors of a repo
+Returns **[object][37]** Github contributors of a repo
 
 ## getAllPRs
 
@@ -208,11 +200,11 @@ and grabs various PR metrics for later calculation
 
 ### Parameters
 
--   `owner` **[string][41]** representing the owner of the repository
--   `libName` **[string][41]** representing the name of the repository/library
--   `contributors` **[object][38]** with keys as contributor login names, and values as number of commits associated with user
+-   `owner` **[string][40]** representing the owner of the repository
+-   `libName` **[string][40]** representing the name of the repository/library
+-   `contributors` **[object][37]** with keys as contributor login names, and values as number of commits associated with user
 -   `lastDate`  
--   `date` **[string][41]** is undefined for contains the last cached date
+-   `date` **[string][40]** is undefined for contains the last cached date
 
 ### Examples
 
@@ -220,7 +212,7 @@ and grabs various PR metrics for later calculation
 owner=google libName=gson contributors={user1:12,user2:3} lastDate="1970-01-01T00:00:00Z"
 ```
 
-Returns **[Array][39]** number of merged PRs, 
+Returns **[Array][38]** number of merged PRs, 
 number of contributor PRs, and total number of all PRs, and the most recent date of last PR
 
 ## pullrequests
@@ -230,7 +222,7 @@ given a library and owner name
 
 ### Parameters
 
--   `req` **[object][38]** contains the request user made
+-   `req` **[object][37]** contains the request user made
 
 ### Examples
 
@@ -238,7 +230,7 @@ given a library and owner name
 localhost:3000/pullrequests?owner=axios&libname=axios
 ```
 
-Returns **[number][40]** percentage containing number of outside contributor's work that is merged into repo
+Returns **[number][39]** percentage containing number of outside contributor's work that is merged into repo
 
 ## window
 
@@ -264,9 +256,9 @@ GET request to grab the number of bugs detected by Spotbugs with FindSecBugs plu
 
 ### Parameters
 
--   `req` **[object][38]** Express middleware request object
+-   `req` **[object][37]** Express middleware request object
 
-Returns **[object][38]** contains the number of bugs found from Spotbugs and the status of the query
+Returns **[object][37]** contains the number of bugs found from Spotbugs and the status of the query
 
 [1]: #calculatemetric
 
@@ -316,40 +308,34 @@ Returns **[object][38]** contains the number of bugs found from Spotbugs and the
 
 [24]: #examples-3
 
-[25]: #foreach
+[25]: #classifyusers
 
-[26]: #classifyusers
+[26]: #parameters-10
 
-[27]: #parameters-10
+[27]: #examples-4
 
-[28]: #examples-4
+[28]: #getallprs
 
-[29]: #getallprs
+[29]: #parameters-11
 
-[30]: #parameters-11
+[30]: #examples-5
 
-[31]: #examples-5
+[31]: #pullrequests
 
-[32]: #pullrequests
+[32]: #parameters-12
 
-[33]: #parameters-12
+[33]: #examples-6
 
-[34]: #examples-6
+[34]: #window
 
-[35]: #window
+[35]: #securitybadge
 
-[36]: #securitybadge
+[36]: #parameters-13
 
-[37]: #parameters-13
+[37]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[38]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[38]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[39]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[39]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[40]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[41]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[42]: https://stackoverflow.com/a/18202926
-
-[43]: https://stackoverflow.com/users/1351261/danny-r
+[40]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

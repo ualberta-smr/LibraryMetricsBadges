@@ -27,7 +27,9 @@ let config = {
 let grabDates = async (response) => {
     let dates = [];
 
+    // Medium Article
     // https://blog.lavrton.com/javascript-loops-how-to-handle-async-await-6252dd3c795
+    // Anton Lavrenov https://blog.lavrton.com/@lavrton
     for (let i = 0; i < response.length; i++){
         try{
             tagResponse = await axios.get(response[i], config);

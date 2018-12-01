@@ -22,7 +22,6 @@ let config = {
  * @example owner=google libName=gson 
  */
 let classifyUserType = async(owner,libName) => {
-    // if number of commits changes, recalculate classification of users
     let pagenum = 1;
     let totalCommits = 0;
     let users = {};         // user as key -> value as number of commits made
@@ -64,12 +63,11 @@ let classifyUserType = async(owner,libName) => {
     // now filter to get only contributor user types
     console.log("Total commits vs all commit numbers", totalCommits, all);
 
-    /**
-     * Looping through JS Object keys
-     * https://stackoverflow.com/a/18202926
-     * Author: Danny R https://stackoverflow.com/users/1351261/danny-r
-     * user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
-     */
+    // Looping through JS Object keys
+    // https://stackoverflow.com/a/18202926
+    // Author: Danny R https://stackoverflow.com/users/1351261/danny-r
+    // user contributions licensed under cc by-sa 3.0 with attribution required. rev 2018.11.5.32076
+    
     Object.keys(users).forEach(user => {
         // divide number of commits user made by total number of all commits
         let percent = users[user] / totalCommits;
