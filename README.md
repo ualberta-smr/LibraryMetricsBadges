@@ -95,6 +95,7 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 
 ## Running Project
 * Setup Security and Contributor PR endpoints first
+* *All scripts run from `createbadge.js` which is our main server*
 * Badge Creation
 	* Run `npm run start` on one terminal session
 	* Run `ngrok http 3000` on another session
@@ -116,6 +117,8 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 		
 ## License
 ualberta-smr/bui-course-f18 is licensed under the </br>
-MIT License
-A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
-[MIT License](LICENSE.md)
+
+MIT License </br>
+A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code. </br>
+
+For more details visit: [MIT License](LICENSE.md)
