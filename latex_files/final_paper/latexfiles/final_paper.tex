@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt, letterpaper]{article}
 
 \usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage{graphicx}
@@ -14,49 +14,109 @@
     \centering
     \large
     \vspace{1cm}
-    Exploring Software Library Metrics with Repository Badges \\
+    Exploring Software Library Metrics \\ 
+    with Repository Badges \\
     \vspace{1cm}
-    by
+    by \\
     \vspace{1cm}
-    Monica Bui
+    Monica Bui \\
+    University of Alberta \\
+    bui1@ualberta.ca \\
 \end{titlepage}
+
+\tableofcontents
+\newpage
 
 \section{Introduction}
 % How do developers select libraries
 % Iinstead of using websites, and online sources
 % we look to create badges that can be shown on the spot to users
 % to help them seee metrics and pick the best library
-
+asdsd
 % Make it a story
 
+% dont explicity reccomend libraries. Allow develoeprs to make their
+% own judgement to select librarie. Another quanittiative tool
+% to help compare b/w 
+
 \section{Related Work}
-\subsubsection{Goals}
+\subsection{Library Selection Goals}
 % This work focused on explicity recomending libraries versus. 
 % helping users pick which ones to use. My work is related to X while it 
 % differentiates itself from Y
 
-\subsubsection{Summary}
+% Library COmparison WEbsite (same method to solve similar problem)
+% Library Recommender (Opiner differe methods but similar problem)
+% Analogical Libraries (differnt method , same problem)
+\subsection{Metrics}
+\subsubsection{Quality Assurance}
+% Security
+% Build
+% Test code coverage
+
+\subsubsection{Community Support}
+% Stack Overflow
+
+\subsubsection{Repository General Information}
+% Pull Requests
+% Releases
+% Issue Stats
+% Commits 
+
+\subsection{Summary}
 
 \section{Background}
 
 \subsection{Badges}
+% Trockman's work
+% Look at what make's a good badge, not looking at how it can help developers choose libaries
 \subsection{Online Badge Services}
+% Shields io
 
 \section{Badge Implementation}
-\subsubsection{Overall Framework}
-\subsubsection{Security}
-\subsubsection{Last Discussed on Stack Overflow}
-\subsubsection{Issue Response Time}
-\subsubsection{Contributor Pull Request Merge Rate}
-\subsubsection{Release Frequency}
+\subsection{Overarching Structure of Scripts}
+% Insert diagram of how we made our badges
+
+\subsection{Security}
+% Talk about limited Fernando's technique and describe why using spotbugs
+\subsection{Last Discussed on Stack Overflow}
+% Techqique borrowed
+\subsection{Issue Response Time}
+% Techqique borrowed
+\subsection{Contributor Pull Request Merge Rate}
+% PR Shopify article
+\subsection{Release Frequency}
+% Techqique borrowed
 
 \section{Evaluation}
+
+\subsection{Open Source Evaluation}
+% Shields.io Open source contributions
+% Choose SO badge b/c it has the least amount of data to process and gives us a good
+% start to see if prototyping thsi works 
 \subsection{Future Work Evaluation}
 % If I had 4 more months, how would I evaluate this work.
+% Have badges hosted on Shields and figure how how many people are using them for popularity?
+% Survey insights to why they are suing those specific badges
 
 \section{Threats to Validity and Limitations}
-\section{Conclusion and Future Work}
+\subsection{Internal Validity}
 
+\subsection{External Validity}
+% <10% comntibnutor rate doesn't capture misclassifies some to be contribtuor when in reality are maintainers
+
+\subsection{Limitations}
+% Database caching
+% Security only works with Java Libraries and requires seperate update 
+% SCripts can only be used locally and need to rerun ngrok everytime
+
+
+\section{Conclusion and Future Work}
+% Future work
+% Host Scripts openly using something like heroku or now.js
+% Improve Error handling to make sure client knows any bad http codes
+% make front end application to display these metrics to get detailed info, visualizations of metrics
+% being used where and number of people suing them in line graph
 
 
 \newpage
