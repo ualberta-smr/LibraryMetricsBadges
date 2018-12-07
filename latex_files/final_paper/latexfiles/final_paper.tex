@@ -100,12 +100,12 @@ From the SpotBugs \cite{spotbugs} website description itself, the program \texti
 In conjunction with the FindSecBugs \cite{findsecbugs} plugin to provide a larger data set of security bug patterns to look for, 
 both these tools will allow for greater accuracy of targeting security bugs.
 
-
 The security badge represents the number of security bugs reported by SpotBugs \cite{spotbugs} with the FindSecBugs \cite{findsecbugs} plugin.
 We filter for only security bug patterns and configure SpotBugs to only classify bugs on the highest confidence setting
 with maximum effort toggled on to increase precision.
 
 \subsubsection{Implementation}
+
 \begin{figure}[!htb]
     \centerline{
         \includegraphics[width=6cm,height=6cm,keepaspectratio=true]{findsecbugsbadge}
@@ -121,27 +121,58 @@ A shell script clones and compiles them respectively under Gradle \cite{gradle} 
 After compilation, a script runs SpotBugs and FindSecBugs per library under our defined configured settings
 and stores the respective result
 into the database. The client can hit the security script endpoint to retrieve the saved results which
-then can be placed into Shields.io to output the security badge with an example shown in figure \ref{findsecbugsbadge}. 
-
+then can be placed into Shields.io \cite{shields} to output the security badge with an example shown in figure \ref{findsecbugsbadge}. 
 
 
 \subsection{Last Discussed on Stack Overflow}
 \subsubsection{Definition}
+We take Mora's et. al \cite{metrics} Last Discussed on Stack Overflow metric and transform it 
+into a badge. This badge represents the latest date of a question posted for a specific
+library on the Stack Overflow website \cite{stackoverflow}.
+
 \subsubsection{Implementation}
-% Techqique borrowed
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=10cm,height=10cm,keepaspectratio=true]{lastdiscussedbadge}
+    }
+    \caption{
+        Example of Last Discussed on Stack Overflow Badge
+    }
+    \label{lastdiscussed}
+\end{figure}
+
+Borrowing the implementation technique \cite{metrics}, we use the StackExchange API \cite{stackexchangeapi}
+to search up the library's name under tag search and extract the most popular tag.
+With the tag, we make a GET request to the API to search for the most recent question containing the tag
+and extract the date. An example of the badge is shown in figure \ref{lastdiscussed}.
+
 \subsection{Issue Response Time}
 \subsubsection{Definition}
+
+
 \subsubsection{Implementation}
 % Techqique borrowed
+
+
 \subsection{Contributor Pull Request Merge Rate}
 % picture of formula used and badge
 \subsubsection{Definition}
+
+
 \subsubsection{Implementation}
 % PR Shopify article
+
+
 \subsection{Release Frequency}
 \subsubsection{Definition}
+
+
 \subsubsection{Implementation}
 % Techqique borrowed
+
+
+
 
 \section{Evaluation}
 
