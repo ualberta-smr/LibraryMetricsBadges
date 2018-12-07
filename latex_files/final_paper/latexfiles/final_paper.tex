@@ -25,7 +25,6 @@
 \end{titlepage}
 
 \tableofcontents
-\newpage
 
 \listoffigures
 \newpage
@@ -52,7 +51,7 @@ online resources \cite{githubbadges,apiwave,metrics,opinerarticle,analogical}. T
 % to help compare b/w 
 
 \section{Related Work}
-\subsection{Library Selection Goals}
+\subsection{Library Selection Methods}
 % This work focused on explicity recomending libraries versus. 
 % helping users pick which ones to use. My work is related to X while it 
 % differentiates itself from Y
@@ -154,7 +153,7 @@ and extract the date. An example of the badge is shown in figure \ref{lastdiscus
 \subsubsection{Definition}
 Using Mora's et. al \cite{metrics} Issue Response Time definition, this badge illustrates the average
 amount of days needed to get the first reply to an issue. The badge is calculated via the response time
-formula described in \cite{metrics} also indicating if the changes in the average over time 
+formula described in \cite{metrics}. It also indicates if there are any changes to the average over time 
 as shown by the rightmost symbol in \ref{issueresponse}. 
 This badge will allow users to check if there is active maintainence of the library and if there is community support
 through the issue discussions. 
@@ -166,23 +165,36 @@ through the issue discussions.
         \includegraphics[width=10cm,height=10cm,keepaspectratio=true]{issueresponsebadge}
     }
     \caption{
-        Example of Last Discussed on Stack Overflow Badge
+        Example of Issue Response Time Badge
     }
     \label{issueresponse}
 \end{figure}
 
 We use the GitHub \cite{github} API to get all the releases of the library and follow the algorithm
 steps shown in \cite{metrics} to calculate the issue response time metric.
+The script makes another request with a list of commits associated with releases as input
+and outputs a new list of dates which then can help determine the final average using the suggested
+formula.
 We also discard deleted accounts and do not take them into account in our average.
 An example of the badge is shown in figure \ref{issueresponse}.
 
 
 \subsection{Contributor Pull Request Merge Rate}
-% picture of formula used and badge
+
 \subsubsection{Definition}
 
 
 \subsubsection{Implementation}
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=10cm,height=10cm,keepaspectratio=true]{prbadge}
+    }
+    \caption{
+        Example of Outside Contributor PR Merge Rate Badge
+    }
+    \label{prbadge}
+\end{figure}
 % PR Shopify article
 
 
@@ -191,6 +203,16 @@ An example of the badge is shown in figure \ref{issueresponse}.
 
 
 \subsubsection{Implementation}
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=10cm,height=10cm,keepaspectratio=true]{releasebadge}
+    }
+    \caption{
+        Example of Release Frequency Badge
+    }
+    \label{releasebadge}
+\end{figure}
 % Techqique borrowed
 
 
