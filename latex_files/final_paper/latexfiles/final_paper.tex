@@ -27,6 +27,9 @@
 \tableofcontents
 \newpage
 
+\listoffigures
+\newpage
+
 \section{Introduction}
 % How do developers select libraries
 % Iinstead of using websites, and online sources
@@ -88,7 +91,7 @@ online resources \cite{githubbadges,apiwave,metrics,opinerarticle,analogical}. T
 
 \subsection{Security}
 \subsubsection{Definition}
-The security badge has been inspired by Mora's et. al \cite{metrics} security metric implementation.
+The security badge is inspired by Mora's et. al \cite{metrics} security metric implementation.
 However, there are limitations related to classifying some security vulnerabilities due to inaccurate
 issue descriptions. These inaccuracies would suggest that there was a security problem but in reality was another issue altogether.
 To avoid this conflict brought by issue descriptions, 
@@ -98,12 +101,27 @@ In conjunction with the FindSecBugs \cite{findsecbugs} plugin to provide a large
 both these tools will allow for greater accuracy of targeting security bugs.
 
 
-The security badge represents the number of security bugs found by SpotBugs \cite{spotbugs} with the FindSecBugs \cite{findsecbugs} plugin.
-We filter for only security bug patterns and configure SpotBugs to only classify bugs on the highest confidence setting.
+The security badge represents the number of security bugs reported by SpotBugs \cite{spotbugs} with the FindSecBugs \cite{findsecbugs} plugin.
+We filter for only security bug patterns and configure SpotBugs to only classify bugs on the highest confidence setting
+with maximum effort toggled on to increase precision.
 
 \subsubsection{Implementation}
-First, we have a text file that holds any open source Java libraries hosted on GitHub \cite{github}.
-A shell script clones them and compiles them respectively under Gradle or Maven. 
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=6cm,height=6cm,keepaspectratio=true]{findsecbugsbadge}
+    }
+    \caption{
+        Example of Security Badge
+    }
+    \label{findsecbugsbadge}
+\end{figure}
+
+First, we have a text file that holds open source Java library links hosted on GitHub \cite{github}.
+A shell script clones and compiles them respectively under Gradle \cite{gradle} or Maven \cite{maven}.
+After compilation, a script runs SpotBugs and FindSecBugs per library under our defined configured settings
+and stores the respective result
+into the database. The client can hit the security script endpoint to retrieve the saved results which
+then can be placed into Shields.io to output the security badge with an example shown in figure \ref{findsecbugsbadge}. 
 
 
 
