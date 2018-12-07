@@ -170,11 +170,9 @@ through the issue discussions.
     \label{issueresponse}
 \end{figure}
 
-We use the GitHub \cite{github} API to get all the releases of the library and follow the algorithm
-steps shown in \cite{metrics} to calculate the issue response time metric.
-The script makes another request with a list of commits associated with releases as input
-and outputs a new list of dates which then can help determine the final average using the suggested
-formula.
+
+
+TODO WRITE UP METHODOLOGY
 We also discard deleted accounts and do not take them into account in our average.
 An example of the badge is shown in figure \ref{issueresponse}.
 
@@ -210,13 +208,19 @@ higher confidence that their PR will be integrated into the repository.
     }
     \label{prbadge}
 \end{figure}
-We have a seperate script endpoint that uses the Github \cite{github} API to get all the users
-that have made commits to the library. 
+
+We have a seperate script endpoint that uses the GitHub \cite{github} API to get all the users
+that have made commits to the library. We classify users as outside contributors or not using
+the technique described by Trockman et. al \cite{githubbadges} and store them as a JSON object in the database.
+Completing this task will allow us to use another endpoint to calculate the PR metric.
+With the GitHub \cite{github} API, we calculate
+the average as follows: total number of merged PRs divided by total number of all PRs where 
+PRs of all statuses are associated with outside contributors. An example response is shown in figure \ref{prbadge}.
 
 
 \subsection{Release Frequency}
 \subsubsection{Definition}
-
+TODO
 
 \subsubsection{Implementation}
 
@@ -229,7 +233,12 @@ that have made commits to the library.
     }
     \label{releasebadge}
 \end{figure}
-% Techqique borrowed
+
+We use the GitHub \cite{github} API to get all the releases of the library and follow the algorithm
+steps shown in \cite{metrics} to calculate the release frequency metric.
+The script makes another request with a list of commits associated with releases as input
+and outputs a new list of dates which then can help determine the final average using the suggested
+formula.
 
 
 
@@ -247,9 +256,14 @@ that have made commits to the library.
 
 \section{Threats to Validity and Limitations}
 \subsection{Validity}
+\subsubsection{Classification of Outside Contributors}
 % <10% comntibnutor rate doesn't capture misclassifies some to be contribtuor when in reality are maintainers
+\subsubsection{Security Bug Classification}
 
 \subsection{Limitations}
+\subsubsection{Request Timeouts}
+All metrics are susupetible to this due to GitHit image restrictions  3 seconds or less. 
+\subsubsection{Local Scripts}
 % Database caching
 % Security only works with Java Libraries and requires seperate update 
 % SCripts can only be used locally and need to rerun ngrok everytime
