@@ -32,9 +32,18 @@
 % Iinstead of using websites, and online sources
 % we look to create badges that can be shown on the spot to users
 % to help them seee metrics and pick the best library
-asdsd
-% Make it a story
 
+Libraries, Frameworks, and Application Programming Interfaces (APIs) provide developers a way to reuse existing functionalities
+built by someone else without having to re-implement already built features. Given a large collection of libraries out there,
+it is often difficult and not clear how to select the best one to use for your own project. 
+
+
+Developers may resort to first doing a general search of their desired library features with search results indicating
+various resources such as a Q\&A website like StackOverflow \cite{stackoverflow} or a website that hosts open source libraries such as Github \cite{github}.
+
+
+Previous research has examined different, inner aspects of libraries that may have mentioned in the above
+online resources \cite{githubbadges,apiwave,metrics,opinerarticle,analogical}. These aspects or defined 
 % dont explicity reccomend libraries. Allow develoeprs to make their
 % own judgement to select librarie. Another quanittiative tool
 % to help compare b/w 
@@ -78,14 +87,42 @@ asdsd
 % Insert diagram of how we made our badges
 
 \subsection{Security}
-% Talk about limited Fernando's technique and describe why using spotbugs
+\subsubsection{Definition}
+The security badge has been inspired by Mora's et. al \cite{metrics} security metric implementation.
+However, there are limitations related to classifying some security vulnerabilities due to inaccurate
+issue descriptions. These inaccuracies would suggest that there was a security problem but in reality was another issue altogether.
+To avoid this conflict brought by issue descriptions, 
+we propose to use another existing tool called SpotBugs \cite{spotbugs}.
+From the SpotBugs \cite{spotbugs} website description itself, the program \textit{uses static analysis to look for bugs in Java code}.
+In conjunction with the FindSecBugs \cite{findsecbugs} plugin to provide a larger data set of security bug patterns to look for, 
+both these tools will allow for greater accuracy of targeting security bugs.
+
+
+The security badge represents the number of security bugs found by SpotBugs \cite{spotbugs} with the FindSecBugs \cite{findsecbugs} plugin.
+We filter for only security bug patterns and configure SpotBugs to only classify bugs on the highest confidence setting.
+
+\subsubsection{Implementation}
+First, we have a text file that holds any open source Java libraries hosted on GitHub \cite{github}.
+A shell script clones them and compiles them respectively under Gradle or Maven. 
+
+
+
 \subsection{Last Discussed on Stack Overflow}
+\subsubsection{Definition}
+\subsubsection{Implementation}
 % Techqique borrowed
 \subsection{Issue Response Time}
+\subsubsection{Definition}
+\subsubsection{Implementation}
 % Techqique borrowed
 \subsection{Contributor Pull Request Merge Rate}
+% picture of formula used and badge
+\subsubsection{Definition}
+\subsubsection{Implementation}
 % PR Shopify article
 \subsection{Release Frequency}
+\subsubsection{Definition}
+\subsubsection{Implementation}
 % Techqique borrowed
 
 \section{Evaluation}
@@ -100,9 +137,7 @@ asdsd
 % Survey insights to why they are suing those specific badges
 
 \section{Threats to Validity and Limitations}
-\subsection{Internal Validity}
-
-\subsection{External Validity}
+\subsection{Validity}
 % <10% comntibnutor rate doesn't capture misclassifies some to be contribtuor when in reality are maintainers
 
 \subsection{Limitations}
