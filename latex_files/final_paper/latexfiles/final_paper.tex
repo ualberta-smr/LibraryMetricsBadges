@@ -144,7 +144,7 @@ involvement behind it.
     \label{lastdiscussed}
 \end{figure}
 
-Borrowing the implementation technique from \cite{metrics}, we use the StackExchange API \cite{stackexchangeapi}
+Borrowing the implementation technique from Mora et. al \cite{metrics}, we use the StackExchange API \cite{stackexchangeapi}
 to search up the library's name under tag search and extract the most popular tag.
 With the tag, we make a GET request to the API to search for the most recent question containing the tag
 and extract the date. An example of the badge is shown in figure \ref{lastdiscussed}.
@@ -170,9 +170,12 @@ through the issue discussions.
     \label{issueresponse}
 \end{figure}
 
-
-
-TODO WRITE UP METHODOLOGY
+We use the algorithm outlined by Mora et. al \cite{metrics} to calculate the issue response time average which
+is the difference of all the dates between issue creation date and first comment date over the total number of 
+accounted issues. 
+The script itself is tweaked to use GitHub's \cite{github} GraphQL API instead of REST to decrease the runtime of iterating through
+all the issues and respective comments. The earlier API type allows us to get both the issue creation date and first
+comment date in one request call versus the latter API with two calls.
 We also discard deleted accounts and do not take them into account in our average.
 An example of the badge is shown in figure \ref{issueresponse}.
 
