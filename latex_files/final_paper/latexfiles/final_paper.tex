@@ -251,27 +251,85 @@ the metric. The final result would look similar to the example pictured in figur
 \section{Evaluation}
 
 \subsection{Open Source Evaluation}
-% Shields.io Open source contributions
-% Choose SO badge b/c it has the least amount of data to process and gives us a good
-% start to see if prototyping thsi works 
+
+Due to the short timeline of the project, there is no formal evalutation of the work itself.
+However, we can qualitatively assess our work by contributing our badges to Shields.io \cite{shields}
+and evaluate maintainers thoughts regarding our badges. On the Shields.io Github repository \cite{shieldsrepo}, 
+we post an issue \cite{shieldsissue} proposing the addition of the Last Discussed on Stack Overflow badge.
+We choose this badge becasuse it has the least amount of data to process and provides us a good indication
+if our badge can be successfully integrated into Shields.io \cite{shields} and used by the general public.
+A core maintainer responds back highlighting that there are not too many Stack Exchange badges hosted online
+and our proposal would be
+useful per design changes to be Number of Questions in Past Month on Stack Exchange instead. 
+This change would assist in eliminating bias in the metric and skewed data if there is a recent question posted but
+for a rarely discussed library confusing a developer using the badge.
+
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=14cm,height=14cm,keepaspectratio=true]{semonthlybadge}
+    }
+    \caption{
+        Example of Stack Exchange Monthly Questions badge
+    }
+    \label{semonthlybadge}
+\end{figure}
+
+In order to make a PR for our proposed badge, we make two other pull requests to respectively
+create unit tests for the StackExchange service class and migrate the legacy code to Shields.io's newer
+API for the service class. Once completed, we make a PR for the Number of Questions in Past Month on Stack Exchange
+badge using the newest Shields.io API. This is calculated by using the StackExchange API and filtering for the 
+number of questions between the first and last day of the previous month from today. Having this metric also
+allows us to view questions from other StackExchange sub websites besides Stack Overflow.
+We were able to successfully get this PR merged and code deployed to the Shields.io \cite{shields} 
+production website to be used by the public as displayed in figure \ref{semonthlybadge}. Although we cannot generalize that this can be said
+true for the rest of our created badges, this is a good starting evaluation for our badges
+that they are indeed useful. 
+
 \subsection{Future Work Evaluation}
-% If I had 4 more months, how would I evaluate this work.
-% Have badges hosted on Shields and figure how how many people are using them for popularity?
-% Survey insights to why they are suing those specific badges
+If given a longer timeline for this project, posting more GitHub issues for the rest of
+our created badges would be a good start. This would allow us to evalutate for more badge design changes
+and if they can be successfully pushed to production. Maintainers can comment on our work
+and provide an outside opinion on our badges to analyze if our work is suitable. 
+In addition, we can determine the amount of users using our StackExchange and other badges as
+a metric of popularity to see if users are using our creations. 
 
 \section{Threats to Validity and Limitations}
+
 \subsection{Validity}
 \subsubsection{Classification of Outside Contributors}
 % <10% comntibnutor rate doesn't capture misclassifies some to be contribtuor when in reality are maintainers
+% look at organization members and look at them if they have a commit in shields.io
+
 \subsubsection{Security Bug Classification}
+SpotBugs \cite{spotbugs} could end up misclassifying and/or missing security bugs for absent bug patterns.
+To make sure our security badge has the most precise value possible, we use SpotBugs \cite{spotbugs}
+and FindSecBugs \cite{findsecbugs} on the highest effort and confidence setting to ensure that 
+our range of classifcation is wide enough to capture the most number of security vulnerabilities.
+
 
 \subsection{Limitations}
 \subsubsection{Request Timeouts}
-All metrics are susupetible to this due to GitHit image restrictions  3 seconds or less. 
+All metrics are susceptible to this due to GitHub image restrictions  3 seconds or less. 
+% Issue respinse time, calcualte in background
+% security use 2 different endpoints
+% release frequency, database caching
+% PR use 2 different endpoints with background processing
+
 \subsubsection{Local Scripts}
-% Database caching
-% Security only works with Java Libraries and requires seperate update 
 % SCripts can only be used locally and need to rerun ngrok everytime
+
+\subsubsection{Badge Specific Limitations}
+Most limitations of each badge is outlined in the Request Timeouts section.
+Specifically for the security badge, there are programming language boundaries.
+SpotBugs \cite{spotbugs} itself can only be used for Java libraries and we are 
+unable to evaluate the tool's functionalities with other open source libraries written
+in different programming languages.
+
+
+All our badges also depend on the library being open source so that it can openly
+access required information without deadling with authentication and privacy concerns.
+% Security only works with Java Libraries and requires seperate update 
 
 
 \section{Conclusion and Future Work}
