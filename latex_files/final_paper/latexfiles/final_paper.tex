@@ -194,7 +194,7 @@ the development of the Outside Contributor Pull Request Merge Rate assessment ba
 
 The badge represents the percentage of PRs that have been merged into the repository authored by outside contributors.
 We define outside contributors using the survey design outlined by Trockman et. al \cite{githubbadges} if they have 
-less than 10\% of commits made to a repository.
+less than 10\% of commits made to a repository. 
 This badge helps users to select libraries that are friendly and open to open source contributions,
 and easily evaluate the merge rate not accessible beforehand.
 With a higher merge rate, it will provide opportunities for developers to extend features of a library with 
@@ -223,7 +223,11 @@ PRs of all statuses are associated with outside contributors. An example respons
 
 \subsection{Release Frequency}
 \subsubsection{Definition}
-TODO
+As defined by Mora et. al \cite{metrics}, release frequency is the average number of days between
+releases in repositories. This badge similar to security, pull request, and issue response metrics has 
+another visual indicator beside the metric value itself that displays whether or not the average changed over time. 
+To the user, the badge suggests if there are fresh releases of software so old code is not being integrated with your
+project that can be more vulnerable to bugs and security problems.
 
 \subsubsection{Implementation}
 
@@ -238,12 +242,10 @@ TODO
 \end{figure}
 
 We use the GitHub \cite{github} API to get all the releases of the library and follow the algorithm
-steps shown in \cite{metrics} to calculate the release frequency metric.
-The script makes another request with a list of commits associated with releases as input
-and outputs a new list of dates which then can help determine the final average using the suggested
-formula.
-
-
+steps outlined by Mora et. al \cite{metrics} to calculate the release frequency metric.
+The average is the difference of all the dates between the releases over the total number of releases.
+Although not explicitly stated by Mora, we only account for repositories that have two or more releases to compute
+the metric. The final result would look similar to the example pictured in figure \ref{releasebadge}.
 
 
 \section{Evaluation}
