@@ -276,8 +276,9 @@ for a rarely discussed library confusing a developer using the badge.
 \end{figure}
 
 In order to make a PR for our proposed badge, we make two other pull requests to respectively
-create unit tests for the StackExchange service class and migrate the legacy code to Shields.io's newer
-API for the service class. Once completed, we make a PR for the Number of Questions in Past Month on Stack Exchange
+create unit tests for the StackExchange service class and migrate the existing legacy code to Shields.io's newest
+API for the service class. This would change the existing StackExchange total questions and StackExchange
+user reputation badges. Once completed, we make a PR for the Number of Questions in Past Month on Stack Exchange
 badge using the newest Shields.io API. This is calculated by using the StackExchange API and filtering for the 
 number of questions between the first and last day of the previous month from today. Having this metric also
 allows us to view questions from other StackExchange sub websites besides Stack Overflow.
@@ -298,8 +299,34 @@ a metric of popularity to see if users are using our creations.
 
 \subsection{Validity}
 \subsubsection{Classification of Outside Contributors}
-% <10% comntibnutor rate doesn't capture misclassifies some to be contribtuor when in reality are maintainers
-% look at organization members and look at them if they have a commit in shields.io
+We use Trockman's et. al \cite{githubbadges} technique to help classify outside contributors for our PR badge.
+However, doing some manual testing with our badge with various repositories such
+as the Shields.io \cite{shieldsrepo} one, it would misclassify some maintainers as outside contributors.
+This would happen if a maintainer has less than 10\% of commits made to a repository which we use as a guideline
+for contributors.
+To counter this issue in the future, we could iterate through all the commits of a library and define a maintainer as a user who is an explicit 
+member of the organization that hosts
+the library e.g figure \ref{maintainer} otherwise, the user would be an outside contributor e.g figure \ref{contributor}. 
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=14cm,height=14cm,keepaspectratio=true]{maintainer}
+    }
+    \caption{
+        Maintainer Example per \cite{shieldsissue}
+    }
+    \label{maintainer}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=14cm,height=14cm,keepaspectratio=true]{contributor}
+    }
+    \caption{
+        Contributor Example per \cite{shieldsissue}
+    }
+    \label{contributor}
+\end{figure}
 
 \subsubsection{Security Bug Classification}
 SpotBugs \cite{spotbugs} could end up misclassifying and/or missing security bugs for absent bug patterns.
