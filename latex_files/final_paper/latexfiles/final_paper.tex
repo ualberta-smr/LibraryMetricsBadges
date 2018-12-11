@@ -90,7 +90,7 @@ online resources \cite{githubbadges,apiwave,metrics,opinerarticle,analogical}. T
 
 \subsection{Security}
 \subsubsection{Definition}
-The security badge is inspired by Mora's et. al \cite{metrics} security metric implementation.
+The security badge is inspired by Mora's et al. \cite{metrics} security metric implementation.
 However, there are limitations related to classifying some security vulnerabilities due to inaccurate
 issue descriptions. These inaccuracies would suggest that there was a security problem but in reality was another issue altogether.
 To avoid this conflict brought by issue descriptions, 
@@ -126,7 +126,7 @@ then can be placed into Shields.io \cite{shields} to output the security badge w
 
 \subsection{Last Discussed on Stack Overflow}
 \subsubsection{Definition}
-We take Mora's et. al \cite{metrics} Last Discussed on Stack Overflow metric and transform it 
+We take Mora's et al. \cite{metrics} Last Discussed on Stack Overflow metric and transform it 
 into a badge. Based on the metric, the badge represents the latest date of a question posted for a specific
 library on the Stack Overflow website \cite{stackoverflow}.
 To the user, this badge will display if there is any recent activity using the library and the community
@@ -144,14 +144,14 @@ involvement behind it.
     \label{lastdiscussed}
 \end{figure}
 
-Borrowing the implementation technique from Mora et. al \cite{metrics}, we use the StackExchange API \cite{stackexchangeapi}
+Borrowing the implementation technique from Mora et al. \cite{metrics}, we use the StackExchange API \cite{stackexchangeapi}
 to search up the library's name under tag search and extract the most popular tag.
 With the tag, we make a GET request to the API to search for the most recent question containing the tag
 and extract the date. An example of the badge is shown in figure \ref{lastdiscussed}.
 
 \subsection{Issue Response Time}
 \subsubsection{Definition}
-Using Mora's et. al \cite{metrics} Issue Response Time definition, this badge illustrates the average
+Using Mora's et al. \cite{metrics} Issue Response Time definition, this badge illustrates the average
 amount of days needed to get the first reply to an issue. The badge is calculated via the response time
 formula described in \cite{metrics}. It also indicates if there are any changes to the average over time 
 as shown by the rightmost symbol in \ref{issueresponse}. 
@@ -170,7 +170,7 @@ through the issue discussions.
     \label{issueresponse}
 \end{figure}
 
-We use the algorithm outlined by Mora et. al \cite{metrics} to calculate the issue response time average which
+We use the algorithm outlined by Mora et al. \cite{metrics} to calculate the issue response time average which
 is the difference of all the dates between issue creation date and first comment date over the total number of 
 accounted issues. 
 The script itself is tweaked to use GitHub's \cite{github} GraphQL API instead of REST to decrease the runtime of iterating through
@@ -182,7 +182,7 @@ An example of the badge is shown in figure \ref{issueresponse}.
 
 \subsection{Contributor Pull Request Merge Rate}
 \subsubsection{Definition}
-Kononenko et. al \cite{shopifyarticle} highlights that, \textit{PRs submitted by the owners are approved more
+Kononenko et al. \cite{shopifyarticle} highlights that, \textit{PRs submitted by the owners are approved more
 quicklier compared to those made by external devs}. This can hinder open source development
 for developers who wish to partake in the project but are not core maintainers or closely associated with the project.
 In addition, there is the lack of assessment defined badges \cite{githubbadges} related to pull requests (PRs)
@@ -193,7 +193,7 @@ the development of the Outside Contributor Pull Request Merge Rate assessment ba
 
 
 The badge represents the percentage of PRs that have been merged into the repository authored by outside contributors.
-We define outside contributors using the survey design outlined by Trockman et. al \cite{githubbadges} if they have 
+We define outside contributors using the survey design outlined by Trockman et al. \cite{githubbadges} if they have 
 less than 10\% of commits made to a repository. 
 This badge helps users to select libraries that are friendly and open to open source contributions,
 and easily evaluate the merge rate not accessible beforehand.
@@ -214,7 +214,7 @@ higher confidence that their PR will be integrated into the repository.
 
 We have a seperate script endpoint that uses the GitHub \cite{github} API to get all the users
 that have made commits to the library. We classify users as outside contributors or not using
-the technique described by Trockman et. al \cite{githubbadges} and store them as a JSON object in the database.
+the technique described by Trockman et al. \cite{githubbadges} and store them as a JSON object in the database.
 Completing this task will allow us to use another endpoint to calculate the PR metric.
 With the GitHub \cite{github} API, we calculate
 the average as follows: total number of merged PRs divided by total number of all PRs where 
@@ -223,7 +223,7 @@ PRs of all statuses are associated with outside contributors. An example respons
 
 \subsection{Release Frequency}
 \subsubsection{Definition}
-As defined by Mora et. al \cite{metrics}, release frequency is the average number of days between
+As defined by Mora et al. \cite{metrics}, release frequency is the average number of days between
 releases in repositories. This badge similar to security, pull request, and issue response metrics has 
 another visual indicator beside the metric value itself that displays whether or not the average changed over time. 
 To the user, the badge suggests if there are fresh releases of software so old code is not being integrated with your
@@ -242,7 +242,7 @@ project that can be more vulnerable to bugs and security problems.
 \end{figure}
 
 We use the GitHub \cite{github} API to get all the releases of the library and follow the algorithm
-steps outlined by Mora et. al \cite{metrics} to calculate the release frequency metric.
+steps outlined by Mora et al. \cite{metrics} to calculate the release frequency metric.
 The average is the difference of all the dates between the releases over the total number of releases.
 Although not explicitly stated by Mora, we only account for repositories that have two or more releases to compute
 the metric. The final result would look similar to the example pictured in figure \ref{releasebadge}.
@@ -299,7 +299,7 @@ a metric of popularity to see if users are using our creations.
 
 \subsection{Validity}
 \subsubsection{Classification of Outside Contributors}
-We use Trockman's et. al \cite{githubbadges} technique to help classify outside contributors for our PR badge.
+We use Trockman's et al. \cite{githubbadges} technique to help classify outside contributors for our PR badge.
 However, doing some manual testing with our badge with various repositories such
 as the Shields.io \cite{shieldsrepo} one, it would misclassify some maintainers as outside contributors.
 This would happen if a maintainer has less than 10\% of commits made to a repository which we use as a guideline
@@ -313,7 +313,7 @@ the library e.g figure \ref{maintainer} otherwise, the user would be an outside 
         \includegraphics[width=14cm,height=14cm,keepaspectratio=true]{maintainer}
     }
     \caption{
-        Maintainer Example per \cite{shieldsissue}
+        Maintainer Example per posted Shields.io issue \cite{shieldsissue}
     }
     \label{maintainer}
 \end{figure}
@@ -323,7 +323,7 @@ the library e.g figure \ref{maintainer} otherwise, the user would be an outside 
         \includegraphics[width=14cm,height=14cm,keepaspectratio=true]{contributor}
     }
     \caption{
-        Contributor Example per \cite{shieldsissue}
+        Contributor Example per posted Shields.io issue \cite{shieldsissue}
     }
     \label{contributor}
 \end{figure}
@@ -345,6 +345,16 @@ All metrics are susceptible to this due to GitHub image restrictions  3 seconds 
 
 \subsubsection{Local Scripts}
 % SCripts can only be used locally and need to rerun ngrok everytime
+Currently the scripts to calculate the metrics required for the badges only run
+locally on one's own machine. We utilize ngrok
+\cite{ngrok} a service that \textit{exposes local servers behind NATS and firewalls to the public
+internet over secure tunnels} to help us test our badges online without dealing with the overhead of maintaining
+servers and makes it simpler to prototype the badge's functionalities. 
+However, this would require restarting ngrok every time after your terminal or machine shuts down
+and makes it difficult to keep the ngrok connection alive for others to use because of this limitation.
+In the future, deploying our scripts online using services such as Heroku \cite{heroku} or Now \cite{nowjs}
+is one possibility. Another solution is to contribute the rest of our badges to Shields.io \cite{shieldsrepo}
+and have them hosted there.
 
 \subsubsection{Badge Specific Limitations}
 Most limitations of each badge is outlined in the Request Timeouts section.
@@ -356,8 +366,6 @@ in different programming languages.
 
 All our badges also depend on the library being open source so that it can openly
 access required information without deadling with authentication and privacy concerns.
-% Security only works with Java Libraries and requires seperate update 
-
 
 \section{Conclusion and Future Work}
 % Future work
