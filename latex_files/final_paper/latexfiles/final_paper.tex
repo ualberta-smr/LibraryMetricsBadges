@@ -337,14 +337,36 @@ our range of classifcation is wide enough to capture the most number of security
 
 \subsection{Limitations}
 \subsubsection{Request Timeouts}
-All metrics are susceptible to this due to GitHub image restrictions  3 seconds or less. 
-% Issue respinse time, calcualte in background
-% security use 2 different endpoints
-% release frequency, database caching
-% PR use 2 different endpoints with background processing
+Most of the metrics are susceptible to a GitHub \cite{github} image restriction of 3 seconds or less
+where the badge has to be displayed before it hits the request timeout limit and not display itself.
+To counteract this issue, we made several design decisions per badge to make sure each metric's
+run time will be efficient enough to stay within the specified limit.
+
+
+For the security badge because it takes some time to get the number of bugs from SpotBugs \cite{spotbugs},
+we run the shell scripts that runs SpotBugs seperately from the client server interaction to get the metric.
+This way when the user hits the security badge endpoint, we only need to return the data previously saved in the 
+database from the shell script execution.
+
+
+For the issue response badge, we return right away to the user the last saved metric saved from the database.
+Asynchronously in the background, we calculate the new metric and replace it in the database.
+This helps to not block Github from displaying the badge right away and the next time the user hits this endpoint,
+we will see the new badge's value.
+
+
+For the release frequency badge, we determine if the number of releases changed from the last time a user has 
+hit this endpoint. If there is no change, we just return the previously saved value which saves a lot of time 
+from re-calculating the metric from scratch. If the number of releases changes, we calculate the metric using 
+normal means. 
+
+
+For the PR badge, we calculate the metric starting from the last date a user has hit this specific endpoint.
+Caching this date allows us to only need to account for new info starting from the previous script execution
+instead of figuring out the metric from scratch for every run.
+
 
 \subsubsection{Local Scripts}
-% SCripts can only be used locally and need to rerun ngrok everytime
 Currently the scripts to calculate the metrics required for the badges only run
 locally on one's own machine. We utilize ngrok
 \cite{ngrok} a service that \textit{exposes local servers behind NATS and firewalls to the public
