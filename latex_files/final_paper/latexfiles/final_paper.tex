@@ -143,7 +143,24 @@ input their own information into the badge.
 
 \section{Badge Implementation}
 \subsection{Overarching Structure of Scripts}
-% Insert diagram of how we made our badges
+
+\begin{figure}[!htb]
+    \centerline{
+        \includegraphics[width=18cm,height=10cm,keepaspectratio=true]{methods}
+    }
+    \caption{
+        Flow diagram representing how we created our badges
+    }
+    \label{methods}
+\end{figure}
+
+Instead of using Shields.io \cite{shields} endpoints, we create our own custom scripts with endpoints 
+so that we can prototype our badges locally in a more flexible development environment.
+If we were to integrate all the scripts into Shields.io \cite{shieldsrepo} instead of 
+developing them locally, we may hit
+more extreme cases of run time issues discussed in the limitations section. 
+The diagram in figure \ref{methods} represents the flow of how we implement our badges.
+
 
 \subsection{Security}
 \subsubsection{Definition}
