@@ -3,6 +3,7 @@
 \usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
+\usepackage{seqsplit}
 \graphicspath{ {./images/} }
     
 
@@ -89,8 +90,33 @@ online resources \cite{githubbadges,apiwave,metrics,opinerarticle,analogical}. T
 \subsection{Badges}
 % Trockman's work
 % Look at what make's a good badge, not looking at how it can help developers choose libaries
+
+
+
 \subsection{Online Badge Services}
-% Shields io
+There are online badge services that exist to help developers use badges for their
+repositories without having to create badges from scratch. To get a specific purpose badge,
+we would use web services e.g Snyk for security dependency vulnerabilities \cite{snyk} and register
+our application with the service to get a full analysis of our project. 
+Using the Snyk example, once registered we can add the security GitHub badge to our readme as
+suggested in markdown, 
+\seqsplit{
+[![Known Vulnerabilities](https://snyk.io/test/github/{username}/{repo}/badge.svg)]
+(https://snyk.io/test/github/{username}/{repo})}
+\cite{snyk}. 
+We take our custom project service URL and input its data with the snyk badge svg image itself.
+
+
+Other services like InchCI for documentation \cite{inchci} or Circleci for build status \cite{circleci} for example
+follow a similar method to create a badge. 
+However to utilize more badges outside of individual services, Shields.io \cite{shields} is often used
+as it is the largest collection
+of online hosted repository badges that users can contribute new badges to and use already
+existing badges. Just like with individual services, in Shields.io \cite{shields} we would hit custom
+http endpoints e.g https://img.shields.io/stackexchange/:stackexchangesite/qm/:query.svg \cite{shields} 
+by filling in the 
+required query parameters to get the output badge to insert into our repository readme file. 
+
 
 \section{Badge Implementation}
 \subsection{Overarching Structure of Scripts}
