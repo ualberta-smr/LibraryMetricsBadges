@@ -44,31 +44,49 @@
 % we look to create badges that can be shown on the spot to users
 % to help them seee metrics and pick the best library
 
-Libraries, Frameworks, and Application Programming Interfaces (APIs) provide developers a way to reuse existing functionalities
-built by someone else without having to re-implement already built features. Given a large collection of libraries out there,
+Libraries, Frameworks, and Application Programming Interfaces (APIs) provide developers 
+a way to reuse existing functionalities
+built by someone else without having to re-implement already built features. 
+Given a large collection of libraries out there,
 it is often difficult and not clear how to select the best one to use for your own project. 
 
 
-Developers may resort to first doing a general search of their desired library features with search results indicating
-various resources such as a Q\&A website like StackOverflow \cite{stackoverflow} or a website that hosts open source libraries such as Github \cite{github}.
+Developers may resort to first doing a general search of their desired library features with 
+search results indicating
+various resources such as a Q\&A website like StackOverflow \cite{stackoverflow} or 
+a website that hosts open source repositories such as Github \cite{github}. On
+these websites, opinions from the community
+\cite{opinerarticle} may sway users to select one library versus another as other users highlight
+a library's strengths and weaknesses. 
+Users can view badges belonging to a repository that display inner aspects of a library that are
+more accessible to view
+\cite{githubbadges}. Visible cues or metrics that are transparent allows users
+to see community support, how "alive" a library is, and to help users assess a project's real value
+\cite{transparency,metrics}. Users may also dig up other library characteristics like functionality, usability,
+quality, compatability, security to judge libraries with\cite{librarytrends,metrics,githubbadges}. 
+These aspects often contribute to the popularity of a library
+\cite{apiwave, librarytrends} that users find the most useful feature across different domains \cite{empiricalmetrics}.
+Users depend on these factors i.e metrics that the related works above mention to select a library to use. 
 
 
-Previous research has examined different, inner aspects of libraries that may have mentioned in the above
-online resources \cite{githubbadges,apiwave,metrics,opinerarticle,analogical}. These aspects or defined 
-
-
-Based on Trockman's et al. \cite{githubbadges} badge recommendations, we look to create 
-dynamic badges that take more work to create i.e assessment badges, metric itself is quantifiable, and
-we implement badges that do not exist yet so we do not develop already existing badges.
+Our research proposes to build transparent repository badges so that users can 
+easily identify inner metrics of a library
+that will assist developers in library selection. 
+Based on Trockman's et al. \cite{githubbadges} badge recommendations and metrics from Mora et al. \cite{metrics},
+we look to create 
+dynamic badges that take more work to create i.e assessment badges, where the metric itself is quantifiable, and
+implement badges that do not exist yet so we do not develop already created badges.
 These suggestions will be helpful to produce effective, reliable
-badges that developers can use for their projects and help them select libraries to use.
+badges.
 
 % dont explicity reccomend libraries. Allow develoeprs to make their
 % own judgement to select librarie. Another quanittiative tool
 % to help compare b/w 
 
 \section{Related Work}
-\subsection{Library Selection Methods}
+\subsection{Library Selection Tools}
+There exists other related work that has focused on users decisions on libaries. 
+Mora et al. 
 % This work focused on explicity recomending libraries versus. 
 % helping users pick which ones to use. My work is related to X while it 
 % differentiates itself from Y
@@ -76,7 +94,7 @@ badges that developers can use for their projects and help them select libraries
 % Library COmparison WEbsite (same method to solve similar problem)
 % Library Recommender (Opiner differe methods but similar problem)
 % Analogical Libraries (differnt method , same problem)
-\subsection{Metrics}
+\subsection{Metrics \& Badges}
 \subsubsection{Quality Assurance}
 % Security
 % Build
@@ -450,7 +468,7 @@ However, this would require restarting ngrok every time after your terminal or m
 and makes it difficult to keep the ngrok connection alive for others to use because of this limitation.
 In the future, deploying our scripts online using services such as Heroku \cite{heroku} or Now \cite{nowjs}
 is one possibility. Another solution is to contribute the rest of our badges to Shields.io \cite{shieldsrepo}
-and have them hosted there.
+and have the badges hosted there.
 
 \subsubsection{Badge Specific Limitations}
 Most limitations of each badge is outlined in the Request Timeouts section.
@@ -461,7 +479,7 @@ in different programming languages.
 
 
 All our badges also depend on the library being open source so that it can openly
-access required information without deadling with authentication and privacy concerns.
+access required information without deadling with authentication issues.
 
 \section{Conclusion and Future Work}
 % Future work
