@@ -39,3 +39,4 @@ buildNumber.properties
 *.out
 *.synctex.gz
 new_metrics/security/repos/
+badges.db
