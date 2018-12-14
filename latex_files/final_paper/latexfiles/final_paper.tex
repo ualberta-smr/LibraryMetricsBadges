@@ -53,8 +53,8 @@ it is often difficult and not clear how to select the best one to use for your o
 Developers may resort to first doing a general search of their desired library features with 
 search results indicating
 various resources such as a Q\&A website like StackOverflow \cite{stackoverflow} or 
-a website that hosts open source repositories such as Github \cite{github}. However finding information using
-this method is inefficent and requires many repititous searches or the data can be outdated
+a website that hosts open source repositories such as Github \cite{github}. However, finding information using
+this method is inefficent and requires many repeated searches or the data can be outdated
 misleading developers \cite{analogical}. On
 these websites, opinions from the community
 \cite{opinerarticle} may sway users to select one library versus another as other users highlight
@@ -64,9 +64,9 @@ more accessible to view
 \cite{githubbadges}. Visible cues or metrics that are transparent allows users
 to see community support, how "alive" a library is, and to help users assess a project's real value
 \cite{metrics,transparency}. Users may also dig up other library characteristics like functionality, usability,
-quality, compatability, security to judge libraries with\cite{githubbadges,metrics,librarytrends}. 
+quality, compatability, security to judge libraries with \cite{githubbadges,metrics,librarytrends}. 
 These aspects often contribute to the popularity of a library
-\cite{librarytrends, apiwave} that users find the most useful feature across differentdomains \cite{empiricalmetrics}.
+\cite{librarytrends, apiwave} that users find the most useful feature to take into account \cite{empiricalmetrics}.
 Users depend on these factors i.e metrics that the related works above mention to help select a library to use. 
 
 
@@ -76,8 +76,8 @@ that will assist developers in library selection.
 Based on Trockman's et al. \cite{githubbadges} badge recommendations and metrics from Mora et al. \cite{metrics},
 we look to create 
 dynamic badges that take more work to create i.e assessment badges, where the metric itself is quantifiable, and
-implement badges that do not exist yet so we do not develop already created badges.
-These suggestions are taken into account to produce effective, reliable
+we implement badges that do not exist yet so we do not develop already created badges.
+These suggestions are taken into consideration to produce effective, reliable
 badges.
 
 
@@ -87,26 +87,27 @@ There are other related works that have focused on users decisions on libraries.
 Mora et al. \cite{metrics, empiricalmetrics} created a library comparison website
 that features metric based comparison between libaries. While our work is based on
 metrics and the idea of comparing libraries on metrics, we use badges that are integrated into
-a repository so that users can view a libary's aspects in one place versus a seperate
-website to view all the extracted library data in. 
+a project so that users can view a libary's aspects in a repository versus a seperate
+website to view all the extracted data in. 
 Chen et al. \cite{analogical} worked on an analogical library recommender that would explicitly
 report other similar libraries in a different programming languages based on the input library.
 e.g input is JUnit testing for Java and output is Jest testing library for JavaScript. 
 This tool would help users to help migrate their knowledge across different programming languages.
-This project gives an actual reccomendation for what library to use but our research allows users to
-make their own judgement for library selection using badges to simplify this process.
+This project gives an actual recommendation for what library to use but our research allows users to
+make their own judgement for library selection using badges to simplify this process like in
+Mora's et al. \cite{metrics, empiricalmetrics} research.
 Uddin et. al \cite{opinerarticle} uses sentiment analysis to examine developer opinions on various libraries
 and summarizes positive and negative opinions under various metrics. We both use metrics as a basis of
 our research and provide resources for developers to help select libraries with but Uddin focuses more on
 opinions themselves \cite{stackoverflow}.
 Trockman et. al \cite{githubbadges} studies the use of repository badges in the NPM (node package modules)
 ecosystem, what the most popular badges are, and if badges intend to signal their underlying qualities well.
-Trockman's review does not directly look into how to help users select libraries like our work does but 
+Trockman's review does not explicitly look into library selection support like our work does but 
 evaluates on different criteria that makes a badge reliable that influence developers decisions
 to use which library. Mileva et. al \cite{librarytrends} examines various library usage trends 
 within different library versions and researchs into different factors that affect a user's decision
 to use a specific version of a library. In contrast with library versions, we look into providing badges
-as resources to select between different libraries instead.
+as resources to aid the selection between different libraries instead.
 
 
 % This work focused on explicity recomending libraries versus. 
@@ -121,18 +122,19 @@ We base the metrics used in our badges off of other related works and identify o
 that were considered in our research process.
 Hora et al. \cite{apiwave} analyzes API popularity and migration as useful aspects that developers care about
 with the former showing community support and the latter suggesting ease of use/usability. 
-While a popularity badge already exists, migration is a challenging metric to quantify as a badge.
+While a popularity badge already exists, migration is a challenging metric to quantify as a badge and therefore
+was not implemented.
 Mora et al. \cite{metrics, empiricalmetrics} as discussed in the previous subsection researches into
 many more metrics that help developers make their own judgements on libraries. We use some of their metrics
-that match our criteria e.g release frequency to build off of. 
-Dabbish et al. \cite{transparency} looks into transparent library features that developers can easily access
-and how it affects project workflow and library selection evalutation. Many metrics such as number of forks,
+that match our criteria for which badge to build off of e.g release frequency. 
+Dabbish et al. \cite{transparency} looks into transparent library aspects that developers can easily access
+and how it affects project workflow and library selection evaluation. Many metrics such as number of forks,
 and number of commits although easily accessible would not make a effective badge \cite{githubbadges}
-as it simple to find this information. 
+due to the aspect's simple lookup. 
 Kononenko et al. \cite{shopifyarticle} examines successful pull requests (PRs) and criteria that determines
-what PRs get merged in or not. Many of the current PR badges in Shields.io \cite{shields}
-are simple lookup metrics and from the Kononenko's work, we want
-to create metrics from their useful research insights on successful PRs.
+whether PRs get merged in or not. Many of the current PR badges in Shields.io \cite{shields}
+are simple lookup metrics and from Kononenko's work, we want
+to create metrics from their research insights on successful PRs.
 
 \section{Background}
 
@@ -196,21 +198,25 @@ input their own information into the badge.
 Instead of using Shields.io \cite{shields} endpoints, we create our own custom scripts with endpoints 
 so that we can prototype our badges locally in a more flexible development environment.
 If we were to integrate all the scripts into Shields.io \cite{shieldsrepo} instead of 
-developing them locally, we may hit
+developing them locally, we may run into 
 more extreme cases of run time issues discussed in the limitations section. 
 The diagram in figure \ref{methods} represents the flow of how we implement our badges.
 
+
+The security, PR, release frequency, and issue response metrics have
+another visual indicator on the right of the metric value itself that suggests
+whether or not the average changed over time. 
 
 \subsection{Security}
 \subsubsection{Definition}
 The security badge is inspired by Mora's et al. \cite{metrics} security metric implementation.
 However, there are limitations related to classifying some security vulnerabilities due to inaccurate
-issue descriptions. These inaccuracies would suggest that there was a security problem but in reality was another issue altogether.
+issue descriptions. These inaccuracies suggest that it was a security problem but in reality was another issue altogether.
 To avoid this conflict brought by issue descriptions, 
 we propose to use another existing tool called SpotBugs \cite{spotbugs}.
 From the SpotBugs \cite{spotbugs} website description itself, the program \textit{uses static analysis to look for bugs in Java code}.
-In conjunction with the FindSecBugs \cite{findsecbugs} plugin to provide a larger data set of security bug patterns to look for, 
-both these tools will allow for greater accuracy of targeting security bugs.
+In conjunction with the FindSecBugs \cite{findsecbugs} plugin (provides a larger data set of security bug patterns), 
+both these tools will allow for greater accuracy in targeting security bugs.
 
 The security badge represents the number of security bugs reported by SpotBugs \cite{spotbugs} with the FindSecBugs \cite{findsecbugs} plugin.
 We filter for only security bug patterns and configure SpotBugs to only classify bugs on the highest confidence setting
@@ -229,12 +235,13 @@ for any known security vulnerabilities before using the library.
     \label{findsecbugsbadge}
 \end{figure}
 
-First, we have a text file that holds open source Java library links hosted on GitHub \cite{github}.
+First, we have a text file that holds open source, Java library clone links hosted on GitHub \cite{github}.
 A shell script clones and compiles them respectively under Gradle \cite{gradle} or Maven \cite{maven}.
 After compilation, a script runs SpotBugs and FindSecBugs per library under our defined configured settings
 and stores the respective result
-into the database. The client can hit the security script endpoint to retrieve the saved results which
-then can be placed into Shields.io \cite{shields} to output the security badge with an example shown in figure \ref{findsecbugsbadge}. 
+into the database. The client can then hit the security script endpoint to retrieve the saved results which
+can be placed into Shields.io \cite{shields} to output the security badge. 
+An example is shown in figure \ref{findsecbugsbadge}. 
 
 
 \subsection{Last Discussed on Stack Overflow}
@@ -242,8 +249,8 @@ then can be placed into Shields.io \cite{shields} to output the security badge w
 We take Mora's et al. \cite{metrics} Last Discussed on Stack Overflow metric and transform it 
 into a badge. Based on the metric, the badge represents the latest date of a question posted for a specific
 library on the Stack Overflow website \cite{stackoverflow}.
-To the user, this badge will display if there is any recent activity using the library and the community
-involvement behind it.  
+To the user, this badge will display if there is any recent activity using the library and if there is
+community support behind it.  
 
 \subsubsection{Implementation}
 
@@ -258,17 +265,15 @@ involvement behind it.
 \end{figure}
 
 Borrowing the implementation technique from Mora et al. \cite{metrics}, we use the StackExchange API \cite{stackexchangeapi}
-to search up the library's name under tag search and extract the most popular tag.
-With the tag, we make a GET request to the API to search for the most recent question containing the tag
+to get the most recent question containing the library's name as the most popular tag
 and extract the date. An example of the badge is shown in figure \ref{lastdiscussed}.
 
 \subsection{Issue Response Time}
 \subsubsection{Definition}
 Using Mora's et al. \cite{metrics} Issue Response Time definition, this badge illustrates the average
-amount of days needed to get the first reply to an issue. The badge is calculated via the response time
-formula described in \cite{metrics}. It also indicates if there are any changes to the average over time 
-as shown by the rightmost symbol in \ref{issueresponse}. 
-This badge will allow users to check if there is active maintainence of the library and if there is community support
+amount of days needed to get the first reply to an issue. 
+This badge will allow users to check if there is active maintainence of the library and if there is community 
+involvement
 through the issue discussions. 
 
 \subsubsection{Implementation}
@@ -283,11 +288,11 @@ through the issue discussions.
     \label{issueresponse}
 \end{figure}
 
-We use the algorithm outlined by Mora et al. \cite{metrics} to calculate the issue response time average which
-is the difference of all the dates between issue creation date and first comment date over the total number of 
-accounted issues. 
-The script itself is tweaked to use GitHub's \cite{github} GraphQL API instead of REST to decrease the runtime of iterating through
-all the issues and respective comments. The earlier API type allows us to get both the issue creation date and first
+We use the algorithm outlined by Mora et al. \cite{metrics} to calculate the issue response time average.
+The script itself is tweaked to use GitHub's \cite{github} GraphQL API instead of REST to decrease the 
+runtime of iterating through
+all the issues and respective comments. 
+The former API type allows us to get both the issue creation date and first
 comment date in one request call versus the latter API with two calls.
 We also discard deleted accounts and do not take them into account in our average.
 An example of the badge is shown in figure \ref{issueresponse}.
@@ -298,7 +303,7 @@ An example of the badge is shown in figure \ref{issueresponse}.
 Kononenko et al. \cite{shopifyarticle} highlights that, \textit{PRs submitted by the owners are approved more
 quicklier compared to those made by external devs}. This can hinder open source development
 for developers who wish to partake in the project but are not core maintainers or closely associated with the project.
-In addition, there is the lack of assessment defined badges \cite{githubbadges} related to pull requests (PRs)
+In addition, there is a lack of assessment defined badges \cite{githubbadges} related to pull requests (PRs)
 as of December 2018.
 The existing PR badges on Shields.io \cite{shields} display readily available PR information that can be easily found on a 
 software repository. Taking both resources \cite{shields, shopifyarticle} into account, this has inspired
@@ -307,7 +312,7 @@ the development of the Outside Contributor Pull Request Merge Rate assessment ba
 
 The badge represents the percentage of PRs that have been merged into the repository authored by outside contributors.
 We define outside contributors using the survey design outlined by Trockman et al. \cite{githubbadges} if they have 
-less than 10\% of commits made to a repository. 
+less then 10\% of commits made to a repository. 
 This badge helps users to select libraries that are friendly and open to open source contributions,
 and easily evaluate the merge rate not accessible beforehand.
 With a higher merge rate, it will provide opportunities for developers to extend features of a library with 
@@ -331,15 +336,16 @@ the technique described by Trockman et al. \cite{githubbadges} and store them as
 Completing this task will allow us to use another endpoint to calculate the PR metric.
 With the GitHub \cite{github} API, we calculate
 the average as follows: total number of merged PRs divided by total number of all PRs where 
-PRs of all statuses are associated with outside contributors. An example response is shown in figure \ref{prbadge}.
+PRs of all statuses (open, closed, merged) are associated with outside contributors. 
+An example response is shown in figure \ref{prbadge}.
 
 
 \subsection{Release Frequency}
 \subsubsection{Definition}
 As defined by Mora et al. \cite{metrics}, release frequency is the average number of days between
-releases in repositories. This badge similar to security, pull request, and issue response metrics has 
-another visual indicator beside the metric value itself that displays whether or not the average changed over time. 
-To the user, the badge suggests if there are fresh releases of software so old code is not being integrated with your
+releases in repositories. 
+To the user, the badge suggests if there are fresh releases of software so old code is not being 
+integrated with the user's 
 project that can be more vulnerable to bugs and security problems.
 
 \subsubsection{Implementation}
@@ -356,7 +362,6 @@ project that can be more vulnerable to bugs and security problems.
 
 We use the GitHub \cite{github} API to get all the releases of the library and follow the algorithm
 steps outlined by Mora et al. \cite{metrics} to calculate the release frequency metric.
-The average is the difference of all the dates between the releases over the total number of releases.
 Although not explicitly stated by Mora, we only account for repositories that have two or more releases to compute
 the metric. The final result would look similar to the example pictured in figure \ref{releasebadge}.
 
@@ -365,17 +370,17 @@ the metric. The final result would look similar to the example pictured in figur
 
 \subsection{Open Source Evaluation}
 
-Due to the short timeline of the project, there is no formal evalutation of the work itself.
+Due to the short timeline of the project, there is no formal evaluation of the work itself.
 However, we can qualitatively assess our work by contributing our badges to Shields.io \cite{shields}
 and evaluate maintainers thoughts regarding our badges. On the Shields.io Github repository \cite{shieldsrepo}, 
 we post an issue \cite{shieldsissue} proposing the addition of the Last Discussed on Stack Overflow badge.
 We choose this badge becasuse it has the least amount of data to process and provides us a good indication
-if our badge can be successfully integrated into Shields.io \cite{shields} and used by the general public.
+if our badge can be successfully integrated into Shields.io \cite{shields}.
 A core maintainer responds back highlighting that there are not too many Stack Exchange badges hosted online
 and our proposal would be
-useful per design changes to be Number of Questions in Past Month on Stack Exchange instead. 
+useful per design changes to be \textit{Number of Questions in the Past Month on Stack Exchange} instead. 
 This change would assist in eliminating bias in the metric and skewed data if there is a recent question posted but
-for a rarely discussed library confusing a developer using the badge.
+for a rarely discussed library, misleading a developer using the badge.
 
 
 \begin{figure}[!htb]
@@ -388,15 +393,16 @@ for a rarely discussed library confusing a developer using the badge.
     \label{semonthlybadge}
 \end{figure}
 
-In order to make a PR for our proposed badge, we make two other pull requests to respectively
-create unit tests for the StackExchange service class and migrate the existing legacy code to Shields.io's newest
-API for the service class. This would change the existing StackExchange total questions and StackExchange
-user reputation badges. Once completed, we make a PR for the Number of Questions in Past Month on Stack Exchange
-badge using the newest Shields.io API. This is calculated by using the StackExchange API and filtering for the 
+In order to make a PR for our proposed badge, we made two other pull requests to respectively
+create unit tests for the StackExchange service class \cite{testspr} and migrate the existing legacy code to Shields.io's newest
+API for the service class \cite{portpr}. This would change the existing StackExchange total questions and StackExchange
+user reputation badges. Once completed, we made a PR for the \textit{Number of Questions in the Past Month on Stack Exchange}
+badge \cite{sepr} using the newest Shields.io API. This is calculated by using the StackExchange API and filtering for the 
 number of questions between the first and last day of the previous month from today. Having this metric also
 allows us to view questions from other StackExchange sub websites besides Stack Overflow.
 We were able to successfully get this PR merged and code deployed to the Shields.io \cite{shields} 
-production website to be used by the public as displayed in figure \ref{semonthlybadge}. Although we cannot generalize that this can be said
+production website to be used by the public as displayed in figure \ref{semonthlybadge}. 
+Although we cannot generalize that successful integrations can be said
 true for the rest of our created badges, this is a good starting evaluation for our badges
 that they are indeed useful. 
 
@@ -503,11 +509,6 @@ All our badges also depend on the library being open source so that it can openl
 access required information without deadling with authentication issues.
 
 \section{Conclusion and Future Work}
-% Future work
-% Host Scripts openly using something like heroku or now.js
-% Improve Error handling to make sure client knows any bad http codes
-% make front end application to display these metrics to get detailed info, visualizations of metrics
-% being used where and number of people suing them in line graph
 Libraries, APIs, and existing frameworks allow users to take advantage of functionalities without implementing
 features from scratch. However, it is often difficult to determine which library to use given the vast
 collection of choices out there varying across different functionalities. 
@@ -515,7 +516,8 @@ While searching for which option to use is one possibility, it is still challeng
 be incorrect information and many varying opinions on a library to judge from.
 We look at related works that look into directly recommending libraries \cite{analogical},
 opinions on libraries \cite{opiner}, features that make libraries effective \cite{githubbadges, librarytrends, transparency}
-, and metrics themselves that help developers view inside aspects of a library \cite{analogical,githubbadges,metrics,transparency,shopifyarticle}.
+, and metrics themselves that help developers view the inner aspects of a library 
+\cite{githubbadges, librarytrends, empiricalmetrics, metrics,transparency,shopifyarticle, apiwave}.
 Our research focuses on developing effective repository badges: Security, PR Merge Rate, Release Frequency, Last Discussed on Stack Overflow, and
 Issue Response Time to help simplify the process for developers when it comes to comparing between different libraries. 
 Having visible, easily accessible badges on a repository makes it straightforward for developers to identify 
@@ -530,7 +532,7 @@ test if it is a better determinent of outside contributors.
 While our badges are simple images in a readme file, the ability to click on the image and view other information
 about it such as how the value changes over time as a data visualization
 and methodology behind the metric are both desired features. 
-Building such a front end application for this is possible and a long term goal. 
+Building such a front end application for this is another possibility. 
 
 \newpage
 \bibliographystyle{IEEEtran}
