@@ -2,7 +2,6 @@
 
 \usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage{graphicx}
-\usepackage[margin=1in]{geometry}
 \usepackage{seqsplit}
 \graphicspath{ {./images/} }
     
@@ -62,11 +61,11 @@ Users can view badges belonging to a repository that display inner aspects of a 
 more accessible to view
 \cite{githubbadges}. Visible cues or metrics that are transparent allows users
 to see community support, how "alive" a library is, and to help users assess a project's real value
-\cite{transparency,metrics}. Users may also dig up other library characteristics like functionality, usability,
-quality, compatability, security to judge libraries with\cite{librarytrends,metrics,githubbadges}. 
+\cite{metrics,transparency}. Users may also dig up other library characteristics like functionality, usability,
+quality, compatability, security to judge libraries with\cite{githubbadges,metrics,librarytrends}. 
 These aspects often contribute to the popularity of a library
-\cite{apiwave, librarytrends} that users find the most useful feature across different domains \cite{empiricalmetrics}.
-Users depend on these factors i.e metrics that the related works above mention to select a library to use. 
+\cite{librarytrends, apiwave} that users find the most useful feature across differentdomains \cite{empiricalmetrics}.
+Users depend on these factors i.e metrics that the related works above mention to help select a library to use. 
 
 
 Our research proposes to build transparent repository badges so that users can 
@@ -76,17 +75,38 @@ Based on Trockman's et al. \cite{githubbadges} badge recommendations and metrics
 we look to create 
 dynamic badges that take more work to create i.e assessment badges, where the metric itself is quantifiable, and
 implement badges that do not exist yet so we do not develop already created badges.
-These suggestions will be helpful to produce effective, reliable
+These suggestions are taken into account to produce effective, reliable
 badges.
 
-% dont explicity reccomend libraries. Allow develoeprs to make their
-% own judgement to select librarie. Another quanittiative tool
-% to help compare b/w 
 
 \section{Related Work}
 \subsection{Library Selection Tools}
-There exists other related work that has focused on users decisions on libaries. 
-Mora et al. 
+There are other related works that have focused on users decisions on libraries. 
+Mora et al. \cite{metrics, empiricalmetrics} created a library comparison website
+that features metric based comparison between libaries. While our work is based on
+metrics and the idea of comparing libraries on metrics, we use badges that are integrated into
+a repository so that users can view a libary's aspects in one place versus a seperate
+website to view all the extracted library data in. 
+Chen et al. \cite{analogical} worked on an analogical library recommender that would explicitly
+report other similar libraries in a different programming languages based on the input library.
+e.g input is JUnit testing for Java and output is Jest testing library for JavaScript. 
+This tool would help users to help migrate their knowledge across different programming languages.
+This project gives an actual reccomendation for what library to use but our research allows users to
+make their own judgement for library selection using badges to simplify this process.
+Uddin et. al \cite{opinerarticle} uses sentiment analysis to examine developer opinions on various libraries
+and summarizes positive and negative opinions under various metrics. We both use metrics as a basis of
+our research and provide resources for developers to help select libraries with but Uddin focuses more on
+opinions themselves \cite{stackoverflow}.
+Trockman et. al \cite{githubbadges} studies the use of repository badges in the NPM (node package modules)
+ecosystem, what the most popular badges are, and if badges intend to signal their underlying qualities well.
+Trockman's review does not directly look into how to help users select libraries like our work does but 
+evaluates on different criteria that makes a badge reliable that influence developers decisions
+to use which library. Mileva et. al \cite{librarytrends} examines various library usage trends 
+within different library versions and researchs into different factors that affect a user's decision
+to use a specific version of a library. In contrast with library versions, we look into providing badges
+as resources to select between different libraries instead.
+
+
 % This work focused on explicity recomending libraries versus. 
 % helping users pick which ones to use. My work is related to X while it 
 % differentiates itself from Y
@@ -94,28 +114,27 @@ Mora et al.
 % Library COmparison WEbsite (same method to solve similar problem)
 % Library Recommender (Opiner differe methods but similar problem)
 % Analogical Libraries (differnt method , same problem)
-\subsection{Metrics \& Badges}
-\subsubsection{Quality Assurance}
-% Security
-% Build
-% Test code coverage
-
-\subsubsection{Community Support}
-% Stack Overflow
-
-\subsubsection{Repository General Information}
-% Pull Requests
-% Releases
-% Issue Stats
-% Commits 
-
-\subsection{Summary}
+\subsection{Library Metrics}
+We base the metrics used in our badges off of other related works and identify other library aspects
+that were considered in our research process.
+Hora et al. \cite{apiwave} analyzes API popularity and migration as useful aspects that developers care about
+with the former showing community support and the latter suggesting ease of use/usability. 
+While a popularity badge already exists, migration is a challenging metric to quantify as a badge.
+Mora et al. \cite{metrics, empiricalmetrics} as discussed in the previous subsection researches into
+many more metrics that help developers make their own judgements on libraries. We use some of their metrics
+that match our criteria e.g release frequency to build off of. 
+Dabbish et al. \cite{transparency} looks into transparent library features that developers can easily access
+and how it affects project workflow and library selection evalutation. Many metrics such as number of forks,
+and number of commits although easily accessible would not make a effective badge \cite{githubbadges}
+as it simple to find this information. 
+Kononenko et al. \cite{shopifyarticle} examines successful pull requests (PRs) and criteria that determines
+what PRs get merged in or not. Many of the current PR badges in Shields.io \cite{shields}
+are simple lookup metrics and from the Kononenko's work, we want
+to create metrics from their useful research insights on successful PRs.
 
 \section{Background}
 
 \subsection{Badges}
-% Trockman's work
-% Look at what make's a good badge, not looking at how it can help developers choose libaries
 \begin{figure}[!htb]
     \centerline{
         \includegraphics[width=22cm,height=20cm,keepaspectratio=true]{gnrephpbadges}
@@ -154,8 +173,8 @@ of online hosted repository badges that users can contribute new badges to and u
 existing badges. Just like with individual services, in Shields.io \cite{shields} we would hit custom
 http endpoints e.g https://img.shields.io/stackexchange/:stackexchangesite/qm/:query.svg \cite{shields} 
 by filling in the 
-required query parameters to get the output badge to insert into our repository readme file. 
-Users can also use Shields.io \cite{shields} badge templates to customize the image of the badge and 
+required query parameters to get a badge to insert into a readme file. 
+Users can also use Shields.io \cite{shields} badge templates to customize the image of a badge and 
 input their own information into the badge.
 
 
