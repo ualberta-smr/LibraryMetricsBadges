@@ -27,7 +27,7 @@
     Sarah Nadi \\
     University of Alberta \\
     nadi@ualberta.ca \\
-    \vspace{10cm}
+    \vspace{6cm}
     Scripts \& Documentation: \\
     https://github.com/ualberta-smr/bui-course-f18
 \end{titlepage}
@@ -53,7 +53,9 @@ it is often difficult and not clear how to select the best one to use for your o
 Developers may resort to first doing a general search of their desired library features with 
 search results indicating
 various resources such as a Q\&A website like StackOverflow \cite{stackoverflow} or 
-a website that hosts open source repositories such as Github \cite{github}. On
+a website that hosts open source repositories such as Github \cite{github}. However finding information using
+this method is inefficent and requires many repititous searches or the data can be outdated
+misleading developers \cite{analogical}. On
 these websites, opinions from the community
 \cite{opinerarticle} may sway users to select one library versus another as other users highlight
 a library's strengths and weaknesses. 
@@ -506,7 +508,29 @@ access required information without deadling with authentication issues.
 % Improve Error handling to make sure client knows any bad http codes
 % make front end application to display these metrics to get detailed info, visualizations of metrics
 % being used where and number of people suing them in line graph
+Libraries, APIs, and existing frameworks allow users to take advantage of functionalities without implementing
+features from scratch. However, it is often difficult to determine which library to use given the vast
+collection of choices out there varying across different functionalities. 
+While searching for which option to use is one possibility, it is still challenging as there can
+be incorrect information and many varying opinions on a library to judge from.
+We look at related works that look into directly recommending libraries \cite{analogical},
+opinions on libraries \cite{opiner}, features that make libraries effective \cite{githubbadges, librarytrends, transparency}
+, and metrics themselves that help developers view inside aspects of a library \cite{analogical,githubbadges,metrics,transparency,shopifyarticle}.
+Our research focuses on developing effective repository badges: Security, PR Merge Rate, Release Frequency, Last Discussed on Stack Overflow, and
+Issue Response Time to help simplify the process for developers when it comes to comparing between different libraries. 
+Having visible, easily accessible badges on a repository makes it straightforward for developers to identify 
+aspects of a library with efficiency.
+Although there were timeline constraints, our StackExchange badge has been deployed to the Shields.io production website \cite{shields}
+and gives us a way to evaluate what other maintainers thought of our work and how useful this badge can be.
 
+
+In the long term, we look to contribute the rest of our created badges to Shields.io or host our scripts online
+as endpoints the public can access. In addition, to fix our classification of outside contributors issue and 
+test if it is a better determinent of outside contributors. 
+While our badges are simple images in a readme file, the ability to click on the image and view other information
+about it such as how the value changes over time as a data visualization
+and methodology behind the metric are both desired features. 
+Building such a front end application for this is possible and a long term goal. 
 
 \newpage
 \bibliographystyle{IEEEtran}
