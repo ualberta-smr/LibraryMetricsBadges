@@ -116,9 +116,19 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 * Generate Docs
 	* Run `npm run docs:build`
 	* New documentation will be rebuilt and shown as `docs/docs.md`
+
+## Shields.io Open Source Contributions
+We proposed our Last Discussed on Stack Overflow badge to [Shields.io](https://github.com/badges/shields) repo
+as an [issue](https://github.com/badges/shields/issues/2378) for changes to be `Number of Questions in Past Month on Stack Exchange` metric instead.
+Pull Requests to make those changes include adding unit tests to existing StackExchange service, porting service from legacy API to the newest API, then finally adding badge to the Shields.io scripts itself.
+* [Tests PR](https://github.com/badges/shields/pull/2414)
+* [Convert API PR](https://github.com/badges/shields/pull/2418)
+* [Badge Addition PR](https://github.com/badges/shields/pull/2432)
+* Number of Questions in Past Month on Stack Exchange Example Badge
+![Number of Questions Badge Example](https://img.shields.io/stackexchange/stackoverflow/qm/axios.svg)
 		
 ## License
-ualberta-smr/bui-course-f18 is licensed under the </br>
+ualberta-smr/LibraryMetricsBadges is licensed under the </br>
 
 MIT License </br>
 A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code. </br>
