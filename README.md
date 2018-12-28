@@ -6,7 +6,7 @@
 ![Issue Response Time Average Badge](https://img.shields.io/badge/dynamic/json.svg?label=Issue%20Response%20Time%20Average&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fissueresponse%3Fowner%3Daxios%26libname%3Daxios&query=responsetime&colorB=29C8A9)
 
 ## Description
-This project oversees repository badges developed from various software metrics to help developers compare between different libraries and make the best selection for which library to use
+Libraries, Frameworks, and Application Programming Interfaces (APIs) provide users a way to reuse existing functionalities written within the library itself. Using libraries allows users to focus on their own work more effectively instead of implementing existing features from scratch. With many libraries out there, it is often not clear how to select the best one to use for your project. Here, we look into quantitative software metrics that exert a library's inner qualities such as build status and test code coverage and turn them into visual repository badges. These repository badges are frequently found in README files and provides an accessible way for users to compare metrics between libraries to help determine the best fit for their work. *This project oversees new and previously worked on metrics and how we transformed those into badges.*
 
 ## Contributors
 Project developed by the Software Maintenance and Reuse lab [(SMR)](https://sarahnadi.org/smr/), University of Alberta. </br>
@@ -36,7 +36,8 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 	* Make 2 environment variables called TOKEN and SO_KEY
 		* Get personal access token from [Github](https://github.com/settings/tokens)
 		* Get API Key from [Stack Overflow](https://stackapps.com/apps/oauth/register)
-		* [Image of Stack Overflow Auth](pictures/stackoverflowkey.png?raw=true)
+		* Image of Stack Overflow Auth
+		* ![Image of Stack Overflow Auth](pictures/stackoverflowkey.png?raw=true)
 		* Input those keys into the file e.g
 			* TOKEN=bearer INPUTYOURTOKEN
 			* SO_KEY=INPUTYOURKEY
@@ -109,7 +110,8 @@ For more detailed descriptions of methodologies used to calculate each badge's m
 	* Go to [Shields.io](https://shields.io/#/)
 	* Scroll down to Dynamic Section
 	* Input values for label, url, query, color 
-		* [Badge Input](pictures/shieldsioinput.png?raw=true)
+		* Badge Input Example
+		* ![Badge Input](pictures/shieldsioinput.png?raw=true)
 	* Finally, grab Shields url given in the url bar and make a link to it on your README
 * Generate Docs
 	* Run `npm run docs:build`
