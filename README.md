@@ -1,9 +1,11 @@
 # Exploring Software Library Metrics with Repository Badges 
-![Security Badge](https://img.shields.io/badge/dynamic/json.svg?label=FindSecurityBugs&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fsecurity%3Flibname%3Dgson&query=numbugs&colorB=orange)
-![Release Frequency Badge](https://img.shields.io/badge/dynamic/json.svg?label=Release%20Frequency&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Freleasefreq%3Flibname%3Dgson%26owner%3Dgoogle&query=numdays&colorB=blue)
-![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/dynamic/json.svg?label=Last%20Discussed%20on%20Stack%20Overflow&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Flastdiscussed%3Flibname%3Dgson&query=lastdate&colorB=9400D3)
-![Contributor PRs Merge Rate Badge](https://img.shields.io/badge/dynamic/json.svg?label=Contributor%20PR%20Merge%20Rate&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fpullrequests%3Fowner%3Daxios%26libname%3Daxios&query=percentage&colorB=green)
-![Issue Response Time Average Badge](https://img.shields.io/badge/dynamic/json.svg?label=Issue%20Response%20Time%20Average&url=http%3A%2F%2Ff213e4f1.ngrok.io%2Fissueresponse%3Fowner%3Daxios%26libname%3Daxios&query=responsetime&colorB=29C8A9)
+
+## Project Badge Examples
+![Security Badge](https://img.shields.io/badge/FindSecurityBugs-2%20%E2%86%91-orange.svg)
+![Release Frequency Badge](https://img.shields.io/badge/ReleaseFrequency-30%20days%20%E2%86%93-blue.svg)
+![Last Discussed on Stack Overflow Badge](https://img.shields.io/badge/Last%20Discussed%20on%20Stack%20Overflow-11--01--2018-lightgrey.svg)
+![Contributor PRs Merge Rate Badge](https://img.shields.io/badge/Contributor%20PR%20Merge%20Rate-89%25%20%E2%86%93-yellowgreen.svg)
+![Issue Response Time Average Badge](https://img.shields.io/badge/Issue%20Response%20Time%20Average-22%20days%20%E2%86%91-brightgreen.svg)
 
 ## Description
 Libraries, Frameworks, and Application Programming Interfaces (APIs) provide users a way to reuse existing functionalities written within the library itself. Using libraries allows users to focus on their own work more effectively instead of implementing existing features from scratch. With many libraries out there, it is often not clear how to select the best one to use for your project. Here, we look into quantitative software metrics that exert a library's inner qualities such as build status and test code coverage and turn them into visual repository badges. These repository badges are frequently found in README files and provides an accessible way for users to compare metrics between libraries to help determine the best fit for their work. *This project oversees new and previously worked on metrics and how we transformed those into badges.*
